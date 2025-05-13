@@ -607,7 +607,7 @@ void tick_ai_quetzalcoaltus(EntityIdx entity, struct rr_simulation *simulation)
         break;
     case rr_ai_state_attacking:
     {
-        physical->knockback_scale = 10;
+        physical->knockback_scale = 5;
         struct rr_component_physical *physical2 =
             rr_simulation_get_physical(simulation, ai->target_entity);
 

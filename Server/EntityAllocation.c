@@ -71,6 +71,9 @@ EntityIdx rr_simulation_alloc_player(struct rr_simulation *this,
     rr_component_flower_set_level(rr_simulation_get_flower(this, flower_id),
                                   player_info->level);
     rr_simulation_get_flower(this, flower_id)->saved_angle = physical->angle;
+    // easter egg
+    if (rr_frand() < 0.0001)
+        rr_simulation_get_flower(this, flower_id)->spinning = 1;
     rr_component_health_set_max_health(
         health, 200 * pow(1.0256, player_info->level - 1));
     rr_component_health_set_health(health, health->max_health);
@@ -115,7 +118,7 @@ EntityIdx rr_simulation_alloc_petal(struct rr_simulation *this, EntityIdx arena,
     if (id == rr_petal_id_club)
     {
         rr_component_physical_set_radius(physical, 15);
-        physical->mass = 5.0f * powf(1.5, petal->rarity);
+        physical->mass = 15.0f * powf(1.5, petal->rarity);
         physical->knockback_scale = 10.0f * powf(1.7, petal->rarity);
     }
     else if (id == rr_petal_id_fireball)
@@ -220,7 +223,7 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
     physical->arena = arena_id;
     physical->friction = 0.75;
     physical->mass = 10.0f * powf(2, rarity_id + 1);
-    physical->slow_resist = rr_fclamp(0.2 * (rarity_scale->radius - 1), 0, 1);
+    physical->slow_resist = rr_fclamp(0.02 * powf(2, rarity_scale->radius) - 0.04, 0, 1);
     if (mob_id == rr_mob_id_meteor)
     {
         physical->mass *= 25;

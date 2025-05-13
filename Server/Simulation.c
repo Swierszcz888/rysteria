@@ -62,31 +62,18 @@ static void set_special_zone(uint8_t biome, uint8_t (*fun)(), uint32_t x,
 #define ALL_MOBS 255
 #define DIFFICULT_MOBS 254
 
-uint8_t fern_zone() { return rr_mob_id_fern; }
-uint8_t pter_meteor_zone()
-{
-    return rr_frand() > 0.02 ? rr_mob_id_pteranodon : rr_mob_id_meteor;
-}
-uint8_t ornith_pachy_zone()
-{
-    return rr_frand() > 0.5 ? rr_mob_id_ornithomimus : rr_mob_id_pachycephalosaurus;
-}
-uint8_t trice_dako_zone()
-{
-    return rr_frand() > 0.2 ? rr_mob_id_dakotaraptor : rr_mob_id_triceratops;
-}
-uint8_t anky_trex_zone()
-{
-    return rr_frand() > 0.2 ? rr_mob_id_ankylosaurus : rr_mob_id_trex;
-}
+uint8_t fern_zone() { return rr_frand() > 0.04 ? rr_mob_id_fern : rr_mob_id_tree; }
+uint8_t pter_meteor_zone() { return rr_frand() > 0.02 ? rr_mob_id_pteranodon : rr_mob_id_meteor; }
+uint8_t ornith_pachy_zone() { return rr_frand() > 0.5 ? rr_mob_id_ornithomimus : rr_mob_id_pachycephalosaurus; }
+uint8_t trice_dako_zone() { return rr_frand() > 0.2 ? rr_mob_id_dakotaraptor : rr_mob_id_triceratops; }
+uint8_t anky_trex_zone() { return rr_frand() > 0.2 ? rr_mob_id_ankylosaurus : rr_mob_id_trex; }
 uint8_t edmo_zone() { return rr_mob_id_edmontosaurus; }
 // ~x5 tree chance
-uint8_t tree_zone() {
-    return rr_frand() > 0.0025 ? DIFFICULT_MOBS : rr_mob_id_tree;
-}
-uint8_t pter_zone() {
-    return rr_frand() > 0.2 ? rr_mob_id_pteranodon : ALL_MOBS;
-}
+uint8_t tree_zone() { return rr_frand() > 0.0025 ? DIFFICULT_MOBS : rr_mob_id_tree; }
+uint8_t pter_zone() { return rr_frand() > 0.1 ? rr_mob_id_pteranodon : ALL_MOBS; }
+uint8_t trex_zone() { return rr_mob_id_trex; }
+uint8_t quetz_zone() { return rr_frand() > 0.2 ? rr_mob_id_quetzalcoatlus : rr_frand() > 0.4 ? rr_mob_id_ankylosaurus : rr_mob_id_pachycephalosaurus; }
+uint8_t trex_dako_pter_zone() { return rr_frand() > 0.6 ? rr_mob_id_trex : rr_frand() > 0.5 ? rr_mob_id_dakotaraptor : rr_mob_id_pteranodon; }
 
 struct zone
 {
@@ -97,18 +84,22 @@ struct zone
     uint8_t (*spawn_func)();
 };
 
-#define ZONE_POSITION_COUNT 9
+#define ZONE_POSITION_COUNT 13
 
 static struct zone zone_positions[ZONE_POSITION_COUNT] = {
-    {4,  0,  7,  3, fern_zone},
+    {5,  0,  6,  3, fern_zone},
     {16, 3,  5,  4, pter_meteor_zone},
-    {17, 8,  3,  2, ornith_pachy_zone},
+    {17, 8,  3,  3, ornith_pachy_zone},
     {26, 11, 3,  3, trice_dako_zone},
     {10, 22, 4,  3, anky_trex_zone},
     {23, 22, 4,  3, edmo_zone},
     {16, 25, 5,  2, tree_zone},
     {13, 27, 11, 4, tree_zone},
     {2,  13, 6, 17, pter_zone},
+    {23,  6, 5,  4, trex_zone},
+    {33, 21, 2,  2, quetz_zone},
+    {35, 20, 2,  2, quetz_zone},
+    {36, 2,  4,  4, trex_dako_pter_zone},
 };
 
 static void set_spawn_zones()

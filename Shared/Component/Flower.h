@@ -38,6 +38,7 @@ struct rr_component_flower
     uint8_t third_eye_count;
     RR_SERVER_ONLY(uint8_t protocol_state;)
     RR_SERVER_ONLY(float saved_angle;)
+    RR_SERVER_ONLY(uint8_t spinning;)
     float eye_angle;
     uint32_t level;
     RR_CLIENT_ONLY(float eye_x;)

@@ -231,6 +231,9 @@ static void system_velocity(EntityIdx id, void *simulation)
     rr_vector_add(&vel, &physical->collision_velocity);
     if (rr_simulation_has_flower(simulation, id))
     {
+        if (rr_simulation_get_flower(simulation, id)->spinning &&
+        !is_dead_flower(simulation, id))
+            rr_component_physical_set_angle(physical, physical->angle + 0.5f);
         if (physical->acceleration.x != 0.0f ||
             physical->acceleration.y != 0.0f)
         {
