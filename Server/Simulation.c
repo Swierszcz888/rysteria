@@ -74,6 +74,7 @@ uint8_t pter_zone() { return rr_frand() > 0.1 ? rr_mob_id_pteranodon : ALL_MOBS;
 uint8_t trex_zone() { return rr_mob_id_trex; }
 uint8_t quetz_zone() { return rr_frand() > 0.2 ? rr_mob_id_quetzalcoatlus : rr_frand() > 0.4 ? rr_mob_id_ankylosaurus : rr_mob_id_pachycephalosaurus; }
 uint8_t trex_dako_pter_zone() { return rr_frand() > 0.6 ? rr_mob_id_trex : rr_frand() > 0.5 ? rr_mob_id_dakotaraptor : rr_mob_id_pteranodon; }
+//uint8_t normal_zone() { return rr_frand() > 0.01 ? rr_mob_id_tree : ALL_MOBS; }
 
 struct zone
 {
@@ -100,6 +101,7 @@ static struct zone zone_positions[ZONE_POSITION_COUNT] = {
     {33, 21, 2,  2, quetz_zone},
     {35, 20, 2,  2, quetz_zone},
     {36, 2,  4,  4, trex_dako_pter_zone},
+  //{34, 33,  2, 3, normal_zone},
 };
 
 static void set_spawn_zones()

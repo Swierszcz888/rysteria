@@ -117,9 +117,9 @@ EntityIdx rr_simulation_alloc_petal(struct rr_simulation *this, EntityIdx arena,
     float scale_d = data->scale[rarity].damage;
     if (id == rr_petal_id_club)
     {
-        rr_component_physical_set_radius(physical, 15);
+        rr_component_physical_set_radius(physical, 25 + (-15 * (log20(-1 * rarity + 8))));
         physical->mass = 15.0f * powf(1.5, petal->rarity);
-        physical->knockback_scale = 10.0f * powf(1.7, petal->rarity);
+        physical->knockback_scale = 5.0f * powf(1.3, rarity);
     }
     else if (id == rr_petal_id_fireball)
         rr_component_physical_set_radius(physical, 13);
