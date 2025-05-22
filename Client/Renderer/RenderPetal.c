@@ -82,7 +82,7 @@ void rr_component_petal_render(EntityIdx entity, struct rr_game *game,
                              2 * M_PI * rr_frand());
         particle->friction = 0.9;
         particle->size = (3 + 2 * rr_frand()) * exotic_coeff * size_coeff;
-        particle->opacity = (0.3 + 0.2 * rr_frand()) *
+        particle->opacity = (0.3 + 0.5 * rr_frand()) *
                                 exotic_coeff * colorful_coeff;
         particle->disappearance = physical->on_title_screen ? 4 : 6;
         particle->color = 0xffffffff;

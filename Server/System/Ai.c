@@ -116,6 +116,9 @@ static void system_for_each(EntityIdx entity, void *simulation)
     default:
         tick_ai_default(entity, this, RR_PLAYER_SPEED);
         break;
+    case rr_mob_id_lanternfly:
+        tick_ai_lanternfly(entity, this);
+        break;
     }
     --ai->ticks_until_next_action;
 }

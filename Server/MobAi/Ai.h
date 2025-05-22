@@ -43,3 +43,4 @@ void tick_ai_ornithomimus(EntityIdx, struct rr_simulation *);
 void tick_ai_ankylosaurus(EntityIdx, struct rr_simulation *);
 void tick_ai_meteor(EntityIdx, struct rr_simulation *);
 void tick_ai_quetzalcoaltus(EntityIdx, struct rr_simulation *);
+void tick_ai_lanternfly(EntityIdx, struct rr_simulation *);

@@ -500,7 +500,7 @@ void tick_ai_ankylosaurus(EntityIdx entity, struct rr_simulation *simulation)
                             rr_frand() < 0.2)
                                ? rr_ai_state_exotic_special
                                : rr_ai_state_charging;
-            ai->ticks_until_next_action = 25;
+            ai->ticks_until_next_action = 5;
         }
         break;
     }
@@ -529,7 +529,7 @@ void tick_ai_ankylosaurus(EntityIdx entity, struct rr_simulation *simulation)
     }
     case rr_ai_state_exotic_special:
     {
-        physical->knockback_scale = 125;
+        physical->knockback_scale = -125;
         struct rr_vector accel;
         struct rr_component_physical *physical2 =
             rr_simulation_get_physical(simulation, ai->target_entity);
@@ -541,7 +541,7 @@ void tick_ai_ankylosaurus(EntityIdx entity, struct rr_simulation *simulation)
 
         rr_component_physical_set_angle(physical, target_angle + M_PI);
 
-        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 3.0, physical->angle);
+        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * -15.0, physical->angle);
         rr_vector_add(&physical->acceleration, &accel);
         if (ai->ticks_until_next_action == 0)
         {
@@ -620,6 +620,53 @@ void tick_ai_quetzalcoaltus(EntityIdx entity, struct rr_simulation *simulation)
             ai->ticks_until_next_action = 20;
 
             rr_vector_from_polar(&delta, RR_PLAYER_SPEED * 18, physical->angle);
+            rr_vector_add(&physical->acceleration, &delta);
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void tick_ai_lanternfly(EntityIdx entity, struct rr_simulation *simulation)
+{
+    struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
+    struct rr_component_physical *physical =
+        rr_simulation_get_physical(simulation, entity);
+
+    if (should_aggro(simulation, ai))
+        ai->ai_state = rr_ai_state_attacking;
+    physical->knockback_scale = 1;
+
+    switch (ai->ai_state)
+    {
+    case rr_ai_state_idle:
+        tick_idle(entity, simulation);
+        break;
+    case rr_ai_state_idle_moving:
+        tick_idle_move_default(entity, simulation);
+        break;
+    case rr_ai_state_attacking:
+    {
+        physical->knockback_scale = -5;
+        struct rr_component_physical *physical2 =
+            rr_simulation_get_physical(simulation, ai->target_entity);
+
+        struct rr_vector delta = {physical2->x, physical2->y};
+        struct rr_vector target_pos = {physical->x, physical->y};
+        rr_vector_sub(&delta, &target_pos);
+        rr_component_physical_set_angle(physical, rr_vector_theta(&delta));
+        if (ai->ticks_until_next_action == 1)
+        {
+            rr_vector_from_polar(&delta, RR_PLAYER_SPEED * 20, physical->angle);
+            rr_vector_add(&physical->acceleration, &delta);
+        }
+        if (ai->ticks_until_next_action == 0)
+        {
+            ai->ticks_until_next_action = 2;
+
+            rr_vector_from_polar(&delta, RR_PLAYER_SPEED * -19, physical->angle);
             rr_vector_add(&physical->acceleration, &delta);
         }
         break;
