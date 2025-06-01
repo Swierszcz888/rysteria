@@ -68,7 +68,7 @@ struct rr_ui_element *rr_ui_finished_game_screen_init()
         rr_ui_choose_element_init(
             rr_ui_text_init("You Died", 48, 0xffffffff),
             // easter egg
-            rr_ui_text_init("Skill Issue", 48, 0xffffffff),
+            rr_ui_text_init("Skill Issue 💀", 48, 0xffffffff),
             text_choose
         ),
         rr_ui_static_space_init(150),

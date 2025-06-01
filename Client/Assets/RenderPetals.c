@@ -1634,6 +1634,10 @@ void rr_renderer_draw_petal(struct rr_renderer *renderer, uint8_t id,
             rr_renderer_scale(renderer, 0.2f);
             rr_meteor_draw(renderer);
             break;
+        case rr_petal_id_clover:
+            rr_renderer_scale(renderer, 0.05f);
+            rr_fern_draw(renderer);
+            break;
         case rr_petal_id_mandible:
             rr_renderer_scale(renderer, 0.09);
             rr_renderer_set_fill(renderer, 0xff171612);
@@ -2172,6 +2176,75 @@ void rr_renderer_draw_petal(struct rr_renderer *renderer, uint8_t id,
             rr_renderer_fill(renderer);
             rr_renderer_scale(renderer, 1 / 0.2f);
             break;
+        case rr_petal_id_rice:
+            rr_renderer_scale(renderer, 0.3);
+            rr_renderer_translate(renderer, -20.00, 0.00);
+            rr_renderer_set_line_cap(renderer, 1);
+            rr_renderer_set_stroke(renderer, 0xffcfcfcf);
+            rr_renderer_set_line_width(renderer, 28);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_move_to(renderer, 39.50, 18.00);
+            rr_renderer_quadratic_curve_to(renderer, 0.00, 30.00, 0.00, 0.00);
+            rr_renderer_stroke(renderer);
+            rr_renderer_set_stroke(renderer, 0xffffffff);
+            rr_renderer_set_line_width(renderer, 16.8);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_move_to(renderer, 40.00, 18.00);
+            rr_renderer_quadratic_curve_to(renderer, 0.00, 30.00, 0.00, 0.00);
+            rr_renderer_stroke(renderer);
+            rr_renderer_set_stroke(renderer, 0xffcfcfcf);
+            rr_renderer_set_line_width(renderer, 28);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_move_to(renderer, 39.50, -18.00);
+            rr_renderer_quadratic_curve_to(renderer, 0.00, -30.00, 0.00, 0.00);
+            rr_renderer_stroke(renderer);
+            rr_renderer_set_stroke(renderer, 0xffffffff);
+            rr_renderer_set_line_width(renderer, 16.8);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_move_to(renderer, 40.00, -18.00);
+            rr_renderer_quadratic_curve_to(renderer, 0.00, -30.00, 0.00, 0.00);
+            rr_renderer_stroke(renderer);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_set_stroke(renderer, 0xffcfcfcf);
+            rr_renderer_set_line_width(renderer, 28);
+            rr_renderer_move_to(renderer, 39.50, 18.00);
+            rr_renderer_quadratic_curve_to(renderer, 0.00, 30.00, 0.00, 0.00);
+            rr_renderer_stroke(renderer);
+            rr_renderer_set_stroke(renderer, 0xffffffff);
+            rr_renderer_set_line_width(renderer, 16.8);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_move_to(renderer, 40.00, 18.00);
+            rr_renderer_quadratic_curve_to(renderer, 0.00, 30.00, 0.00, 0.00);
+            rr_renderer_stroke(renderer);
+            rr_renderer_set_line_cap(renderer, 0);
+            rr_renderer_set_stroke(renderer, 0xffcfcfcf);
+            rr_renderer_set_line_width(renderer, 28);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_move_to(renderer, 39.50, -18.00);
+            rr_renderer_quadratic_curve_to(renderer, 0.00, -30.00, 0.00, 0.00);
+            rr_renderer_stroke(renderer);
+            rr_renderer_set_stroke(renderer, 0xffffffff);
+            rr_renderer_set_line_width(renderer, 16.8);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_move_to(renderer, 40.00, -18.00);
+            rr_renderer_quadratic_curve_to(renderer, 0.00, -30.00, 0.00, 0.00);
+            rr_renderer_stroke(renderer);
+            rr_renderer_scale(renderer, 1 / 0.5);
+            break;
+        case rr_petal_id_missile:
+            rr_renderer_set_fill(renderer, 0xffcdb124);
+            rr_renderer_set_stroke(renderer, 0xffa68e1a);
+            rr_renderer_set_line_width(renderer, 3.0f);
+            rr_renderer_set_line_join(renderer, 1.0f);
+            rr_renderer_set_line_cap(renderer, 1.0f);
+            rr_renderer_begin_path(renderer);
+            rr_renderer_move_to(renderer, 15.00, 0.00);
+            rr_renderer_line_to(renderer, -10.50, 6.06);
+            rr_renderer_line_to(renderer, -10.50, -6.06);
+            rr_renderer_line_to(renderer, 15.00, 0.00);
+            rr_renderer_fill(renderer);
+            rr_renderer_stroke(renderer);
+            break;
         default:
             break;
         }
@@ -2212,6 +2285,8 @@ void rr_renderer_draw_static_petal(struct rr_renderer *renderer, uint8_t id,
             rr_renderer_rotate(renderer, -1.0f);
         else if (id == rr_petal_id_wax)
             rr_renderer_rotate(renderer, 0.3f);
+        else if (id == rr_petal_id_missile)
+            rr_renderer_rotate(renderer, -1.0f);
         rr_renderer_draw_petal(renderer, id, flags);
     }
     else

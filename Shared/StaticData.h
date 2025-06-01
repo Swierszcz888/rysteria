@@ -132,13 +132,18 @@ enum rr_petal_id
     rr_petal_id_meat,      // 26
     rr_petal_id_bubble,    // 27
     rr_petal_id_meteor,    // 28
+    rr_petal_id_clover,    // 29
 
-    rr_petal_id_mandible,  // 29
-    rr_petal_id_wax,       // 30
-    rr_petal_id_sand,      // 31
-    rr_petal_id_mint,      // 32
+    rr_petal_id_mandible,  // 30
+    rr_petal_id_wax,       // 31
+    rr_petal_id_sand,      // 32
+    rr_petal_id_mint,      // 33
+    
+    rr_petal_id_rice,      // 34
+    rr_petal_id_missile,   // 35
+    rr_petal_id_test_petal,// 36
 
-    rr_petal_id_max,       // 33
+    rr_petal_id_max,       // 37
 };
 
 enum rr_mob_id

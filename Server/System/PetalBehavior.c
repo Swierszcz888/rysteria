@@ -545,6 +545,27 @@ static void system_flower_petal_movement_logic(
             }
             break;
         }
+        case rr_petal_id_missile:
+        {
+            if ((player_info->input & 1) == 0)
+                break;
+            system_petal_detach(simulation, petal, player_info, outer_pos,
+                                inner_pos, petal_data);
+            petal->effect_delay = 47;
+            physical->friction = 0.5;
+            physical->bearing_angle = curr_angle;
+            EntityIdx target = rr_simulation_find_nearest_enemy(
+                simulation, id, 750, NULL, is_close_enough_and_angle);
+            if (target != RR_NULL_ENTITY)
+            {
+                struct rr_component_physical *t_physical =
+                    rr_simulation_get_physical(simulation, target);
+                struct rr_vector delta = {t_physical->x - physical->x,
+                                          t_physical->y - physical->y};
+                physical->bearing_angle = rr_vector_theta(&delta);
+            }
+            break;
+        }
         default:
             break;
         }
@@ -603,6 +624,8 @@ static void system_flower_petal_movement_logic(
         rr_vector_magnitude_cmp(&physical->acceleration, 1.0f) == 1)
         rr_component_physical_set_angle(
             physical, rr_vector_theta(&physical->acceleration));
+    else if (petal->id == rr_petal_id_missile)
+        rr_component_physical_set_angle(physical, curr_angle);
     else
         rr_component_physical_set_angle(
             physical, physical->angle + 0.04f * petal->spin_ccw *
@@ -693,6 +716,11 @@ static void petal_modifiers(struct rr_simulation *simulation,
                     player_info->modifiers.drop_pickup_radius +=
                         (50 + 180 * slot->rarity) * magnet_diminish_factor;
                     magnet_diminish_factor *= 0.5;
+                }        
+                else if (data->id == rr_petal_id_test_petal)
+                {
+                struct rr_component_health *petal_health = rr_simulation_get_health(simulation, slot->petals[inner].entity_hash);
+                rr_component_health_set_health(petal_health, petal_health->health + 0.012 * petal_health->max_health);
                 }
             }
         }
@@ -1025,6 +1053,11 @@ static void system_petal_misc_logic(EntityIdx id, void *_simulation)
         }
         else if (petal->id == rr_petal_id_meat)
             meat_petal_system(simulation, petal);
+        else if (petal->id == rr_petal_id_missile)
+        {
+            rr_vector_from_polar(&physical->acceleration, 25.0f,
+                                 physical->bearing_angle);
+        }
         if (--petal->effect_delay <= 0)
         {
             rr_simulation_request_entity_deletion(simulation, id);

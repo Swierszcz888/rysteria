@@ -476,5 +476,19 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
                                   rr_ui_text_init(extra, 12, 0xffffffff), NULL),
                               -1, 0));
     }
+    else if (id == rr_petal_id_test_petal)
+    {
+        char *extra = malloc((sizeof *extra) * 8);
+        sprintf(extra, "%s",
+                rr_sprintf(fmt, 0.3 * RR_PETAL_DATA[id].health *
+                                    RR_PETAL_DATA[id].scale[rarity].health));
+        rr_ui_container_add_element(
+            this, rr_ui_set_justify(
+                      rr_ui_h_container_init(
+                          rr_ui_container_init(), 0, 0,
+                          rr_ui_text_init("Regeneration: ", 12, 0xffff7744),
+                          rr_ui_text_init(extra, 12, 0xffffffff), NULL),
+                      -1, 0));
+    }
     return this;
 }

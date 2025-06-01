@@ -116,6 +116,19 @@ static void system_for_each(EntityIdx entity, void *simulation)
     default:
         tick_ai_default(entity, this, RR_PLAYER_SPEED);
         break;
+    case rr_mob_id_hornet:
+        tick_ai_hornet(entity, this);
+        break;
+    case rr_mob_id_dragonfly:
+        tick_ai_dragonfly(entity, this);
+        break;
+    case rr_mob_id_honeybee:
+        tick_ai_honeybee(entity, this);
+        break;
+    case rr_mob_id_spider:
+        tick_ai_default(entity, this, RR_PLAYER_SPEED *
+                                      (1.4 - mob->rarity * 0.05));
+        break;
     case rr_mob_id_lanternfly:
         tick_ai_lanternfly(entity, this);
         break;
