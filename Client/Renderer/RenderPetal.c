@@ -113,11 +113,10 @@ void rr_component_petal_render(EntityIdx entity, struct rr_game *game,
 
     rr_renderer_scale(renderer, physical->radius / 10);
     uint8_t use_cache =
-        (((health->damage_animation < 0.1) | game->cache.low_performance_mode) &
-         1) &
-        (1 - game->cache.tint_petals);
+        (health->damage_animation < 0.1 || game->cache.low_performance_mode) &&
+        !game->cache.tint_petals;
     if (petal->id != rr_petal_id_peas || petal->detached == 1)
-        rr_renderer_draw_petal(renderer, petal->id, use_cache);
+        rr_renderer_draw_petal(renderer, petal->id, petal->rarity, use_cache);
     else
         rr_renderer_draw_static_petal(renderer, petal->id, petal->rarity,
                                       use_cache);

@@ -112,7 +112,7 @@ void rr_component_flower_render(EntityIdx entity, struct rr_game *game,
         rr_renderer_translate(renderer, 0, -21.75);
         rr_renderer_scale2(renderer, 1, flower->crest_count);
         rr_renderer_translate(renderer, 0, -14.25);
-        rr_renderer_draw_petal(renderer, rr_petal_id_crest, 0);
+        rr_renderer_draw_petal(renderer, rr_petal_id_crest, 0, 1);
         rr_renderer_context_state_free(renderer, &state);
     }
     if (flower->third_eye_count)

@@ -26,10 +26,12 @@
 struct rr_renderer petal_cache;
 
 void rr_renderer_draw_petal(struct rr_renderer *renderer, uint8_t id,
-                            uint8_t flags)
+                            uint8_t rarity, uint8_t flags)
 {
     if (flags & 1)
     {
+        if (id == rr_petal_id_clover && rarity >= rr_rarity_id_exotic)
+            id = rr_petal_id_max;
         rr_renderer_scale(renderer, 50 / IMAGE_SIZE);
         rr_renderer_draw_clipped_image(
             renderer, &petal_cache, IMAGE_SIZE / 2 + IMAGE_SIZE * id,
@@ -1635,8 +1637,182 @@ void rr_renderer_draw_petal(struct rr_renderer *renderer, uint8_t id,
             rr_meteor_draw(renderer);
             break;
         case rr_petal_id_clover:
-            rr_renderer_scale(renderer, 0.05f);
-            rr_fern_draw(renderer);
+            if (rarity < rr_rarity_id_exotic)
+            {
+                rr_renderer_scale(renderer, 25.0f / 2849.0f);
+                rr_renderer_translate(renderer, -1556.5, -1424.5);
+                rr_renderer_set_fill(renderer, 0xff2b741e);
+                rr_renderer_begin_path(renderer);
+                rr_renderer_move_to(renderer, 1658.1, 1237);
+                rr_renderer_bezier_curve_to(renderer, 1658.1, 1237, 1495.74, 2173.74, 1727.75, 2620.07);
+                rr_renderer_bezier_curve_to(renderer, 1763.95, 2689.71, 1831.85, 2792, 1831.85, 2792);
+                rr_renderer_line_to(renderer, 1532.3, 2848.52);
+                rr_renderer_bezier_curve_to(renderer, 1532.3, 2848.52, 1548.95, 2729.45, 1554.8, 2652.7);
+                rr_renderer_bezier_curve_to(renderer, 1575.38, 2382.61, 1488.4, 2230, 1513.71, 1960.31);
+                rr_renderer_bezier_curve_to(renderer, 1537.22, 1709.7, 1658.1, 1237, 1658.1, 1237);
+                rr_renderer_fill(renderer);
+                rr_renderer_set_fill(renderer, 0xff348d23);
+                rr_renderer_begin_path(renderer);
+                rr_renderer_move_to(renderer, 2079.91, 1324.94);
+                rr_renderer_bezier_curve_to(renderer, 2229.32, 1139.04, 2355.3, 931.606, 2355.3, 760.648);
+                rr_renderer_bezier_curve_to(renderer, 2355.3, 340.554, 2014.74, 0, 1594.65, 0);
+                rr_renderer_bezier_curve_to(renderer, 1174.55, 0, 834, 340.554, 834, 760.648);
+                rr_renderer_bezier_curve_to(renderer, 834, 941.937, 975.655, 1164.24, 1136.7, 1358.4);
+                rr_renderer_bezier_curve_to(renderer, 907.525, 1279.28, 664.148, 1229.22, 500.775, 1288.69);
+                rr_renderer_bezier_curve_to(renderer, 106.016, 1432.37, -97.5238, 1868.86, 46.1568, 2263.62);
+                rr_renderer_bezier_curve_to(renderer, 189.838, 2658.38, 626.329, 2861.92, 1021.09, 2718.24);
+                rr_renderer_bezier_curve_to(renderer, 1227.91, 2642.96, 1420.13, 2350.8, 1556.28, 2089.68);
+                rr_renderer_bezier_curve_to(renderer, 1692.42, 2350.8, 1884.64, 2642.96, 2091.47, 2718.24);
+                rr_renderer_bezier_curve_to(renderer, 2486.23, 2861.92, 2922.72, 2658.38, 3066.4, 2263.62);
+                rr_renderer_bezier_curve_to(renderer, 3210.08, 1868.86, 3006.54, 1432.37, 2611.78, 1288.69);
+                rr_renderer_bezier_curve_to(renderer, 2472.98, 1238.17, 2276.44, 1266.7, 2079.91, 1324.94);
+                rr_renderer_fill(renderer);
+                rr_renderer_begin_path(renderer);
+                rr_renderer_move_to(renderer, 2079.91, 1324.94);
+                rr_renderer_bezier_curve_to(renderer, 2229.32, 1139.04, 2355.3, 931.606, 2355.3, 760.648);
+                rr_renderer_bezier_curve_to(renderer, 2355.3, 340.554, 2014.74, 0, 1594.65, 0);
+                rr_renderer_bezier_curve_to(renderer, 1174.55, 0, 834, 340.554, 834, 760.648);
+                rr_renderer_bezier_curve_to(renderer, 834, 941.937, 975.655, 1164.24, 1136.7, 1358.4);
+                rr_renderer_bezier_curve_to(renderer, 907.525, 1279.28, 664.148, 1229.22, 500.775, 1288.69);
+                rr_renderer_bezier_curve_to(renderer, 106.016, 1432.37, -97.5238, 1868.86, 46.1568, 2263.62);
+                rr_renderer_bezier_curve_to(renderer, 189.838, 2658.38, 626.329, 2861.92, 1021.09, 2718.24);
+                rr_renderer_bezier_curve_to(renderer, 1227.91, 2642.96, 1420.13, 2350.8, 1556.28, 2089.68);
+                rr_renderer_bezier_curve_to(renderer, 1692.42, 2350.8, 1884.64, 2642.96, 2091.47, 2718.24);
+                rr_renderer_bezier_curve_to(renderer, 2486.23, 2861.92, 2922.72, 2658.38, 3066.4, 2263.62);
+                rr_renderer_bezier_curve_to(renderer, 3210.08, 1868.86, 3006.54, 1432.37, 2611.78, 1288.69);
+                rr_renderer_bezier_curve_to(renderer, 2472.98, 1238.17, 2276.44, 1266.7, 2079.91, 1324.94);
+                rr_renderer_clip(renderer);
+                rr_renderer_set_fill(renderer, 0xff2e7b20);
+                rr_renderer_begin_path(renderer);
+                rr_renderer_move_to(renderer, 2079.91, 1324.94);
+                rr_renderer_line_to(renderer, 2001.97, 1262.3);
+                rr_renderer_line_to(renderer, 1801.47, 1511.76);
+                rr_renderer_line_to(renderer, 2108.33, 1420.82);
+                rr_renderer_line_to(renderer, 2079.91, 1324.94);
+                rr_renderer_move_to(renderer, 1136.7, 1358.4);
+                rr_renderer_line_to(renderer, 1104.07, 1452.92);
+                rr_renderer_line_to(renderer, 1441.72, 1569.48);
+                rr_renderer_line_to(renderer, 1213.67, 1294.55);
+                rr_renderer_line_to(renderer, 1136.7, 1358.4);
+                rr_renderer_move_to(renderer, 500.775, 1288.69);
+                rr_renderer_line_to(renderer, 466.573, 1194.72);
+                rr_renderer_line_to(renderer, 466.573, 1194.72);
+                rr_renderer_line_to(renderer, 500.775, 1288.69);
+                rr_renderer_move_to(renderer, 46.1568, 2263.62);
+                rr_renderer_line_to(renderer, 140.126, 2229.42);
+                rr_renderer_line_to(renderer, 140.126, 2229.42);
+                rr_renderer_line_to(renderer, 46.1568, 2263.62);
+                rr_renderer_move_to(renderer, 1021.09, 2718.24);
+                rr_renderer_line_to(renderer, 986.887, 2624.27);
+                rr_renderer_line_to(renderer, 986.887, 2624.27);
+                rr_renderer_line_to(renderer, 1021.09, 2718.24);
+                rr_renderer_move_to(renderer, 1556.28, 2089.68);
+                rr_renderer_line_to(renderer, 1644.95, 2043.45);
+                rr_renderer_line_to(renderer, 1556.28, 1873.38);
+                rr_renderer_line_to(renderer, 1467.61, 2043.45);
+                rr_renderer_line_to(renderer, 1556.28, 2089.68);
+                rr_renderer_move_to(renderer, 2091.47, 2718.24);
+                rr_renderer_line_to(renderer, 2125.67, 2624.27);
+                rr_renderer_line_to(renderer, 2125.67, 2624.27);
+                rr_renderer_line_to(renderer, 2091.47, 2718.24);
+                rr_renderer_move_to(renderer, 3066.4, 2263.62);
+                rr_renderer_line_to(renderer, 3160.37, 2297.82);
+                rr_renderer_line_to(renderer, 3160.37, 2297.82);
+                rr_renderer_line_to(renderer, 3066.4, 2263.62);
+                rr_renderer_move_to(renderer, 2611.78, 1288.69);
+                rr_renderer_line_to(renderer, 2577.58, 1382.65);
+                rr_renderer_line_to(renderer, 2577.58, 1382.65);
+                rr_renderer_line_to(renderer, 2611.78, 1288.69);
+                rr_renderer_move_to(renderer, 2157.86, 1387.59);
+                rr_renderer_bezier_curve_to(renderer, 2234.95, 1291.67, 2308.09, 1187.67, 2362.35, 1083.33);
+                rr_renderer_bezier_curve_to(renderer, 2415.97, 980.232, 2455.3, 869.007, 2455.3, 760.648);
+                rr_renderer_line_to(renderer, 2255.3, 760.648);
+                rr_renderer_bezier_curve_to(renderer, 2255.3, 823.246, 2231.63, 901.216, 2184.91, 991.049);
+                rr_renderer_bezier_curve_to(renderer, 2138.84, 1079.64, 2074.29, 1172.31, 2001.97, 1262.3);
+                rr_renderer_line_to(renderer, 2157.86, 1387.59);
+                rr_renderer_move_to(renderer, 2455.3, 760.648);
+                rr_renderer_bezier_curve_to(renderer, 2455.3, 285.325, 2069.97, -100, 1594.65, -100);
+                rr_renderer_line_to(renderer, 1594.65, 100);
+                rr_renderer_bezier_curve_to(renderer, 1959.51, 100, 2255.3, 395.782, 2255.3, 760.648);
+                rr_renderer_line_to(renderer, 2455.3, 760.648);
+                rr_renderer_move_to(renderer, 1594.65, -100);
+                rr_renderer_bezier_curve_to(renderer, 1119.33, -100, 734, 285.325, 734, 760.648);
+                rr_renderer_line_to(renderer, 934, 760.648);
+                rr_renderer_bezier_curve_to(renderer, 934, 395.782, 1229.78, 100, 1594.65, 100);
+                rr_renderer_line_to(renderer, 1594.65, -100);
+                rr_renderer_move_to(renderer, 734, 760.648);
+                rr_renderer_bezier_curve_to(renderer, 734, 875.347, 778.073, 993.522, 837.037, 1102.34);
+                rr_renderer_bezier_curve_to(renderer, 896.812, 1212.65, 976.865, 1322.33, 1059.74, 1422.24);
+                rr_renderer_line_to(renderer, 1213.67, 1294.55);
+                rr_renderer_bezier_curve_to(renderer, 1135.5, 1200.3, 1064.2, 1101.75, 1012.88, 1007.05);
+                rr_renderer_bezier_curve_to(renderer, 960.755, 910.858, 934, 827.237, 934, 760.648);
+                rr_renderer_line_to(renderer, 734, 760.648);
+                rr_renderer_move_to(renderer, 1169.34, 1263.87);
+                rr_renderer_bezier_curve_to(renderer, 1051.18, 1223.08, 926.273, 1188.66, 807.559, 1172.49);
+                rr_renderer_bezier_curve_to(renderer, 690.316, 1156.52, 570.073, 1157.05, 466.573, 1194.72);
+                rr_renderer_line_to(renderer, 534.977, 1382.65);
+                rr_renderer_bezier_curve_to(renderer, 594.85, 1360.86, 677.982, 1356.69, 780.566, 1370.66);
+                rr_renderer_bezier_curve_to(renderer, 881.679, 1384.43, 993.047, 1414.6, 1104.07, 1452.92);
+                rr_renderer_line_to(renderer, 1169.34, 1263.87);
+                rr_renderer_move_to(renderer, 466.573, 1194.72);
+                rr_renderer_bezier_curve_to(renderer, 19.9159, 1357.29, -210.382, 1851.16, -47.8124, 2297.82);
+                rr_renderer_line_to(renderer, 140.126, 2229.42);
+                rr_renderer_bezier_curve_to(renderer, 15.3347, 1886.55, 192.115, 1507.45, 534.977, 1382.65);
+                rr_renderer_line_to(renderer, 466.573, 1194.72);
+                rr_renderer_move_to(renderer, -47.8124, 2297.82);
+                rr_renderer_bezier_curve_to(renderer, 114.757, 2744.48, 608.634, 2974.77, 1055.29, 2812.2);
+                rr_renderer_line_to(renderer, 986.887, 2624.27);
+                rr_renderer_bezier_curve_to(renderer, 644.025, 2749.06, 264.918, 2572.28, 140.126, 2229.42);
+                rr_renderer_line_to(renderer, -47.8124, 2297.82);
+                rr_renderer_move_to(renderer, 1055.29, 2812.2);
+                rr_renderer_bezier_curve_to(renderer, 1185.2, 2764.92, 1299.21, 2655.19, 1393.65, 2535.64);
+                rr_renderer_bezier_curve_to(renderer, 1489.99, 2413.71, 1575.39, 2269.33, 1644.95, 2135.91);
+                rr_renderer_line_to(renderer, 1467.61, 2043.45);
+                rr_renderer_bezier_curve_to(renderer, 1401.03, 2171.15, 1322.24, 2303.41, 1236.72, 2411.66);
+                rr_renderer_bezier_curve_to(renderer, 1149.32, 2522.29, 1063.8, 2596.27, 986.887, 2624.27);
+                rr_renderer_line_to(renderer, 1055.29, 2812.2);
+                rr_renderer_move_to(renderer, 1467.61, 2135.91);
+                rr_renderer_bezier_curve_to(renderer, 1537.17, 2269.33, 1622.57, 2413.71, 1718.9, 2535.64);
+                rr_renderer_bezier_curve_to(renderer, 1813.35, 2655.19, 1927.35, 2764.92, 2057.27, 2812.2);
+                rr_renderer_line_to(renderer, 2125.67, 2624.27);
+                rr_renderer_bezier_curve_to(renderer, 2048.76, 2596.27, 1963.24, 2522.29, 1875.84, 2411.66);
+                rr_renderer_bezier_curve_to(renderer, 1790.32, 2303.41, 1711.53, 2171.15, 1644.95, 2043.45);
+                rr_renderer_line_to(renderer, 1467.61, 2135.91);
+                rr_renderer_move_to(renderer, 2057.27, 2812.2);
+                rr_renderer_bezier_curve_to(renderer, 2503.92, 2974.77, 2997.8, 2744.48, 3160.37, 2297.82);
+                rr_renderer_line_to(renderer, 2972.43, 2229.42);
+                rr_renderer_bezier_curve_to(renderer, 2847.64, 2572.28, 2468.53, 2749.06, 2125.67, 2624.27);
+                rr_renderer_line_to(renderer, 2057.27, 2812.2);
+                rr_renderer_move_to(renderer, 3160.37, 2297.82);
+                rr_renderer_bezier_curve_to(renderer, 3322.94, 1851.16, 3092.64, 1357.29, 2645.98, 1194.72);
+                rr_renderer_line_to(renderer, 2577.58, 1382.65);
+                rr_renderer_bezier_curve_to(renderer, 2920.44, 1507.45, 3097.22, 1886.55, 2972.43, 2229.42);
+                rr_renderer_line_to(renderer, 3160.37, 2297.82);
+                rr_renderer_move_to(renderer, 2645.98, 1194.72);
+                rr_renderer_bezier_curve_to(renderer, 2474.21, 1132.19, 2249.66, 1170.34, 2051.5, 1229.06);
+                rr_renderer_line_to(renderer, 2108.33, 1420.82);
+                rr_renderer_bezier_curve_to(renderer, 2303.22, 1363.06, 2471.76, 1344.14, 2577.58, 1382.65);
+                rr_renderer_line_to(renderer, 2645.98, 1194.72);
+                rr_renderer_fill(renderer);
+                rr_renderer_set_fill(renderer, 0xff3a9c26);
+                rr_renderer_begin_path(renderer);
+                rr_renderer_move_to(renderer, 1819.54, 1479.28);
+                rr_renderer_bezier_curve_to(renderer, 1936.39, 1347.4, 2051.03, 1185.13, 2051.03, 1056.04);
+                rr_renderer_bezier_curve_to(renderer, 2051.03, 792.752, 1837.54, 579.318, 1574.18, 579.318);
+                rr_renderer_bezier_curve_to(renderer, 1310.83, 579.318, 1097.33, 792.752, 1097.33, 1056.04);
+                rr_renderer_bezier_curve_to(renderer, 1097.33, 1197.97, 1235.91, 1380.02, 1363.66, 1517.68);
+                rr_renderer_bezier_curve_to(renderer, 1192.92, 1446.97, 982.364, 1383.77, 852.492, 1431.04);
+                rr_renderer_bezier_curve_to(renderer, 605.086, 1521.09, 477.542, 1794.7, 567.615, 2042.18);
+                rr_renderer_bezier_curve_to(renderer, 657.689, 2289.65, 931.27, 2417.27, 1178.68, 2327.22);
+                rr_renderer_bezier_curve_to(renderer, 1334.57, 2270.48, 1477.2, 2017.09, 1561.39, 1837.4);
+                rr_renderer_bezier_curve_to(renderer, 1646.24, 2016.16, 1785.95, 2259.52, 1938.34, 2314.99);
+                rr_renderer_bezier_curve_to(renderer, 2185.74, 2405.04, 2459.32, 2277.42, 2549.4, 2029.94);
+                rr_renderer_bezier_curve_to(renderer, 2639.47, 1782.47, 2511.93, 1508.85, 2264.52, 1418.8);
+                rr_renderer_bezier_curve_to(renderer, 2151.01, 1377.49, 1975.86, 1420.56, 1819.54, 1479.28);
+                rr_renderer_fill(renderer);
+            }
+            else
+            {}
             break;
         case rr_petal_id_mandible:
             rr_renderer_scale(renderer, 0.09);
@@ -2287,7 +2463,7 @@ void rr_renderer_draw_static_petal(struct rr_renderer *renderer, uint8_t id,
             rr_renderer_rotate(renderer, 0.3f);
         else if (id == rr_petal_id_missile)
             rr_renderer_rotate(renderer, -1.0f);
-        rr_renderer_draw_petal(renderer, id, flags);
+        rr_renderer_draw_petal(renderer, id, rarity, flags);
     }
     else
     {
@@ -2307,7 +2483,7 @@ void rr_renderer_draw_static_petal(struct rr_renderer *renderer, uint8_t id,
                 rr_renderer_rotate(renderer, M_PI);
             else if (id == rr_petal_id_wax)
                 rr_renderer_rotate(renderer, 0.3f);
-            rr_renderer_draw_petal(renderer, id, flags);
+            rr_renderer_draw_petal(renderer, id, rarity, flags);
             rr_renderer_context_state_free(renderer, &state);
             rr_renderer_rotate(renderer, M_PI * 2.0f / count);
         }
@@ -2333,10 +2509,15 @@ static void rr_renderer_petal_cache_draw()
     {
         rr_renderer_context_state_init(&petal_cache, &state);
         rr_renderer_scale(&petal_cache, IMAGE_SIZE / 50);
-        rr_renderer_draw_petal(&petal_cache, i, 0);
+        rr_renderer_draw_petal(&petal_cache, i, 0, 0);
         rr_renderer_context_state_free(&petal_cache, &state);
         rr_renderer_translate(&petal_cache, IMAGE_SIZE, 0);
     }
+    rr_renderer_context_state_init(&petal_cache, &state);
+    rr_renderer_scale(&petal_cache, IMAGE_SIZE / 50);
+    rr_renderer_draw_petal(&petal_cache, rr_petal_id_clover,
+                           rr_rarity_id_exotic, 0);
+    rr_renderer_context_state_free(&petal_cache, &state);
 }
 
 static void rr_renderer_petal_cache_redraw(void *captures)
@@ -2347,7 +2528,7 @@ static void rr_renderer_petal_cache_redraw(void *captures)
 void rr_renderer_petal_cache_init()
 {
     rr_renderer_init(&petal_cache);
-    rr_renderer_set_dimensions(&petal_cache, IMAGE_SIZE * rr_petal_id_max,
+    rr_renderer_set_dimensions(&petal_cache, IMAGE_SIZE * (rr_petal_id_max + 1),
                                IMAGE_SIZE);
     petal_cache.on_context_restore = rr_renderer_petal_cache_redraw;
     rr_renderer_petal_cache_draw();

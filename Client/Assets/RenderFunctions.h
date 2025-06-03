@@ -20,7 +20,7 @@
 
 struct rr_renderer;
 
-void rr_renderer_draw_petal(struct rr_renderer *, uint8_t, uint8_t);
+void rr_renderer_draw_petal(struct rr_renderer *, uint8_t, uint8_t, uint8_t);
 void rr_renderer_draw_static_petal(struct rr_renderer *, uint8_t, uint8_t,
                                    uint8_t);
 void rr_renderer_draw_petal_with_name(struct rr_renderer *, uint8_t, uint8_t);
