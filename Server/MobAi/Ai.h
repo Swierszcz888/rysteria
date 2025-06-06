@@ -47,3 +47,4 @@ void tick_ai_hornet(EntityIdx, struct rr_simulation *);
 void tick_ai_dragonfly(EntityIdx, struct rr_simulation *);
 void tick_ai_honeybee(EntityIdx, struct rr_simulation *);
 void tick_ai_lanternfly(EntityIdx, struct rr_simulation *);
+void tick_ai_trol(EntityIdx, struct rr_simulation *);

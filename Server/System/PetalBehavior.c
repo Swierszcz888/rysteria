@@ -705,6 +705,15 @@ static void petal_modifiers(struct rr_simulation *simulation,
                                                   bone_diminish_factor;
             bone_diminish_factor *= 0.5;
         }
+        else if (data->id == rr_petal_id_trol)
+        {
+            float heal = -999999 * RR_PETAL_RARITY_SCALE[slot->rarity].heal;
+            float max_heal = health->max_health - health->health;
+            rr_component_health_set_health(health, health->health + heal);
+            if (max_heal < heal)
+                heal = max_heal;
+            health->gradually_healed += heal;
+        }
         else
         {
             for (uint32_t inner = 0; inner < slot->count; ++inner)
@@ -717,10 +726,10 @@ static void petal_modifiers(struct rr_simulation *simulation,
                         (50 + 180 * slot->rarity) * magnet_diminish_factor;
                     magnet_diminish_factor *= 0.5;
                 }        
-                else if (data->id == rr_petal_id_test_petal)
+                else if (data->id == rr_petal_id_test_1)
                 {
                 struct rr_component_health *petal_health = rr_simulation_get_health(simulation, slot->petals[inner].entity_hash);
-                rr_component_health_set_health(petal_health, petal_health->health + 0.012 * petal_health->max_health);
+                rr_component_health_set_health(petal_health, petal_health->health + 0.0028 * petal_health->max_health);
                 }
             }
         }
@@ -745,7 +754,7 @@ system_egg_hatching_logic(struct rr_simulation *simulation,
     if (petal->id == rr_petal_id_egg)
     {
         m_id = rr_mob_id_trex;
-        m_rar = petal->rarity >= 1 ? petal->rarity - 1 : 0;
+        m_rar = petal->rarity >= 2 ? petal->rarity - 2 : 0;
     }
     else if (petal->id == rr_petal_id_meteor)
     {

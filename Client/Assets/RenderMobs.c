@@ -200,15 +200,16 @@ void rr_renderer_draw_mob(struct rr_renderer *renderer, uint8_t id,
         render_sprite(renderer, id, 0, flags);
         break;
     case rr_mob_id_ant:
-        rr_renderer_scale(renderer, 0.35f);
+        rr_renderer_scale(renderer, 0.3f);
         rr_renderer_translate(renderer, -35, 0);
         render_sprite(renderer, id, 1, flags);
         rr_renderer_translate(renderer, 70, 0);
         render_sprite(renderer, id, 0, flags);
         break;
-    case rr_mob_id_hornet:
     case rr_mob_id_honeybee:
-        rr_renderer_scale(renderer, 0.2f);
+        rr_renderer_scale(renderer, 0.7f);
+    case rr_mob_id_hornet:
+        rr_renderer_scale(renderer, 0.24f);
         /*
         rr_renderer_context_state_init(renderer, &state);
         rr_renderer_rotate(renderer, animation_tick * 0.1f - M_PI / 6);
@@ -290,46 +291,46 @@ void rr_renderer_draw_mob(struct rr_renderer *renderer, uint8_t id,
         rr_renderer_scale(renderer, 0.2);
 
         rr_renderer_context_state_init(renderer, &state);
-        rr_renderer_rotate(renderer, animation_tick * 0.05f + M_PI / 4);
+        rr_renderer_rotate(renderer, animation_tick * 0.1f + M_PI / 4);
         rr_renderer_translate(renderer, 100, 0);
         rr_renderer_scale2(renderer, 1, -1);
         render_sprite(renderer, id, 2, flags);
         rr_renderer_context_state_free(renderer, &state);
         rr_renderer_context_state_init(renderer, &state);
-        rr_renderer_rotate(renderer, animation_tick * -0.05f + 5 * M_PI / 12);
+        rr_renderer_rotate(renderer, animation_tick * -0.1f + 5 * M_PI / 12);
         rr_renderer_translate(renderer, 100, 0);
         rr_renderer_scale2(renderer, 1, -1);
         render_sprite(renderer, id, 2, flags);
         rr_renderer_context_state_free(renderer, &state);
         rr_renderer_context_state_init(renderer, &state);
-        rr_renderer_rotate(renderer, animation_tick * 0.05f + 7 * M_PI / 12);
+        rr_renderer_rotate(renderer, animation_tick * 0.1f + 7 * M_PI / 12);
         rr_renderer_translate(renderer, 100, 0);
         render_sprite(renderer, id, 2, flags);
         rr_renderer_context_state_free(renderer, &state);
         rr_renderer_context_state_init(renderer, &state);
-        rr_renderer_rotate(renderer, animation_tick * -0.05f + 3 * M_PI / 4);
+        rr_renderer_rotate(renderer, animation_tick * -0.1f + 3 * M_PI / 4);
         rr_renderer_translate(renderer, 100, 0);
         render_sprite(renderer, id, 2, flags);
         rr_renderer_context_state_free(renderer, &state);
 
         rr_renderer_context_state_init(renderer, &state);
-        rr_renderer_rotate(renderer, animation_tick * 0.05f - M_PI / 4);
+        rr_renderer_rotate(renderer, animation_tick * 0.1f - M_PI / 4);
         rr_renderer_translate(renderer, 100, 0);
         render_sprite(renderer, id, 2, flags);
         rr_renderer_context_state_free(renderer, &state);
         rr_renderer_context_state_init(renderer, &state);
-        rr_renderer_rotate(renderer, animation_tick * -0.05f - 5 * M_PI / 12);
+        rr_renderer_rotate(renderer, animation_tick * -0.1f - 5 * M_PI / 12);
         rr_renderer_translate(renderer, 100, 0);
         render_sprite(renderer, id, 2, flags);
         rr_renderer_context_state_free(renderer, &state);
         rr_renderer_context_state_init(renderer, &state);
-        rr_renderer_rotate(renderer, animation_tick * 0.05f - 7 * M_PI / 12);
+        rr_renderer_rotate(renderer, animation_tick * 0.1f - 7 * M_PI / 12);
         rr_renderer_translate(renderer, 100, 0);
         rr_renderer_scale2(renderer, 1, -1);
         render_sprite(renderer, id, 2, flags);
         rr_renderer_context_state_free(renderer, &state);
         rr_renderer_context_state_init(renderer, &state);
-        rr_renderer_rotate(renderer, animation_tick * -0.05f - 3 * M_PI / 4);
+        rr_renderer_rotate(renderer, animation_tick * -0.1f - 3 * M_PI / 4);
         rr_renderer_translate(renderer, 100, 0);
         rr_renderer_scale2(renderer, 1, -1);
         render_sprite(renderer, id, 2, flags);

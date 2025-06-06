@@ -141,9 +141,10 @@ enum rr_petal_id
     
     rr_petal_id_rice,      // 34
     rr_petal_id_missile,   // 35
-    rr_petal_id_test_petal,// 36
+    rr_petal_id_test_1,    // 36
+    rr_petal_id_trol,      // 37
 
-    rr_petal_id_max,       // 37
+    rr_petal_id_max,       // 38
 };
 
 enum rr_mob_id
@@ -170,7 +171,9 @@ enum rr_mob_id
     rr_mob_id_house_centipede,    // 18
     rr_mob_id_lanternfly,         // 19
 
-    rr_mob_id_max,                // 20
+    rr_mob_id_trol,               // 20
+
+    rr_mob_id_max,                // 21
 };
 
 struct rr_petal_base_stat_scale
@@ -281,7 +284,7 @@ struct rr_maze_declaration
     float grid_size;
     struct rr_maze_grid *maze;
     uint8_t checkpoint_count;
-    struct rr_checkpoint checkpoints[12];
+    struct rr_checkpoint checkpoints[13];
 };
 
 #define RR_DECLARE_MAZE(name, size)                                            \

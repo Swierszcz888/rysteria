@@ -94,7 +94,7 @@ static void system_for_each(EntityIdx entity, void *simulation)
         break;
     case rr_mob_id_dakotaraptor:
         tick_ai_default(entity, this, RR_PLAYER_SPEED *
-                                      (1.5 - mob->rarity * 0.05));
+                                      (1.25 + mob->rarity * 0.03));
         break;
     case rr_mob_id_pachycephalosaurus:
         tick_ai_pachycephalosaurus(entity, this);
@@ -127,10 +127,17 @@ static void system_for_each(EntityIdx entity, void *simulation)
         break;
     case rr_mob_id_spider:
         tick_ai_default(entity, this, RR_PLAYER_SPEED *
-                                      (1.4 - mob->rarity * 0.05));
+                                      (1.25 + mob->rarity * 0.03));
+        break;
+    case rr_mob_id_house_centipede:
+        tick_ai_default(entity, this, RR_PLAYER_SPEED *
+                                      (1.25 + mob->rarity * 0.03));
         break;
     case rr_mob_id_lanternfly:
         tick_ai_lanternfly(entity, this);
+        break;
+    case rr_mob_id_trol:
+        tick_ai_trol(entity, this);
         break;
     }
     --ai->ticks_until_next_action;

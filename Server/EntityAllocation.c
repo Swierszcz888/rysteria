@@ -123,6 +123,8 @@ EntityIdx rr_simulation_alloc_petal(struct rr_simulation *this, EntityIdx arena,
     }
     else if (id == rr_petal_id_fireball)
         rr_component_physical_set_radius(physical, 13);
+    else if (id == rr_petal_id_egg)
+        rr_component_physical_set_radius(physical, 8 + 0.75 * rarity);
 
     rr_component_petal_set_id(petal, id);
     rr_component_petal_set_rarity(petal, rarity);
