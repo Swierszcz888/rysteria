@@ -726,7 +726,7 @@ static void petal_modifiers(struct rr_simulation *simulation,
                         (50 + 180 * slot->rarity) * magnet_diminish_factor;
                     magnet_diminish_factor *= 0.5;
                 }        
-                else if (data->id == rr_petal_id_test_1)
+                else if (data->id == rr_petal_id_amber)
                 {
                 struct rr_component_health *petal_health = rr_simulation_get_health(simulation, slot->petals[inner].entity_hash);
                 rr_component_health_set_health(petal_health, petal_health->health + 0.0028 * petal_health->max_health);

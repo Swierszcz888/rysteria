@@ -141,7 +141,7 @@ enum rr_petal_id
     
     rr_petal_id_rice,      // 34
     rr_petal_id_missile,   // 35
-    rr_petal_id_test_1,    // 36
+    rr_petal_id_amber,     // 36
     rr_petal_id_trol,      // 37
 
     rr_petal_id_max,       // 38

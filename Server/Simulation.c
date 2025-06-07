@@ -63,7 +63,7 @@ static void set_special_zone(uint8_t biome, uint8_t (*fun)(), uint32_t x,
 #define DIFFICULT_MOBS 254
 
 uint8_t garden_zone() { return rr_frand() > 0.8 ? rr_mob_id_ant : rr_frand() > 0.7 ? rr_mob_id_lanternfly : rr_frand() > 0.64 ? rr_mob_id_dragonfly : rr_frand() > 0.88 ? rr_mob_id_honeybee : rr_frand() > 0.3 ? rr_mob_id_spider : rr_frand() > 0.3 ? rr_mob_id_hornet : rr_frand() > 0.02 ? rr_mob_id_house_centipede : rr_mob_id_beehive; }
-uint8_t fern_zone() { return rr_frand() > 0.04 ? rr_mob_id_fern : rr_mob_id_tree; }
+uint8_t fern_zone() { return rr_frand() > 0.01 ? rr_mob_id_fern : rr_mob_id_tree; }
 uint8_t pter_meteor_zone() { return rr_frand() > 0.035 ? rr_mob_id_pteranodon : rr_mob_id_meteor; }
 uint8_t ornith_pachy_zone() { return rr_frand() > 0.5 ? rr_mob_id_ornithomimus : rr_mob_id_pachycephalosaurus; }
 uint8_t trice_dako_zone() { return rr_frand() > 0.2 ? rr_mob_id_dakotaraptor : rr_mob_id_triceratops; }
