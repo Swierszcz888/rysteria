@@ -968,7 +968,7 @@ void tick_ai_trol(EntityIdx entity, struct rr_simulation *simulation)
         struct rr_vector target_pos = {physical->x, physical->y};
         rr_vector_sub(&delta, &target_pos);
         rr_component_physical_set_angle(physical, rr_vector_theta(&delta));
-        if (rr_vector_magnitude_cmp(&delta, 500) == 1)
+        if (rr_vector_magnitude_cmp(&delta, 300) == 1)
         {
             struct rr_vector accel;
             rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 0.0, physical->angle);

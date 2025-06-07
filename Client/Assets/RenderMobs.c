@@ -424,6 +424,11 @@ void rr_renderer_draw_mob(struct rr_renderer *renderer, uint8_t id,
             rr_renderer_translate(renderer, 150, 0);
             render_sprite(renderer, id, 0, flags);
             break;
+        case rr_mob_id_trol:
+            rr_renderer_scale(renderer, 0.4f);
+            rr_renderer_translate(renderer, 58, 0);
+            render_sprite(renderer, id, 0, flags);
+            break;
     }
 
     rr_renderer_context_state_free(renderer, &original_state);
@@ -537,4 +542,7 @@ void rr_renderer_mob_cache_init()
         &mob_sprites[19], NULL, 240, 240, rr_quetzalcoatlus_head_draw, 240, 240,
         rr_lanternfly_abdomen_draw, 240, 240, rr_lanternfly_leg_draw, 240, 240,
         rr_lanternfly_wing1_draw, 0);
+
+    rr_renderer_spritesheet_init(&mob_sprites[20], NULL, 672, 672, rr_house_centipede_head_draw,
+                                 0);
 }

@@ -132,7 +132,7 @@ char const *RR_PETAL_DESCRIPTIONS[rr_petal_id_max] = {
     "Remember to feed your pets",
     "🍞",
     "🍞",
-    "🍞",
+    "Don't break it",
     "Gift from god",
 };
 
