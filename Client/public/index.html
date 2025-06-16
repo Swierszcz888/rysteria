@@ -23,18 +23,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
             window.location.replace("https://swierszcz888.github.io/rysteria/");
         </script>
     </head>
-    <body>
-        <h2 id="rrolf-error">Sorry, the server is not running</h2>
-        <script>
-            let rrolfErrors = 0;
-            function rrolfError() {
-                if (++rrolfErrors === 1) {
-                    document.querySelector("#rrolf-error").style.display = "block";
-                    setTimeout(() => window.location.reload(), 10000);
-                }
-            }
-            var rrolfScript = null;
-        </script>
-        <script src="rrolf-client" onerror="rrolfError()" onload="rrolfScript = this"></script>
-    </body>
 </html>
