@@ -418,6 +418,7 @@ void rr_game_init(struct rr_game *this)
                     rr_ui_github_toggle_button_init(),
                     rr_ui_account_toggle_button_init(),
                     rr_ui_dev_panel_toggle_button_init(),
+                    rr_ui_fullscreen_toggle_button_init(),
                     rr_ui_link_toggle(rr_ui_close_button_init(30, abandon_game_on_event), simulation_ready),
                     NULL
                 ),
@@ -705,6 +706,11 @@ void rr_game_init(struct rr_game *this)
     this->github_tooltip = rr_ui_container_add_element(
         this->window,
         make_label_tooltip("We're Open Source!", 16)
+    );
+
+    this->fullscreen_tooltip = rr_ui_container_add_element(
+        this->window,
+        make_label_tooltip("Fullscreen", 16)
     );
 
     this->link_reminder_tooltip = rr_ui_container_add_element(
