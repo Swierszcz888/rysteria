@@ -967,15 +967,25 @@ void tick_ai_trol(EntityIdx entity, struct rr_simulation *simulation)
         struct rr_vector delta = {physical2->x, physical2->y};
         struct rr_vector target_pos = {physical->x, physical->y};
         rr_vector_sub(&delta, &target_pos);
-        rr_component_physical_set_angle(physical, rr_vector_theta(&delta));
-        if (rr_vector_magnitude_cmp(&delta, 300) == 1)
+        float target_angle = rr_vector_theta(&delta);
+
+        if (rr_vector_magnitude_cmp(&delta, 500) == 1)
         {
+            rr_component_physical_set_angle(physical, target_angle + 0);
             struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 0.0, physical->angle);
+            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 15.0, physical->angle);
             rr_vector_add(&physical->acceleration, &accel);
         }
-        else
+        else if (rr_vector_magnitude_cmp(&delta, 300) == 1)
         {
+            rr_component_physical_set_angle(physical, target_angle + 1.5);
+            struct rr_vector accel;
+            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 15.0, physical->angle);
+            rr_vector_add(&physical->acceleration, &accel);
+        }
+        else if (rr_vector_magnitude_cmp(&delta, 300) == -1)
+        {
+            rr_component_physical_set_angle(physical, target_angle + M_PI);
             struct rr_vector accel;
             rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 15.0, physical->angle);
             rr_vector_add(&physical->acceleration, &accel);

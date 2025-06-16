@@ -263,6 +263,10 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
             }
         }
     }
+    if (mob_id == rr_mob_id_trol)
+    {
+    ai->aggro_range = powf(2, 32);
+    }
     else
     {
         struct rr_component_health *health =
