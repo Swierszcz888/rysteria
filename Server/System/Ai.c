@@ -139,6 +139,12 @@ static void system_for_each(EntityIdx entity, void *simulation)
     case rr_mob_id_trol:
         tick_ai_trol(entity, this);
         break;
+    case rr_mob_id_test:
+        tick_ai_test(entity, this);
+        break;
+    case rr_mob_id_pectinodon:
+        tick_ai_pectinodon(entity, this);
+        break;
     }
     --ai->ticks_until_next_action;
 }

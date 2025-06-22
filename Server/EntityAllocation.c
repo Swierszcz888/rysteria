@@ -125,6 +125,23 @@ EntityIdx rr_simulation_alloc_petal(struct rr_simulation *this, EntityIdx arena,
         rr_component_physical_set_radius(physical, 13);
     else if (id == rr_petal_id_egg)
         rr_component_physical_set_radius(physical, 8 + 0.75 * rarity);
+    else if (id == rr_petal_id_stick)
+    {
+        float burn_damage;
+
+    switch (rarity) {
+        case 0:  burn_damage = 5.0 / 75;    break;
+        case 1:  burn_damage = 10.0 / 75;   break;
+        case 2:  burn_damage = 20.0 / 75;   break;
+        case 3:  burn_damage = 40.0 / 75;   break;
+        case 4:  burn_damage = 80.0 / 75;   break;
+        case 5:  burn_damage = 240.0 / 75;  break;
+        case 6:  burn_damage = 720.0 / 75;  break;
+        case 7:  burn_damage = 2160.0 / 75; break;
+        default: burn_damage = 0.0;         break;
+        }
+        health->secondary_damage = burn_damage;
+    }
 
     rr_component_petal_set_id(petal, id);
     rr_component_petal_set_rarity(petal, rarity);
@@ -231,6 +248,15 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
         physical->mass *= 25;
         team_id = rr_simulation_team_id_players;
     }
+    if (mob_id == rr_mob_id_trol)
+    {
+        physical->mass = 0;
+        physical->slow_resist = 1;
+    }
+    if (mob_id == rr_mob_id_test)
+    {
+        physical->slow_resist = 1;
+    }
     rr_component_relations_set_team(relations, team_id);
     rr_component_relations_update_root_owner(this, relations);
     ai->aggro_range = 800 * sqrtf(rarity_id + 1);
@@ -263,10 +289,6 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
             }
         }
     }
-    if (mob_id == rr_mob_id_trol)
-    {
-    ai->aggro_range = powf(2, 32);
-    }
     else
     {
         struct rr_component_health *health =
@@ -279,6 +301,10 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
         health->damage_paused = 25;
         if (mob_id == rr_mob_id_edmontosaurus)
             health->damage_reduction = 10 * rarity_scale->damage;
+        if (mob_id == rr_mob_id_trol)
+            ai->aggro_range = 8000;
+        if (mob_id == rr_mob_id_test)
+            ai->aggro_range = 600 * sqrtf(rarity_id + 1);
         else if (mob_id == rr_mob_id_house_centipede)
         {
             // ai->ai_type = rr_ai_type_neutral;

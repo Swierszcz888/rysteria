@@ -133,6 +133,7 @@ void rr_renderer_draw_mob(struct rr_renderer *renderer, uint8_t id,
         render_sprite(renderer, id, 0, flags);
         break;
     case rr_mob_id_dakotaraptor:
+    case rr_mob_id_pectinodon:
     case rr_mob_id_ornithomimus:
         rr_renderer_scale(renderer, 0.16f);
 
@@ -544,6 +545,11 @@ void rr_renderer_mob_cache_init()
         rr_lanternfly_abdomen_draw, 240, 240, rr_lanternfly_leg_draw, 240, 240,
         rr_lanternfly_wing1_draw, 0);
 
-    rr_renderer_spritesheet_init(&mob_sprites[20], NULL, 672, 672, rr_house_centipede_head_draw,
+    rr_renderer_spritesheet_init(
+    &mob_sprites[20], NULL, 240, 144, rr_pectinodon_head_draw, 336, 192,
+    rr_pectinodon_body_draw, 240, 144, rr_pectinodon_wing1_draw, 240, 144,
+    rr_pectinodon_wing2_draw, 336, 192, rr_pectinodon_tail_draw, 0);
+    
+    rr_renderer_spritesheet_init(&mob_sprites[21], NULL, 672, 672, rr_house_centipede_head_draw,
                                  0);
 }

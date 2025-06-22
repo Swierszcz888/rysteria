@@ -490,5 +490,36 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
                           rr_ui_text_init(extra, 12, 0xffffffff), NULL),
                       -1, 0));
     }
+    else if (id == rr_petal_id_stick)
+    {
+        char *extra_poison = malloc((sizeof *extra_poison) * 8);
+        float burn_damage;
+
+    switch (rarity) {
+        case 0:  burn_damage = 5.0;    break;
+        case 1:  burn_damage = 10.0;   break;
+        case 2:  burn_damage = 20.0;   break;
+        case 3:  burn_damage = 40.0;   break;
+        case 4:  burn_damage = 80.0;   break;
+        case 5:  burn_damage = 240.0;  break;
+        case 6:  burn_damage = 720.0;  break;
+        case 7:  burn_damage = 2160.0; break;
+        default: burn_damage = 0.0;    break;
+      }
+
+    if (burn_damage >= 1000) {
+        sprintf(extra_poison, "%.1fk/s", burn_damage / 1000.0);
+    } else {
+        sprintf(extra_poison, "%.1f/s", burn_damage);
+    }
+
+            rr_ui_container_add_element(
+                this,
+                rr_ui_set_justify(rr_ui_h_container_init(
+                                      rr_ui_container_init(), 0, 0,
+                                      rr_ui_text_init("Burn: ", 12, 0xffd97232),
+                                      rr_ui_text_init(extra_poison, 12, 0xffffffff), NULL),
+                                  -1, 0));
+    }
     return this;
 }

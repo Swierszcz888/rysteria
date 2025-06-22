@@ -40,6 +40,12 @@ void rr_dakotaraptor_wing2_draw(struct rr_renderer *);
 void rr_dakotaraptor_head_draw(struct rr_renderer *);
 void rr_dakotaraptor_tail_draw(struct rr_renderer *);
 
+void rr_pectinodon_body_draw(struct rr_renderer *);
+void rr_pectinodon_wing1_draw(struct rr_renderer *);
+void rr_pectinodon_wing2_draw(struct rr_renderer *);
+void rr_pectinodon_head_draw(struct rr_renderer *);
+void rr_pectinodon_tail_draw(struct rr_renderer *);
+
 void rr_fern_draw(struct rr_renderer *);
 void rr_tree_draw(struct rr_renderer *);
 void rr_meteor_draw(struct rr_renderer *);

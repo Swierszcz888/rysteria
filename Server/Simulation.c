@@ -82,7 +82,7 @@ uint8_t ant_zone() { return rr_mob_id_ant; }
 uint8_t lanternfly_zone() { return rr_frand() > 0.3 ? rr_mob_id_lanternfly : rr_mob_id_hornet; }
 uint8_t hornet_zone() { return rr_mob_id_hornet; }
 uint8_t bee_hornet_zone() { return rr_frand() > 0.4 ? rr_mob_id_honeybee : rr_frand() > 0.025 ? rr_mob_id_hornet : rr_mob_id_beehive; }
-uint8_t dragonfly_zone() { return rr_frand() > 0.2 ? rr_mob_id_dragonfly : rr_mob_id_hornet; }
+uint8_t dragonfly_zone() { return rr_mob_id_dragonfly; }
 uint8_t spider_centi_zone() { return rr_frand() > 0.15 ? rr_mob_id_spider : rr_mob_id_house_centipede; }
 uint8_t edmo_quetz_ant_zone() { return rr_frand() > 0.85 ? rr_mob_id_edmontosaurus : rr_frand() > 0.6 ? rr_mob_id_quetzalcoatlus : rr_mob_id_ant; }
 uint8_t lanternfly_ornith_quetz_zone() { return rr_frand() > 0.5 ? rr_mob_id_lanternfly : rr_frand() > 0.6 ? rr_mob_id_ornithomimus :rr_mob_id_quetzalcoatlus; }
