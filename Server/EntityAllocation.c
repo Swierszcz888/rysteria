@@ -80,7 +80,7 @@ EntityIdx rr_simulation_alloc_player(struct rr_simulation *this,
     health->damage = health->max_health * 0.1;
     health->damage_paused = 25;
     rr_component_relations_set_team(
-        relations, arena->pvp
+        relations, !arena->pvp
                        ? rr_simulation_team_id_pvp + player_info->squad
                        : rr_simulation_team_id_players);
     rr_component_relations_set_owner(
