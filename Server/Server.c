@@ -257,7 +257,7 @@ void rr_server_client_broadcast_update(struct rr_server_client *this)
     char joined_code[16];
     sprintf(joined_code, "%s-%s", server->server_alias, squad->squad_code);
     proto_bug_write_string(&encoder, joined_code, 16, "squad code");
-    proto_bug_write_uint8(&encoder, this->afk_ticks > 9 * 60 * 25, "afk");
+    proto_bug_write_uint8(&encoder, this->afk_ticks > 25 * 60 * 25, "afk");
     proto_bug_write_uint8(&encoder, this->player_info != NULL, "in game");
     if (this->player_info != NULL)
         rr_simulation_write_binary(&server->simulation, &encoder,
@@ -1485,7 +1485,7 @@ static void server_tick(struct rr_server *this)
                 !is_dead_flower(&this->simulation,
                                 client->player_info->flower_id))
             {
-                if (++client->afk_ticks > 10 * 60 * 25)
+                if (++client->afk_ticks > 30 * 60 * 25)
                 {
                     rr_simulation_request_entity_deletion(
                         &this->simulation, client->player_info->parent_id);
