@@ -427,7 +427,50 @@ void rr_renderer_draw_mob(struct rr_renderer *renderer, uint8_t id,
             render_sprite(renderer, id, 0, flags);
             break;
         case rr_mob_id_trol:
-            rr_renderer_scale(renderer, 0.4f);
+            rr_renderer_scale(renderer, 0.2f);
+            rr_renderer_context_state_init(renderer, &state);
+            rr_renderer_rotate(renderer, animation_tick * 900.1f - M_PI / 6);
+            rr_renderer_translate(renderer, 0, 75);
+            rr_renderer_scale2(renderer, -1, 1);
+            rr_renderer_rotate(renderer, M_PI / 20);
+            render_sprite(renderer, id, 1, flags);
+            rr_renderer_context_state_free(renderer, &state);
+            rr_renderer_context_state_init(renderer, &state);
+            rr_renderer_rotate(renderer, animation_tick * -900.1f);
+            rr_renderer_translate(renderer, 0, 75);
+            rr_renderer_scale2(renderer, -1, 1);
+            rr_renderer_rotate(renderer, M_PI / 20);
+            render_sprite(renderer, id, 1, flags);
+            rr_renderer_context_state_free(renderer, &state);
+            rr_renderer_context_state_init(renderer, &state);
+            rr_renderer_rotate(renderer, animation_tick * 900.1f + M_PI / 6);
+            rr_renderer_translate(renderer, 0, 75);
+            rr_renderer_scale2(renderer, -1, 1);
+            rr_renderer_rotate(renderer, M_PI / 20);
+            render_sprite(renderer, id, 1, flags);
+            rr_renderer_context_state_free(renderer, &state);
+
+            rr_renderer_context_state_init(renderer, &state);
+            rr_renderer_rotate(renderer, animation_tick * 900.1f - M_PI / 6 + M_PI);
+            rr_renderer_translate(renderer, 0, 75);
+            rr_renderer_rotate(renderer, M_PI / 20);
+            render_sprite(renderer, id, 1, flags);
+            rr_renderer_context_state_free(renderer, &state);
+            rr_renderer_context_state_init(renderer, &state);
+            rr_renderer_rotate(renderer, animation_tick * -900.1f + M_PI);
+            rr_renderer_translate(renderer, 0, 75);
+            rr_renderer_rotate(renderer, M_PI / 20);
+            render_sprite(renderer, id, 1, flags);
+            rr_renderer_context_state_free(renderer, &state);
+            rr_renderer_context_state_init(renderer, &state);
+            rr_renderer_rotate(renderer, animation_tick * 900.1f + M_PI / 6 + M_PI);
+            rr_renderer_translate(renderer, 0, 75);
+            rr_renderer_rotate(renderer, M_PI / 20);
+            render_sprite(renderer, id, 1, flags);
+            rr_renderer_context_state_free(renderer, &state);
+
+            rr_renderer_scale(renderer, 2.0f);
+            rr_renderer_rotate(renderer, animation_tick * 900.1f - M_PI / 6);
             rr_renderer_translate(renderer, 58, 0);
             render_sprite(renderer, id, 0, flags);
             break;
@@ -550,6 +593,6 @@ void rr_renderer_mob_cache_init()
     rr_pectinodon_body_draw, 240, 144, rr_pectinodon_wing1_draw, 240, 144,
     rr_pectinodon_wing2_draw, 336, 192, rr_pectinodon_tail_draw, 0);
     
-    rr_renderer_spritesheet_init(&mob_sprites[21], NULL, 672, 672, rr_house_centipede_head_draw,
+    rr_renderer_spritesheet_init(&mob_sprites[21], NULL, 672, 672, rr_house_centipede_head_draw, 240, 240, rr_lanternfly_leg_draw,
                                  0);
 }

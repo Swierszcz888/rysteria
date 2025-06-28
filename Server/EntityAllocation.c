@@ -248,13 +248,19 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
         physical->mass *= 25;
         team_id = rr_simulation_team_id_players;
     }
+    if (mob_id == rr_mob_id_spider)
+    {
+        physical->slow_resist = rr_fclamp(0.5 * powf(1.12, rarity_scale->radius), 0, 1);
+    }
     if (mob_id == rr_mob_id_trol)
     {
-        physical->mass = 0;
+        physical->friction = 0.85;
+        physical->mass = 1;
         physical->slow_resist = 1;
     }
     if (mob_id == rr_mob_id_test)
     {
+        physical->friction = 0.85;
         physical->slow_resist = 1;
     }
     rr_component_relations_set_team(relations, team_id);
@@ -303,8 +309,6 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
             health->damage_reduction = 10 * rarity_scale->damage;
         if (mob_id == rr_mob_id_trol)
             ai->aggro_range = 8000;
-        if (mob_id == rr_mob_id_test)
-            ai->aggro_range = 600 * sqrtf(rarity_id + 1);
         else if (mob_id == rr_mob_id_house_centipede)
         {
             // ai->ai_type = rr_ai_type_neutral;

@@ -305,7 +305,7 @@ static void system_flower_petal_movement_logic(
         {
             struct rr_component_health *flower_health =
                 rr_simulation_get_health(simulation, player_info->flower_id);
-            float heal = 10 * RR_PETAL_RARITY_SCALE[petal->rarity].heal /
+            float heal = 12 * RR_PETAL_RARITY_SCALE[petal->rarity].heal /
                              petal_data->count[petal->rarity];
             if (flower_health->health < flower_health->max_health)
             {

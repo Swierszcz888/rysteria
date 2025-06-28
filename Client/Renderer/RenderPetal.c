@@ -108,6 +108,14 @@ void rr_component_petal_render(EntityIdx entity, struct rr_game *game,
             particle->size = (3 + 2 * rr_frand()) * exotic_coeff * size_coeff;
             particle->color = rr_frand() > 0.30 ? 0xffbc0303 : rr_frand() > 0.55 ? 0xffce5d0b : 0xffd4cc08;
         }
+        else if (petal->id == rr_petal_id_trol)
+        {
+            particle->friction = 0.7;
+            particle->size = (25 + 50 * rr_frand()) * exotic_coeff * size_coeff;
+            particle->opacity = 0.99;
+        particle->disappearance = physical->on_title_screen ? 20 : 20;
+            particle->color = rr_frand() > 0.25 ? 0xffffffc8 : 0xffffff64;
+        }
     }
     if (petal->id == rr_petal_id_stick)
     {
@@ -138,6 +146,37 @@ void rr_component_petal_render(EntityIdx entity, struct rr_game *game,
         particle->opacity = 0.4;
         particle->disappearance = physical->on_title_screen ? 6 : 10;
         particle->color = rr_frand() > 0.25 ? 0xffab3423 : 0xff999999;
+    }
+    if (petal->id == rr_petal_id_trol)
+    {
+        struct rr_particle_manager *particle_manager =
+            petal->id != rr_petal_id_meteor
+                ? &game->default_particle_manager
+                : &game->foreground_particle_manager;
+        float size_coeff =
+            physical->on_title_screen ? physical->radius / 20 : 1;
+        float colorful_coeff = petal->id == rr_petal_id_fireball ||
+                               petal->id == rr_petal_id_meteor ? 2 : 1;
+        float pos_offset = 0;
+        struct rr_simulation_animation *particle =
+            rr_particle_alloc(particle_manager, rr_animation_type_default);
+        particle->x = physical->lerp_x;
+        particle->y = physical->lerp_y;
+        if (pos_offset > 0)
+        {
+            struct rr_vector vector;
+            rr_vector_from_polar(&vector, pos_offset, 2 * M_PI * rr_frand());
+            particle->x += vector.x;
+            particle->y += vector.y;
+        }
+        rr_vector_from_polar(&particle->velocity,
+                             (3 + 2 * rr_frand()) * size_coeff,
+                             2 * M_PI * rr_frand());
+        particle->friction = 0.95;
+        particle->size = (5 + 8 * rr_frand()) * size_coeff;
+        particle->opacity = (0.7 + 0.9 * rr_frand());
+        particle->disappearance = physical->on_title_screen ? 4 : 6;
+        particle->color = rr_frand() > 0.25 ? 0xffffffc8 : 0xffffff64;
     }
     if (game->cache.tint_petals)
         rr_renderer_add_color_filter(renderer, RR_RARITY_COLORS[petal->rarity],

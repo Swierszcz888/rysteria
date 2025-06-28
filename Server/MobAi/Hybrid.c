@@ -664,7 +664,7 @@ void tick_ai_hornet(EntityIdx entity, struct rr_simulation *simulation)
         if (rr_vector_magnitude_cmp(&delta, 500) == 1)
         {
             struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 1.25, physical->angle);
+            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 1.05, physical->angle);
             rr_vector_add(&physical->acceleration, &accel);
         }
         if (ai->ticks_until_next_action == 0)
@@ -941,121 +941,6 @@ void tick_ai_lanternfly(EntityIdx entity, struct rr_simulation *simulation)
     }
 }
 
-void tick_ai_trol(EntityIdx entity, struct rr_simulation *simulation)
-{
-    struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
-    struct rr_component_physical *physical =
-        rr_simulation_get_physical(simulation, entity);
-
-    if (should_aggro(simulation, ai))
-        ai->ai_state = rr_ai_state_attacking;
-
-    switch (ai->ai_state)
-    {
-    case rr_ai_state_idle:
-        tick_idle(entity, simulation);
-        break;
-    case rr_ai_state_idle_moving:
-        tick_idle_move_default(entity, simulation);
-        break;
-    case rr_ai_state_attacking:
-    {
-        physical->knockback_scale = 0;
-        struct rr_component_physical *physical2 =
-            rr_simulation_get_physical(simulation, ai->target_entity);
-
-        struct rr_vector delta = {physical2->x, physical2->y};
-        struct rr_vector target_pos = {physical->x, physical->y};
-        rr_vector_sub(&delta, &target_pos);
-        float target_angle = rr_vector_theta(&delta);
-
-        if (rr_vector_magnitude_cmp(&delta, 800) == 1)
-        {
-            rr_component_physical_set_angle(physical, target_angle + 0);
-            struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 15.0, physical->angle);
-            rr_vector_add(&physical->acceleration, &accel);
-        }
-        else if (rr_vector_magnitude_cmp(&delta, 700) == 1)
-        {
-            rr_component_physical_set_angle(physical, target_angle + 0.1);
-            struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 5.0, physical->angle);
-            rr_vector_add(&physical->acceleration, &accel);
-        }
-        else if (rr_vector_magnitude_cmp(&delta, 700) == -1)
-        {
-            rr_component_physical_set_angle(physical, target_angle);
-            struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * -5.0, physical->angle);
-            rr_vector_add(&physical->acceleration, &accel);
-        }
-    }
-    default:
-        break;
-    }
-}
-
-void tick_ai_test(EntityIdx entity,
-                                struct rr_simulation *simulation)
-{
-    struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
-    struct rr_component_physical *physical =
-        rr_simulation_get_physical(simulation, entity);
-        
-    if (should_aggro(simulation, ai))
-        ai->ai_state = rr_ai_state_attacking;
-
-    switch (ai->ai_state)
-    {
-    case rr_ai_state_idle:
-        tick_idle(entity, simulation);
-        break;
-
-    case rr_ai_state_idle_moving:
-        tick_idle_move_default(entity, simulation);
-        break;
-    case rr_ai_state_attacking:
-    {
-        struct rr_vector accel;
-        struct rr_component_physical *physical2 =
-            rr_simulation_get_physical(simulation, ai->target_entity);
-
-        struct rr_vector delta = {physical2->x, physical2->y};
-        struct rr_vector target_pos = {physical->x, physical->y};
-        rr_vector_sub(&delta, &target_pos);
-        // struct rr_vector prediction = predict(delta, physical2->velocity, 4);
-        float target_angle = rr_vector_theta(&delta);
-
-        rr_component_physical_set_angle(physical, target_angle);
-
-        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 2, physical->angle);
-        rr_vector_add(&physical->acceleration, &accel);
-        ai->ticks_until_next_action = 5;
-        if (rr_vector_magnitude_cmp(&delta, 750) == -1)
-            ai->ai_state = rr_ai_state_charging;
-        break;
-    }
-    case rr_ai_state_charging:
-    {
-        struct rr_vector accel;
-        struct rr_component_physical *physical2 =
-            rr_simulation_get_physical(simulation, ai->target_entity);
-
-        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 10, physical->angle);
-        rr_vector_add(&physical->acceleration, &accel);
-        if (ai->ticks_until_next_action == 0)
-        {
-            ai->ticks_until_next_action = 25;
-            ai->ai_state = rr_ai_state_attacking;
-        }
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 void tick_ai_pectinodon(EntityIdx entity,
                                       struct rr_simulation *simulation)
 {
@@ -1112,11 +997,11 @@ void tick_ai_pectinodon(EntityIdx entity,
         rr_component_physical_set_angle(physical, rr_vector_theta(&delta));
         if (dist > 300)
         {
-            rr_vector_from_polar(&physical->acceleration, 1.6, physical->angle);
+            rr_vector_from_polar(&physical->acceleration, RR_PLAYER_SPEED * 0.9, physical->angle);
         }
         else if (dist < 200)
         {
-            rr_vector_from_polar(&physical->acceleration, 1.8, M_PI + physical->angle);
+            rr_vector_from_polar(&physical->acceleration, RR_PLAYER_SPEED * 0.5, M_PI + physical->angle);
             ++ai->ticks_until_next_action;
         }
         break;
@@ -1153,6 +1038,152 @@ void tick_ai_pectinodon(EntityIdx entity,
         ai->ai_state = rr_ai_state_waiting_to_attack;
         ai->ticks_until_next_action = 50;
 
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void tick_ai_trol(EntityIdx entity, struct rr_simulation *simulation)
+{
+    struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
+    struct rr_component_physical *physical =
+        rr_simulation_get_physical(simulation, entity);
+
+    if (should_aggro(simulation, ai))
+        ai->ai_state = rr_ai_state_attacking;
+
+    switch (ai->ai_state)
+    {
+    case rr_ai_state_idle:
+        tick_idle(entity, simulation);
+        break;
+    case rr_ai_state_idle_moving:
+        tick_idle_move_default(entity, simulation);
+        break;
+    case rr_ai_state_attacking:
+    {
+        physical->knockback_scale = 0;
+        struct rr_component_physical *physical2 =
+            rr_simulation_get_physical(simulation, ai->target_entity);
+
+        struct rr_vector delta = {physical2->x, physical2->y};
+        struct rr_vector target_pos = {physical->x, physical->y};
+        rr_vector_sub(&delta, &target_pos);
+        float target_angle = rr_vector_theta(&delta);
+
+        if (rr_vector_magnitude_cmp(&delta, 800) == 1)
+        {
+            rr_component_physical_set_angle(physical, target_angle);
+            struct rr_vector accel;
+            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 15.0, physical->angle);
+            rr_vector_add(&physical->acceleration, &accel);
+        }
+        else if (rr_vector_magnitude_cmp(&delta, 700) == 1)
+        {
+            rr_component_physical_set_angle(physical, target_angle/* + 0.1*/);
+            struct rr_vector accel;
+            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 5.0, physical->angle);
+            rr_vector_add(&physical->acceleration, &accel);
+        }
+        else if (rr_vector_magnitude_cmp(&delta, 700) == -1)
+        {
+            rr_component_physical_set_angle(physical, target_angle);
+            struct rr_vector accel;
+            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * -5.0, physical->angle);
+            rr_vector_add(&physical->acceleration, &accel);
+        }
+    }
+    default:
+        break;
+    }
+}
+ 
+void tick_ai_test(EntityIdx entity,
+                                struct rr_simulation *simulation)
+{
+    struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
+    struct rr_component_physical *physical =
+        rr_simulation_get_physical(simulation, entity);
+        
+    if (should_aggro(simulation, ai))
+    {
+        ai->ai_state = rr_ai_state_attacking;
+        ai->ticks_until_next_action = 10;
+    }
+
+    switch (ai->ai_state)
+    {
+    case rr_ai_state_idle:
+    {
+        struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
+        struct rr_component_physical *physical =
+            rr_simulation_get_physical(simulation, entity);
+
+        if (ai->ticks_until_next_action == 0)
+        {
+            ai->ticks_until_next_action = rand() % 99 + 75;
+            ai->ai_state = rr_ai_state_idle_moving;
+            rr_component_physical_set_angle(
+                physical, physical->angle + (rr_frand() - 0.5) * M_PI);
+            physical->bearing_angle = physical->angle;
+        }
+        break;
+    }
+
+    case rr_ai_state_idle_moving:
+    {
+        struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
+        struct rr_component_physical *physical =
+            rr_simulation_get_physical(simulation, entity);
+        if (ai->ticks_until_next_action == 0)
+        {
+            ai->ticks_until_next_action = 1.2 + rr_frand() * 3.7;
+            ai->ai_state = rr_ai_state_idle;
+        }
+        struct rr_vector accel;
+        rr_vector_from_polar(&accel, 2.0f, physical->angle);
+        rr_vector_add(&physical->acceleration, &accel);
+        break;
+    }
+    case rr_ai_state_attacking:
+    {
+        struct rr_vector accel;
+        struct rr_component_physical *physical2 =
+            rr_simulation_get_physical(simulation, ai->target_entity);
+
+        struct rr_vector delta = {physical2->x, physical2->y};
+        struct rr_vector target_pos = {physical->x, physical->y};
+        rr_vector_sub(&delta, &target_pos);
+        // struct rr_vector prediction = predict(delta, physical2->velocity, 4);
+        float target_angle = rr_vector_theta(&delta);
+
+        rr_component_physical_set_angle(physical, target_angle);
+
+        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 1.45, physical->angle);
+        rr_vector_add(&physical->acceleration, &accel);
+        if (ai->ticks_until_next_action == 0)
+        {
+        ai->ticks_until_next_action = 10;
+        if (rr_vector_magnitude_cmp(&delta, 750) == -1)
+            ai->ai_state = rr_ai_state_charging;
+        }
+        break;
+    }
+    case rr_ai_state_charging:
+    {
+        struct rr_vector accel;
+        struct rr_component_physical *physical2 =
+            rr_simulation_get_physical(simulation, ai->target_entity);
+
+        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 6, physical->angle);
+        rr_vector_add(&physical->acceleration, &accel);
+        if (ai->ticks_until_next_action == 0)
+        {
+            ai->ticks_until_next_action = 10;
+            ai->ai_state = rr_ai_state_attacking;
+        }
         break;
     }
     default:

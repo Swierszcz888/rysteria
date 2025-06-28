@@ -546,7 +546,7 @@ static int handle_lws_event(struct rr_server *this, struct lws *ws,
                 if (client->dev || this->clients[j].dev)
                     continue;
                 if (strcmp(client->rivet_account.uuid,
-                           this->clients[j].rivet_account.uuid) == 0)
+                           this->clients[j].rivet_account.uuid)/* == 0*/)
                     continue;
                 if (strcmp(client->ip_address,
                            this->clients[j].ip_address) != 0)
