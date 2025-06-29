@@ -95,7 +95,7 @@ void rr_component_mob_render(EntityIdx entity, struct rr_game *game,
             (15 + rr_frand() * 2) * RR_MOB_RARITY_SCALING[mob->rarity].radius;
         particle->opacity = 0.85;
         particle->disappearance = 6;
-        particle->color = rr_frand() > 0.25 ? 0xff000000 : 0xff220000;
+        particle->color = rr_frand() > 0.25 ? 0xffffffc8 : 0xffffff64;
     }
     if (mob->id == rr_mob_id_test)
     {
@@ -116,7 +116,7 @@ void rr_component_mob_render(EntityIdx entity, struct rr_game *game,
             (20 + rr_frand() * 2) * RR_MOB_RARITY_SCALING[mob->rarity].radius;
         particle->opacity = 0.95;
         particle->disappearance = 30;
-        particle->color = 0xff000000;
+        particle->color = 0xffffffff;
     }
     if (physical->animation_timer > 2 * M_PI)
         physical->animation_timer = fmod(physical->animation_timer, 2 * M_PI);
