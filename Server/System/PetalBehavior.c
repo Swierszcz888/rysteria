@@ -82,8 +82,8 @@ static void uranium_damage(EntityIdx target, void *_captures)
         mob->id != rr_mob_id_tree && mob->id != rr_mob_id_meteor)
     {
         ai->ai_type = rr_ai_type_aggro;
-        if (ai->aggro_range < radius)
-            ai->aggro_range = radius;
+        if (ai->aggro_range < radius + target_physical->radius)
+            ai->aggro_range = radius + target_physical->radius;
     }
     if ((ai->target_entity == RR_NULL_ENTITY ||
          rr_frand() < powf(0.3, mob->rarity)) &&
