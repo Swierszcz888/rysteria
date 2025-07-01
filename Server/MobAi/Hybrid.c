@@ -944,23 +944,15 @@ void tick_ai_lanternfly(EntityIdx entity, struct rr_simulation *simulation)
 void tick_ai_pectinodon(EntityIdx entity,
                                       struct rr_simulation *simulation)
 {
-    // fixed not aggro
     struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
     struct rr_component_physical *physical =
         rr_simulation_get_physical(simulation, entity);
 
-    if (ai->ai_state == rr_ai_state_idle ||
-        ai->ai_state == rr_ai_state_idle_moving)
+    if (should_aggro(simulation, ai))
     {
-        if (rr_simulation_has_entity(simulation, ai->target_entity))
-        {
-            ai->ai_state = rr_ai_state_waiting_to_attack;
-            ai->ticks_until_next_action = 25;
-        }
+        ai->ai_state = rr_ai_state_attacking;
+        ai->ticks_until_next_action = -1;
     }
-    if (ai->target_entity != RR_NULL_ENTITY &&
-        !rr_simulation_has_entity(simulation, ai->target_entity))
-        ai->target_entity = RR_NULL_ENTITY;
 
     switch (ai->ai_state)
     {

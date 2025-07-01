@@ -292,7 +292,7 @@ static uint8_t damage_effect(struct rr_simulation *simulation, EntityIdx target,
                 rr_simulation_get_physical(simulation, target);
             physical->stun_ticks =
                 25 *
-                (1 + sqrtf(RR_PETAL_RARITY_SCALE[petal->rarity].heal) / 3) *
+                (1 + sqrtf(RR_PETAL_RARITY_SCALE[petal->rarity].heal) / 6) *
                 (1 - physical->slow_resist);
         }
         else if (petal->id == rr_petal_id_lightning)

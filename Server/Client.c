@@ -251,7 +251,7 @@ int rr_server_client_read_from_api(struct rr_server_client *this,
         return 0;
     if (this->dev)
     {
-        this->checkpoint = 4;
+        this->checkpoint = 2;
         this->experience = 0;
         for (uint32_t lvl = 2; lvl <= 140; ++lvl)
             this->experience += xp_to_reach_level(lvl);
