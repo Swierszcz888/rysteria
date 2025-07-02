@@ -566,6 +566,48 @@ static void system_flower_petal_movement_logic(
             }
             break;
         }
+        case rr_petal_id_rake:
+        {
+            EntityIdx closest_target = RR_NULL_ENTITY;
+            float closest_dist = 200;
+            for (uint32_t i = 0; i < simulation->flower_count; ++i)
+            {
+                EntityIdx target = simulation->flower_vector[i];
+                if (!is_dead_flower(simulation, target))
+                    continue;
+                struct rr_component_relations *target_relations =
+                    rr_simulation_get_relations(simulation, target);
+                if (is_same_team(relations->team, target_relations->team))
+                    continue;
+                struct rr_component_physical *target_physical =
+                    rr_simulation_get_physical(simulation, target);
+                if (target_physical->bubbling_to_death)
+                    continue;
+                struct rr_vector delta = {target_physical->x - physical->x,
+                                          target_physical->y - physical->y};
+                if (rr_vector_magnitude_cmp(
+                        &delta, closest_dist + target_physical->radius) == 1)
+                    continue;
+                closest_target = target;
+                closest_dist =
+                    rr_vector_get_magnitude(&delta) - target_physical->radius;
+            }
+            if (closest_target != RR_NULL_ENTITY)
+            {
+                struct rr_component_physical *target_physical =
+                    rr_simulation_get_physical(simulation, closest_target);
+                petal->bind_target =
+                    rr_simulation_get_entity_hash(simulation, closest_target);
+                rr_vector_from_polar(
+                    &petal->bind_pos,
+                    (target_physical->radius - physical->radius) * rr_frand(),
+                    2 * M_PI * rr_frand());
+                petal->effect_delay =
+                    15;
+                rr_component_petal_set_detached(petal, 1);
+            }
+            break;
+        }
         default:
             break;
         }
@@ -624,8 +666,13 @@ static void system_flower_petal_movement_logic(
         rr_vector_magnitude_cmp(&physical->acceleration, 1.0f) == 1)
         rr_component_physical_set_angle(
             physical, rr_vector_theta(&physical->acceleration));
-    else if (petal->id == rr_petal_id_missile)
+    else if (petal->id == rr_petal_id_missile /*|| rr_petal_id_rake*/)
         rr_component_physical_set_angle(physical, curr_angle);
+    else if (petal->id == rr_petal_id_rake)
+            if (player_info->input & 1)
+            {
+            rr_component_physical_set_angle(physical, curr_angle + M_PI/2);
+            }
     else
         rr_component_physical_set_angle(
             physical, physical->angle + 0.04f * petal->spin_ccw *
@@ -1067,9 +1114,31 @@ static void system_petal_misc_logic(EntityIdx id, void *_simulation)
             rr_vector_from_polar(&physical->acceleration, 25.0f,
                                  physical->bearing_angle);
         }
+        else if (petal->id == rr_petal_id_rake)
+        {
+            struct rr_component_physical *target_physical =
+                rr_simulation_get_physical(simulation, petal->bind_target);
+            struct rr_vector delta = {target_physical->x - physical->x,
+                                      target_physical->y - physical->y};
+            rr_vector_add(&delta, &petal->bind_pos);
+            rr_vector_scale(&delta, 0.4);
+            rr_vector_add(&physical->acceleration, &delta);
+            struct rr_component_relations *target_relations =
+                rr_simulation_get_relations(simulation, petal->bind_target);
+            struct rr_component_player_info *target_player_info =
+                rr_simulation_get_player_info(simulation,
+                                              target_relations->owner);
+            rr_component_player_info_set_spectate_target(
+                target_player_info, petal->bind_target);
+            target_player_info->spectate_ticks = 62;
+            target_player_info->spectating_single_target = 0;
+        }
         if (--petal->effect_delay <= 0)
         {
+            if (petal->id != rr_petal_id_rake)
+            {
             rr_simulation_request_entity_deletion(simulation, id);
+            }
             if (petal->id == rr_petal_id_seed)
             {
                 struct rr_component_flower *target_flower =
@@ -1112,6 +1181,13 @@ static void system_petal_misc_logic(EntityIdx id, void *_simulation)
                 nest_health->damage = 0;
                 nest_health->damage_reduction =
                     5 * RR_MOB_RARITY_SCALING[stats_rarity].damage;
+            }
+            if (petal->id == rr_petal_id_rake)
+            {
+                rr_component_petal_set_detached(petal, 0);
+                struct rr_component_flower *target_flower =
+                    rr_simulation_get_flower(simulation, petal->bind_target);
+                rr_simulation_request_entity_deletion(simulation, petal->bind_target);
             }
         }
     }
