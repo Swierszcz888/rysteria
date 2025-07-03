@@ -40,6 +40,7 @@ struct rr_component_health
     RR_SERVER_ONLY(float damage_reduction_ratio;)
     RR_SERVER_ONLY(float poison;)
     RR_SERVER_ONLY(uint16_t poison_ticks;)
+    RR_SERVER_ONLY(EntityHash poison_from;)
     EntityIdx parent_id;
     uint8_t flags;
     RR_SERVER_ONLY(uint8_t protocol_state;)

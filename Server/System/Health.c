@@ -40,10 +40,15 @@ static void system_default_idle_heal(EntityIdx entity, void *captures)
     if (is_dead_flower(this, entity))
         return;
 
-    if (health->poison_ticks > 0)
+    if (health->poison_ticks > 0 &&
+        rr_simulation_entity_alive(this, health->poison_from) &&
+        !is_dead_flower(this, health->poison_from))
     {
         --health->poison_ticks;
-        rr_component_health_set_health(health, health->health - health->poison);
+        health->flags |= 4;
+        rr_component_health_do_damage(
+            this, health, health->poison_from, health->poison,
+            rr_animation_color_type_fireball);
     }
     else
         health->poison = 0;
@@ -316,8 +321,11 @@ static uint8_t damage_effect(struct rr_simulation *simulation, EntityIdx target,
         {
             struct rr_component_health *health =
                 rr_simulation_get_health(simulation, target);
+            struct rr_component_relations *relations =
+                rr_simulation_get_relations(simulation, attacker);
             health->poison_ticks = 75;
             health->poison = rr_simulation_get_health(simulation, attacker)->secondary_damage;
+            health->poison_from = relations->owner;
         }
     }
     return 1;
