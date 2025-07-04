@@ -159,7 +159,8 @@ void rr_component_petal_render(EntityIdx entity, struct rr_game *game,
         float angle = rr_vector_theta(&physical->lerp_velocity) + M_PI - 0.5 + rr_frand();
         float dist = 10;
         rr_vector_from_polar(&particle->velocity, (rr_frand() * 5 + 5), angle);
-        rr_vector_set(&particle->x, physical->lerp_x + sinf(physical->angle) * dist, physical->lerp_y - cosf(physical->angle) * dist);
+        particle->x = physical->lerp_x + sinf(physical->angle) * dist;
+        particle->y = physical->lerp_y - cosf(physical->angle) * dist;
         particle->friction = 0.7;
         particle->size = (1 + rr_frand() * 5);
         particle->opacity = 0.4;

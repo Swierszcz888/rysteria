@@ -667,13 +667,10 @@ static void system_flower_petal_movement_logic(
         rr_vector_magnitude_cmp(&physical->acceleration, 1.0f) == 1)
         rr_component_physical_set_angle(
             physical, rr_vector_theta(&physical->acceleration));
-    else if (petal->id == rr_petal_id_missile /*|| rr_petal_id_rake*/)
+    else if (petal->id == rr_petal_id_missile)
         rr_component_physical_set_angle(physical, curr_angle);
-    else if (petal->id == rr_petal_id_rake)
-            if (player_info->input & 1)
-            {
-            rr_component_physical_set_angle(physical, curr_angle + M_PI/2);
-            }
+    else if (petal->id == rr_petal_id_rake && player_info->input & 1)
+            rr_component_physical_set_angle(physical, curr_angle + M_PI / 2);
     else
         rr_component_physical_set_angle(
             physical, physical->angle + 0.04f * petal->spin_ccw *
