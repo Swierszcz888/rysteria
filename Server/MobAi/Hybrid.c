@@ -777,6 +777,7 @@ void tick_ai_dragonfly(EntityIdx entity, struct rr_simulation *simulation)
         ai->ai_state = rr_ai_state_attacking;
         ai->ticks_until_next_action = 10;
     }
+    physical->phasing = 0;
     physical->knockback_scale = 1;
 
     switch (ai->ai_state)
@@ -821,12 +822,13 @@ void tick_ai_dragonfly(EntityIdx entity, struct rr_simulation *simulation)
         if (rr_vector_magnitude_cmp(&delta, 75 + physical->radius) == -1)
         {
             ai->ai_state = rr_ai_state_dashing;
-            ai->ticks_until_next_action = 4;
+            ai->ticks_until_next_action = 1;
         }
         break;
     }
     case rr_ai_state_dashing:
     {
+        physical->phasing = 1;
         physical->knockback_scale = 0;
         struct rr_vector accel;
         struct rr_component_physical *physical2 =
@@ -839,7 +841,7 @@ void tick_ai_dragonfly(EntityIdx entity, struct rr_simulation *simulation)
 
         rr_component_physical_set_angle(physical, target_angle);
 
-        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 20.0, physical->angle);
+        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 40.0, physical->angle);
         rr_vector_add(&physical->acceleration, &accel);
         if (ai->ticks_until_next_action == 0)
         {

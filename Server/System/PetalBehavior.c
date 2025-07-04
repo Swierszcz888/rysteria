@@ -534,6 +534,7 @@ static void system_flower_petal_movement_logic(
                 if (flower_physical->bubbling)
                     flower_physical->bubbling_to_death = 1;
                 flower_physical->bubbling = 1;
+                flower_physical->phasing = 1;
                 if (flower_physical->bubbling_to_death)
                 {
                     rr_vector_set_magnitude(&accel, RR_PLAYER_SPEED * 100);

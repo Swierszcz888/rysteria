@@ -224,7 +224,10 @@ static void system_velocity(EntityIdx id, void *simulation)
             rr_vector_from_polar(&physical->velocity, vel, angle);
         }
         if (vel < 25)
+        {
             physical->bubbling = 0;
+            physical->phasing = 0;
+        }
     }
     physical->acceleration_scale = physical->web_slowdown = 1;
     struct rr_vector vel = {physical->velocity.x, physical->velocity.y};

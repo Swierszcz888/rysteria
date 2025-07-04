@@ -102,17 +102,17 @@ static void grid_filter_candidates(struct rr_simulation *this,
     if (is_dead_flower(this, entity1) ||
         is_dead_flower(this, entity2))
         return;
-    if (physical1->bubbling || physical2->bubbling)
-        return;
     if (rr_simulation_has_petal(this, entity1) &&
         rr_simulation_get_petal(this, entity1)->detached == 0 &&
         rr_simulation_get_physical(this,
-            rr_simulation_get_relations(this, entity1)->owner)->bubbling)
+            rr_simulation_get_relations(this, entity1)->owner)->phasing)
         return;
     if (rr_simulation_has_petal(this, entity2) &&
         rr_simulation_get_petal(this, entity2)->detached == 0 &&
         rr_simulation_get_physical(this,
-            rr_simulation_get_relations(this, entity2)->owner)->bubbling)
+            rr_simulation_get_relations(this, entity2)->owner)->phasing)
+        return;
+    if (physical1->phasing || physical2->phasing)
         return;
     if (rr_simulation_has_nest(this, entity1) &&
         rr_simulation_has_petal(this, entity2) &&
