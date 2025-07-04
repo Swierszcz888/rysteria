@@ -132,15 +132,15 @@ EntityIdx rr_simulation_alloc_petal(struct rr_simulation *this, EntityIdx arena,
         float burn_damage;
 
     switch (rarity) {
-        case 0:  burn_damage = 5.0 / 75;    break;
-        case 1:  burn_damage = 10.0 / 75;   break;
-        case 2:  burn_damage = 20.0 / 75;   break;
-        case 3:  burn_damage = 40.0 / 75;   break;
-        case 4:  burn_damage = 80.0 / 75;   break;
-        case 5:  burn_damage = 240.0 / 75;  break;
-        case 6:  burn_damage = 720.0 / 75;  break;
-        case 7:  burn_damage = 2160.0 / 75; break;
-        default: burn_damage = 0.0;         break;
+        case 0:  burn_damage = 50.0 / 75;    break;
+        case 1:  burn_damage = 100.0 / 75;   break;
+        case 2:  burn_damage = 200.0 / 75;   break;
+        case 3:  burn_damage = 400.0 / 75;   break;
+        case 4:  burn_damage = 800.0 / 75;   break;
+        case 5:  burn_damage = 2400.0 / 75;  break;
+        case 6:  burn_damage = 7200.0 / 75;  break;
+        case 7:  burn_damage = 21600.0 / 75; break;
+        default: burn_damage = 0.0;          break;
         }
         health->secondary_damage = burn_damage;
     }

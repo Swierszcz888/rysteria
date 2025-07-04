@@ -931,7 +931,7 @@ void tick_ai_lanternfly(EntityIdx entity, struct rr_simulation *simulation)
         {
             ai->ticks_until_next_action = 2;
 
-            rr_vector_from_polar(&delta, RR_PLAYER_SPEED * -18, physical->angle);
+            rr_vector_from_polar(&delta, RR_PLAYER_SPEED * -19, physical->angle);
             rr_vector_add(&physical->acceleration, &delta);
         }
         break;
@@ -1023,7 +1023,7 @@ void tick_ai_pectinodon(EntityIdx entity,
             health, 3 * RR_MOB_RARITY_SCALING[mob->rarity].health);
         rr_component_health_set_health(health, health->max_health);
 
-        health->damage = 2 * RR_MOB_RARITY_SCALING[mob->rarity].damage;
+        health->damage = 1 * RR_MOB_RARITY_SCALING[mob->rarity].damage;
         health->secondary_damage = 0.5 * RR_MOB_RARITY_SCALING[mob->rarity].damage;
         rr_simulation_get_petal(simulation, petal_id)->effect_delay = 50;
 

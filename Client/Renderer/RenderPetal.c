@@ -49,21 +49,17 @@ void rr_component_petal_render(EntityIdx entity, struct rr_game *game,
     if (petal->rarity >= rr_rarity_id_exotic)
     {
         struct rr_particle_manager *particle_manager =
-            petal->id != rr_petal_id_meteor
-                ? &game->default_particle_manager
-                : &game->foreground_particle_manager;
+            &game->default_particle_manager;
         float exotic_coeff = petal->rarity == rr_rarity_id_exotic ? 0.5 : 1;
         float size_coeff =
             physical->on_title_screen ? physical->radius / 20 : 1;
-        float colorful_coeff = petal->id == rr_petal_id_fireball ||
-                               petal->id == rr_petal_id_meteor ? 2 : 1;
+        float colorful_coeff = petal->id == rr_petal_id_fireball ? 2 : 1;
         float pos_offset = 0;
         if (physical->on_title_screen)
         {
             if (petal->id == rr_petal_id_magnet ||
                 petal->id == rr_petal_id_crest ||
-                petal->id == rr_petal_id_bubble ||
-                petal->id == rr_petal_id_meteor)
+                petal->id == rr_petal_id_bubble)
                 pos_offset = physical->radius * rr_frand();
         }
         struct rr_simulation_animation *particle =
@@ -101,8 +97,6 @@ void rr_component_petal_render(EntityIdx entity, struct rr_game *game,
                 break;
             }
         }
-        else if (petal->id == rr_petal_id_meteor)
-            particle->color = 0xffab3423;
         else if (petal->id == rr_petal_id_stick)
         {
             particle->size = (3 + 2 * rr_frand()) * exotic_coeff * size_coeff;
@@ -116,6 +110,31 @@ void rr_component_petal_render(EntityIdx entity, struct rr_game *game,
         particle->disappearance = physical->on_title_screen ? 20 : 20;
             particle->color = rr_frand() > 0.25 ? 0xffffffc8 : 0xffffff64;
         }
+    }
+    if (petal->id == rr_petal_id_meteor)
+    {
+        float pos_offset = 0;
+        struct rr_simulation_animation *particle =
+            rr_particle_alloc(&game->foreground_particle_manager,
+                              rr_animation_type_default);
+        float angle =
+            rr_vector_theta(&physical->lerp_velocity) + M_PI - 0.5 + rr_frand();
+        float dist = rr_frand() * 50;
+        struct rr_vector vector;
+        
+        if (pos_offset > 0)
+        {
+            rr_vector_from_polar(&vector, pos_offset, 2 * M_PI * rr_frand());
+            particle->x += vector.x;
+            particle->y += vector.y;
+        }
+        particle->friction = 0.9;
+        particle->x = physical->lerp_x + cosf(angle) * dist;
+        particle->y = physical->lerp_y + sinf(angle) * dist;
+        particle->size = (4 + rr_frand() * 2);
+        particle->opacity = 0.8;
+        particle->disappearance = 6;
+        particle->color = 0xffab3423;
     }
     if (petal->id == rr_petal_id_stick)
     {
