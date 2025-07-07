@@ -75,11 +75,11 @@ uint8_t edmo_zone() { return rr_mob_id_edmontosaurus; }
 uint8_t edmo_dako_quetz_zone() { return rr_frand() > 0.45 ? rr_mob_id_edmontosaurus : rr_frand() > 0.6 ? rr_mob_id_dakotaraptor : rr_mob_id_quetzalcoatlus; }
 uint8_t pter_zone() { return rr_frand() > 0.1 ? rr_mob_id_pteranodon : ALL_MOBS; }
 uint8_t quetz_zone() { return rr_frand() > 0.2 ? rr_mob_id_quetzalcoatlus : rr_frand() > 0.4 ? rr_mob_id_ankylosaurus : rr_mob_id_pachycephalosaurus; }
-uint8_t anky_trex_bee_zone() { return rr_frand() > 0.4 ? rr_mob_id_ankylosaurus : rr_frand() > 0.4 ? rr_mob_id_trex : rr_mob_id_honeybee; }
+uint8_t anky_trex_bee_zone() { return rr_frand() > 0.6 ? rr_mob_id_ankylosaurus : rr_frand() > 0.4 ? rr_mob_id_trex : rr_mob_id_honeybee; }
 // ~x15 tree chance
 uint8_t tree_zone() { return rr_frand() > 0.0075 ? DIFFICULT_MOBS : rr_mob_id_tree; }
 uint8_t pachy_trex_fern_zone() { return rr_frand() > 0.4 ? rr_mob_id_pachycephalosaurus : rr_frand() > 0.25 ? rr_mob_id_trex : rr_mob_id_fern; }
-uint8_t ant_zone() { return rr_mob_id_ant; }
+uint8_t ant_zone() { return rr_frand() > 0.1 ? rr_mob_id_ant : rr_mob_id_house_centipede; }
 uint8_t lanternfly_zone() { return rr_frand() > 0.3 ? rr_mob_id_lanternfly : rr_mob_id_hornet; }
 uint8_t spider_zone() { return rr_frand() > 0.1 ? rr_mob_id_spider : rr_mob_id_dragonfly; }
 uint8_t hornet_pter_zone() { return rr_frand() > 0.5 ? rr_mob_id_hornet : rr_mob_id_pteranodon; }
