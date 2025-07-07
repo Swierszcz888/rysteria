@@ -594,7 +594,10 @@ void tick_ai_quetzalcoaltus(EntityIdx entity, struct rr_simulation *simulation)
         rr_simulation_get_physical(simulation, entity);
 
     if (should_aggro(simulation, ai))
+    {
         ai->ai_state = rr_ai_state_attacking;
+        ai->ticks_until_next_action = 20;
+    }
     physical->knockback_scale = 1;
 
     switch (ai->ai_state)
@@ -621,6 +624,46 @@ void tick_ai_quetzalcoaltus(EntityIdx entity, struct rr_simulation *simulation)
 
             rr_vector_from_polar(&delta, RR_PLAYER_SPEED * 18, physical->angle);
             rr_vector_add(&physical->acceleration, &delta);
+        }
+        if (rr_vector_magnitude_cmp(&delta, 900 + physical->radius) == 1 && rr_vector_magnitude_cmp(&delta, 1000 + physical->radius) == -1 &&
+                            rr_frand() < 0.02)
+        {
+            ai->ai_state = (rr_simulation_get_mob(simulation, entity)->rarity >=
+                                rr_rarity_id_exotic)
+                               ? rr_ai_state_exotic_special
+                               : rr_ai_state_attacking;
+            ai->ticks_until_next_action = 25;
+        }
+        break;
+    }
+    case rr_ai_state_exotic_special:
+    {
+        if (ai->ticks_until_next_action == 10)
+        {
+        physical->phasing = 1;
+        struct rr_vector accel;
+        struct rr_component_physical *physical2 =
+            rr_simulation_get_physical(simulation, ai->target_entity);
+
+        struct rr_vector delta = {physical2->x, physical2->y};
+        struct rr_vector target_pos = {physical->x, physical->y};
+        rr_vector_sub(&delta, &target_pos);
+        float target_angle = rr_vector_theta(&delta);
+
+        rr_component_physical_set_angle(physical, target_angle);
+
+        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 102.0, physical->angle);
+        rr_vector_add(&physical->acceleration, &accel);
+        }
+        physical->knockback_scale = 50;
+        if (ai->ticks_until_next_action == 1)
+        {
+            physical->phasing = 0;
+        }
+        if (ai->ticks_until_next_action == 0)
+        {
+        ai->ai_state = rr_ai_state_attacking;
+        ai->ticks_until_next_action = 20;
         }
         break;
     }
