@@ -127,7 +127,7 @@ static void system_for_each(EntityIdx entity, void *simulation)
         break;
     case rr_mob_id_spider:
         tick_ai_default(entity, this, RR_PLAYER_SPEED *
-                                      (1.05 + mob->rarity * 0.04));
+                                      (1.02 + mob->rarity * 0.03));
         break;
     case rr_mob_id_house_centipede:
         tick_ai_default(entity, this, RR_PLAYER_SPEED *

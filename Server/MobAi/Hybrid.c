@@ -610,7 +610,7 @@ void tick_ai_quetzalcoaltus(EntityIdx entity, struct rr_simulation *simulation)
         break;
     case rr_ai_state_attacking:
     {
-        physical->knockback_scale = 5;
+        physical->knockback_scale = 10;
         struct rr_component_physical *physical2 =
             rr_simulation_get_physical(simulation, ai->target_entity);
 
@@ -745,7 +745,7 @@ void tick_ai_hornet(EntityIdx entity, struct rr_simulation *simulation)
             rr_component_health_set_max_health(
                 health, 1 * RR_MOB_RARITY_SCALING[mob->rarity].health);
             rr_component_health_set_health(health, health->max_health);
-            health->damage = 15 * RR_MOB_RARITY_SCALING[mob->rarity].damage;
+            health->damage = 7.5 * RR_MOB_RARITY_SCALING[mob->rarity].damage;
             rr_simulation_get_petal(simulation, petal_id)->effect_delay = 25;
             struct rr_vector recoil;
             rr_vector_from_polar(&recoil, -5,

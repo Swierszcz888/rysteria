@@ -480,7 +480,7 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
     {
         char *extra = malloc((sizeof *extra) * 8);
         sprintf(extra, "%s",
-                rr_sprintf(fmt, 0.07 * RR_PETAL_DATA[id].health *
+                rr_sprintf(fmt, 0.15 * RR_PETAL_DATA[id].health *
                                     RR_PETAL_DATA[id].scale[rarity].health));
         rr_ui_container_add_element(
             this, rr_ui_set_justify(
@@ -496,15 +496,15 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
         float burn_damage;
 
     switch (rarity) {
-        case 0:  burn_damage = 50.0;    break;
-        case 1:  burn_damage = 100.0;   break;
-        case 2:  burn_damage = 200.0;   break;
-        case 3:  burn_damage = 400.0;   break;
-        case 4:  burn_damage = 800.0;   break;
-        case 5:  burn_damage = 2400.0;  break;
-        case 6:  burn_damage = 7200.0;  break;
-        case 7:  burn_damage = 21600.0; break;
-        default: burn_damage = 0.0;     break;
+        case 0:  burn_damage = 50.0 / 3;    break;
+        case 1:  burn_damage = 100.0 / 3;   break;
+        case 2:  burn_damage = 200.0 / 3;   break;
+        case 3:  burn_damage = 400.0 / 3;   break;
+        case 4:  burn_damage = 800.0 / 3;   break;
+        case 5:  burn_damage = 2400.0 / 3;  break;
+        case 6:  burn_damage = 7200.0 / 3;  break;
+        case 7:  burn_damage = 21600.0 / 3; break;
+        default: burn_damage = 0.0;         break;
       }
 
     if (burn_damage >= 1000) {

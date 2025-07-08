@@ -774,7 +774,7 @@ static void petal_modifiers(struct rr_simulation *simulation,
                 else if (data->id == rr_petal_id_amber)
                 {
                 struct rr_component_health *petal_health = rr_simulation_get_health(simulation, slot->petals[inner].entity_hash);
-                rr_component_health_set_health(petal_health, petal_health->health + 0.0028 * petal_health->max_health);
+                rr_component_health_set_health(petal_health, petal_health->health + 0.006 * petal_health->max_health);
                 }
             }
         }
