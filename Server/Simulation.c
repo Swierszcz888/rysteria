@@ -78,6 +78,7 @@ uint8_t quetz_zone() { return rr_frand() > 0.2 ? rr_mob_id_quetzalcoatlus : rr_f
 uint8_t anky_trex_bee_zone() { return rr_frand() > 0.6 ? rr_mob_id_ankylosaurus : rr_frand() > 0.4 ? rr_mob_id_trex : rr_mob_id_honeybee; }
 // ~x15 tree chance
 uint8_t tree_zone() { return rr_frand() > 0.0075 ? DIFFICULT_MOBS : rr_mob_id_tree; }
+uint8_t pecti_zone() { return rr_frand() > 0.7 ? rr_mob_id_pectinodon : DIFFICULT_MOBS; }
 uint8_t pachy_trex_fern_zone() { return rr_frand() > 0.4 ? rr_mob_id_pachycephalosaurus : rr_frand() > 0.25 ? rr_mob_id_trex : rr_mob_id_fern; }
 uint8_t ant_zone() { return rr_frand() > 0.1 ? rr_mob_id_ant : rr_mob_id_house_centipede; }
 uint8_t lanternfly_zone() { return rr_frand() > 0.3 ? rr_mob_id_lanternfly : rr_mob_id_hornet; }
@@ -86,7 +87,7 @@ uint8_t hornet_pter_zone() { return rr_frand() > 0.5 ? rr_mob_id_hornet : rr_mob
 uint8_t bee_hornet_zone() { return rr_frand() > 0.4 ? rr_mob_id_honeybee : rr_frand() > 0.025 ? rr_mob_id_hornet : rr_mob_id_beehive; }
 uint8_t dragonfly_zone() { return rr_frand() > 0.1 ? rr_mob_id_dragonfly : rr_mob_id_lanternfly; }
 uint8_t spider_centi_zone() { return rr_frand() > 0.15 ? rr_mob_id_spider : rr_mob_id_house_centipede; }
-uint8_t lanternfly_ornith_quetz_zone() { return rr_frand() > 0.5 ? rr_mob_id_lanternfly : rr_frand() > 0.6 ? rr_mob_id_ornithomimus :rr_mob_id_quetzalcoatlus; }
+uint8_t lanternfly_ornith_quetz_zone() { return rr_frand() > 0.5 ? rr_mob_id_lanternfly : rr_frand() > 0.6 ? rr_mob_id_ant :rr_mob_id_quetzalcoatlus; }
 uint8_t mixed_biomes_zone() { return rr_frand() > 0.5 ? ALL_MOBS : rr_frand() > 0.8 ? rr_mob_id_ant : rr_frand() > 0.7 ? rr_mob_id_lanternfly : rr_frand() > 0.64 ? rr_mob_id_dragonfly : rr_frand() > 0.88 ? rr_mob_id_honeybee : rr_frand() > 0.3 ? rr_mob_id_spider : rr_frand() > 0.3 ? rr_mob_id_hornet : rr_frand() > 0.02 ? rr_mob_id_house_centipede : rr_mob_id_beehive; }
 
 struct zone
@@ -98,7 +99,7 @@ struct zone
     uint8_t (*spawn_func)();
 };
 
-#define ZONE_POSITION_COUNT 31
+#define ZONE_POSITION_COUNT 32
 
 static struct zone zone_positions[ZONE_POSITION_COUNT] = {
     {0,  8,  11,32, garden_zone},
@@ -122,6 +123,7 @@ static struct zone zone_positions[ZONE_POSITION_COUNT] = {
     {22, 13, 5,  4, quetz_zone},
     {36, 27, 4,  3, anky_trex_bee_zone},
     {27, 24, 3,  1, tree_zone},
+    {21, 34, 4,  3, pecti_zone},
     {15, 31, 5,  5, pachy_trex_fern_zone},
     {7,  8,  3,  2, ant_zone},
     {0,  9,  3,  3, lanternfly_zone},
