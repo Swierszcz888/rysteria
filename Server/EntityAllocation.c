@@ -118,7 +118,7 @@ EntityIdx rr_simulation_alloc_petal(struct rr_simulation *this, EntityIdx arena,
     if (id == rr_petal_id_club)
     {
         rr_component_physical_set_radius(physical, 15* (powf(1.00009, powf(rarity, 4.5))));
-        physical->mass = 5.0f * powf(1.25, rarity);
+        physical->mass = 2.0f * powf(1.3, rarity);
         physical->knockback_scale = 10.0f;
     }
     else if (id == rr_petal_id_fireball)
@@ -253,6 +253,10 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
     if (mob_id == rr_mob_id_spider)
     {
         physical->slow_resist = rr_fclamp(0.5 * powf(1.12, rarity_scale->radius), 0, 1);
+    }
+    if (mob_id == rr_mob_id_dragonfly || mob_id == rr_mob_id_lanternfly)
+    {
+        physical->mass = 5.0f * powf(2, rarity_id + 1);
     }
     if (mob_id == rr_mob_id_trol)
     {

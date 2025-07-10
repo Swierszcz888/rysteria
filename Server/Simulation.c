@@ -64,7 +64,7 @@ static void set_special_zone(uint8_t biome, uint8_t (*fun)(), uint32_t x,
 
 uint8_t garden_zone() { return rr_frand() > 0.8 ? rr_mob_id_ant : rr_frand() > 0.7 ? rr_mob_id_lanternfly : rr_frand() > 0.64 ? rr_mob_id_dragonfly : rr_frand() > 0.88 ? rr_mob_id_honeybee : rr_frand() > 0.3 ? rr_mob_id_spider : rr_frand() > 0.3 ? rr_mob_id_hornet : rr_frand() > 0.02 ? rr_mob_id_house_centipede : rr_mob_id_beehive; }
 uint8_t fern_zone() { return rr_frand() > 0.01 ? rr_mob_id_fern : rr_mob_id_tree; }
-uint8_t meteor_zone() { return rr_frand() > 0.25 ? rr_mob_id_trex : rr_frand() > 0.2 ? rr_mob_id_triceratops : rr_mob_id_meteor; }
+uint8_t meteor_zone() { return rr_frand() > 0.95 ? rr_mob_id_meteor : rr_frand() > 0.4 ? rr_mob_id_quetzalcoatlus : rr_mob_id_dakotaraptor; }
 uint8_t quetz_edmo_ant_zone() { return rr_frand() > 0.9 ? rr_mob_id_quetzalcoatlus : rr_frand() > 0.5 ? rr_mob_id_edmontosaurus : rr_mob_id_ant; }
 uint8_t ornith_pachy_zone() { return rr_frand() > 0.5 ? rr_mob_id_ornithomimus : rr_mob_id_pachycephalosaurus; }
 uint8_t pter_meteor_zone() { return rr_frand() > 0.035 ? rr_mob_id_pteranodon : rr_mob_id_meteor; }
@@ -84,7 +84,7 @@ uint8_t lanternfly_zone() { return rr_frand() > 0.3 ? rr_mob_id_lanternfly : rr_
 uint8_t spider_zone() { return rr_frand() > 0.1 ? rr_mob_id_spider : rr_mob_id_dragonfly; }
 uint8_t hornet_pter_zone() { return rr_frand() > 0.5 ? rr_mob_id_hornet : rr_mob_id_pteranodon; }
 uint8_t bee_hornet_zone() { return rr_frand() > 0.4 ? rr_mob_id_honeybee : rr_frand() > 0.025 ? rr_mob_id_hornet : rr_mob_id_beehive; }
-uint8_t dragonfly_zone() { return rr_mob_id_dragonfly; }
+uint8_t dragonfly_zone() { return rr_frand() > 0.1 ? rr_mob_id_dragonfly : rr_mob_id_lanternfly; }
 uint8_t spider_centi_zone() { return rr_frand() > 0.15 ? rr_mob_id_spider : rr_mob_id_house_centipede; }
 uint8_t lanternfly_ornith_quetz_zone() { return rr_frand() > 0.5 ? rr_mob_id_lanternfly : rr_frand() > 0.6 ? rr_mob_id_ornithomimus :rr_mob_id_quetzalcoatlus; }
 uint8_t mixed_biomes_zone() { return rr_frand() > 0.5 ? ALL_MOBS : rr_frand() > 0.8 ? rr_mob_id_ant : rr_frand() > 0.7 ? rr_mob_id_lanternfly : rr_frand() > 0.64 ? rr_mob_id_dragonfly : rr_frand() > 0.88 ? rr_mob_id_honeybee : rr_frand() > 0.3 ? rr_mob_id_spider : rr_frand() > 0.3 ? rr_mob_id_hornet : rr_frand() > 0.02 ? rr_mob_id_house_centipede : rr_mob_id_beehive; }
