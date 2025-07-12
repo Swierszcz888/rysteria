@@ -117,7 +117,9 @@ void rr_component_mob_free(struct rr_component_mob *this,
                     simulation, member->client->player_info->flower_id);
             struct rr_vector delta = {physical->x - flower_physical->x,
                                       physical->y - flower_physical->y};
-            if (rr_vector_magnitude_cmp(&delta, 2000) == 1)
+            if (rr_vector_magnitude_cmp(&delta, 2000) == 1 &&
+            (rr_simulation_has_arena(simulation, this->parent_id) == 0 ||
+             flower_physical->arena != this->parent_id))
                 continue;
             ++member->client->mob_gallery[this->id][this->rarity];
             rr_server_client_write_to_api(member->client);
