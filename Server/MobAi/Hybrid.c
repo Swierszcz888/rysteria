@@ -632,15 +632,12 @@ void tick_ai_quetzalcoaltus(EntityIdx entity, struct rr_simulation *simulation)
                                 rr_rarity_id_exotic)
                                ? rr_ai_state_exotic_special
                                : rr_ai_state_attacking;
-            ai->ticks_until_next_action = 25;
+            ai->ticks_until_next_action = 10;
         }
         break;
     }
     case rr_ai_state_exotic_special:
     {
-        if (ai->ticks_until_next_action == 10)
-        {
-        physical->phasing = 1;
         struct rr_vector accel;
         struct rr_component_physical *physical2 =
             rr_simulation_get_physical(simulation, ai->target_entity);
@@ -651,8 +648,10 @@ void tick_ai_quetzalcoaltus(EntityIdx entity, struct rr_simulation *simulation)
         float target_angle = rr_vector_theta(&delta);
 
         rr_component_physical_set_angle(physical, target_angle);
-
-        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 102.0, physical->angle);
+        if (ai->ticks_until_next_action == 9)
+        {
+        physical->phasing = 1;
+        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 85.0, physical->angle);
         rr_vector_add(&physical->acceleration, &accel);
         }
         physical->knockback_scale = 50;
@@ -663,7 +662,7 @@ void tick_ai_quetzalcoaltus(EntityIdx entity, struct rr_simulation *simulation)
         if (ai->ticks_until_next_action == 0)
         {
         ai->ai_state = rr_ai_state_attacking;
-        ai->ticks_until_next_action = 20;
+        ai->ticks_until_next_action = 40;
         }
         break;
     }
@@ -883,8 +882,10 @@ void tick_ai_dragonfly(EntityIdx entity, struct rr_simulation *simulation)
         float target_angle = rr_vector_theta(&delta);
 
         rr_component_physical_set_angle(physical, target_angle);
-
+        if (rr_simulation_get_mob(simulation, entity)->rarity >= rr_rarity_id_exotic)
         rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 40.0, physical->angle);
+        else
+        rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 25.0, physical->angle);
         rr_vector_add(&physical->acceleration, &accel);
         if (ai->ticks_until_next_action == 0)
         {
@@ -932,6 +933,78 @@ void tick_ai_honeybee(EntityIdx entity, struct rr_simulation *simulation)
         physical->bearing_angle = rr_vector_theta(&delta);
 
         tick_idle_move_sinusoid(entity, simulation, RR_PLAYER_SPEED * 1.5);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void tick_ai_spider(EntityIdx entity, struct rr_simulation *simulation,
+                     float speed)
+{
+    struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
+    struct rr_component_physical *physical =
+        rr_simulation_get_physical(simulation, entity);
+    if (ai->ai_type == rr_ai_type_none)
+        return;
+    if (should_aggro(simulation, ai))
+    {
+        ai->ai_state = rr_ai_state_attacking;
+        ai->ticks_until_next_action = 10;
+    }
+
+    switch (ai->ai_state)
+    {
+    case rr_ai_state_idle:
+        tick_idle(entity, simulation);
+        break;
+
+    case rr_ai_state_idle_moving:
+        tick_idle_move_default(entity, simulation);
+        break;
+    case rr_ai_state_attacking:
+    {
+        struct rr_vector accel;
+        struct rr_component_physical *physical2 =
+            rr_simulation_get_physical(simulation, ai->target_entity);
+
+        struct rr_vector delta = {physical2->x, physical2->y};
+        struct rr_vector target_pos = {physical->x, physical->y};
+        rr_vector_sub(&delta, &target_pos);
+        // struct rr_vector prediction = predict(delta, physical2->velocity, 4);
+        float target_angle = rr_vector_theta(&delta);
+
+        rr_component_physical_set_angle(
+            physical, rr_angle_lerp(physical->angle, target_angle, 0.4));
+
+        rr_vector_from_polar(&accel, speed, physical->angle);
+        rr_vector_add(&physical->acceleration, &accel);
+
+        if (ai->ticks_until_next_action == 0)
+        {
+            if (rr_simulation_get_mob(simulation, entity)->rarity >=
+                rr_rarity_id_exotic)
+                ai->ai_state = rr_ai_state_exotic_special;
+        }
+        break;
+    }
+    case rr_ai_state_exotic_special:
+    {
+        struct rr_component_mob *mob =
+            rr_simulation_get_mob(simulation, entity);
+        // spawn a web
+        EntityIdx petal_id = rr_simulation_alloc_petal(
+            simulation, physical->arena, physical->x, physical->y,
+            rr_petal_id_web, mob->rarity - 3, mob->parent_id);
+        struct rr_component_physical *physical2 =
+            rr_simulation_get_physical(simulation, petal_id);
+        rr_component_petal_set_detached(
+            rr_simulation_get_petal(simulation, petal_id), 1);
+        rr_simulation_get_petal(simulation, petal_id)->effect_delay = 0;
+
+        ai->ai_state = rr_ai_state_attacking;
+        ai->ticks_until_next_action = 10;
         break;
     }
     default:
@@ -1108,29 +1181,13 @@ void tick_ai_trol(EntityIdx entity, struct rr_simulation *simulation)
         struct rr_vector delta = {physical2->x, physical2->y};
         struct rr_vector target_pos = {physical->x, physical->y};
         rr_vector_sub(&delta, &target_pos);
+        float dist = rr_vector_get_magnitude(&delta) - physical->radius - physical2->radius;
         float target_angle = rr_vector_theta(&delta);
 
-        if (rr_vector_magnitude_cmp(&delta, 800) == 1)
-        {
             rr_component_physical_set_angle(physical, target_angle);
             struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 15.0, physical->angle);
+            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 0.001 * dist + 0.02, physical->angle);
             rr_vector_add(&physical->acceleration, &accel);
-        }
-        else if (rr_vector_magnitude_cmp(&delta, 700) == 1)
-        {
-            rr_component_physical_set_angle(physical, target_angle/* + 0.1*/);
-            struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 5.0, physical->angle);
-            rr_vector_add(&physical->acceleration, &accel);
-        }
-        else if (rr_vector_magnitude_cmp(&delta, 700) == -1)
-        {
-            rr_component_physical_set_angle(physical, target_angle);
-            struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * -5.0, physical->angle);
-            rr_vector_add(&physical->acceleration, &accel);
-        }
     }
     default:
         break;

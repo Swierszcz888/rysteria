@@ -750,15 +750,6 @@ static void petal_modifiers(struct rr_simulation *simulation,
                                                   bone_diminish_factor;
             bone_diminish_factor *= 0.5;
         }
-        else if (data->id == rr_petal_id_trol)
-        {
-            float heal = -99 * RR_PETAL_RARITY_SCALE[slot->rarity].heal;
-            float max_heal = health->max_health - health->health;
-            rr_component_health_set_health(health, health->health + heal);
-            if (max_heal < heal)
-                heal = max_heal;
-            health->gradually_healed += heal;
-        }
         else
         {
             for (uint32_t inner = 0; inner < slot->count; ++inner)

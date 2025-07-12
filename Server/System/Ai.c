@@ -126,7 +126,7 @@ static void system_for_each(EntityIdx entity, void *simulation)
         tick_ai_honeybee(entity, this);
         break;
     case rr_mob_id_spider:
-        tick_ai_default(entity, this, RR_PLAYER_SPEED *
+        tick_ai_spider(entity, this, RR_PLAYER_SPEED *
                                       (1.02 + mob->rarity * 0.03));
         break;
     case rr_mob_id_house_centipede:
