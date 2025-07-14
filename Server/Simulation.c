@@ -62,7 +62,31 @@ static void set_special_zone(uint8_t biome, uint8_t (*fun)(), uint32_t x,
 #define ALL_MOBS 255
 #define DIFFICULT_MOBS 254
 
-uint8_t garden_zone() { return rr_frand() > 0.8 ? rr_mob_id_ant : rr_frand() > 0.7 ? rr_mob_id_lanternfly : rr_frand() > 0.64 ? rr_mob_id_dragonfly : rr_frand() > 0.88 ? rr_mob_id_honeybee : rr_frand() > 0.3 ? rr_mob_id_spider : rr_frand() > 0.3 ? rr_mob_id_hornet : rr_frand() > 0.02 ? rr_mob_id_house_centipede : rr_mob_id_beehive; }
+uint8_t garden_zone()
+{
+    float seed = rr_frand();
+    if ((seed -= 0.03117) < 0)
+        return rr_mob_id_fern;
+    if ((seed -= 0.00052) < 0)
+        return rr_mob_id_tree;
+    if ((seed -= 0.00208) < 0)
+        return rr_mob_id_meteor;
+    if ((seed -= 0.23) < 0)
+        return rr_mob_id_ant;
+    if ((seed -= 0.06) < 0)
+        return rr_mob_id_hornet;
+    if ((seed -= 0.204) < 0)
+        return rr_mob_id_dragonfly;
+    if ((seed -= 0.03) < 0)
+        return rr_mob_id_honeybee;
+    if ((seed -= 0.22) < 0)
+        return rr_mob_id_spider;
+    if ((seed -= 0.02) < 0)
+        return rr_mob_id_house_centipede;
+    if ((seed -= 0.2) < 0)
+        return rr_mob_id_lanternfly;
+    return rr_mob_id_beehive; //0.00223
+}
 uint8_t fern_zone() { return rr_frand() > 0.035 ? rr_mob_id_fern : rr_mob_id_tree; }
 uint8_t meteor_zone() { return rr_frand() > 0.8 ? rr_mob_id_meteor : rr_frand() > 0.4 ? rr_mob_id_quetzalcoatlus : rr_mob_id_dakotaraptor; }
 uint8_t quetz_edmo_ant_zone() { return rr_frand() > 0.9 ? rr_mob_id_quetzalcoatlus : rr_frand() > 0.5 ? rr_mob_id_edmontosaurus : rr_mob_id_ant; }
@@ -88,7 +112,33 @@ uint8_t bee_hornet_zone() { return rr_frand() > 0.4 ? rr_mob_id_honeybee : rr_fr
 uint8_t dragonfly_zone() { return rr_frand() > 0.1 ? rr_mob_id_dragonfly : rr_mob_id_lanternfly; }
 uint8_t spider_centi_zone() { return rr_frand() > 0.15 ? rr_mob_id_spider : rr_mob_id_house_centipede; }
 uint8_t lanternfly_ornith_quetz_zone() { return rr_frand() > 0.5 ? rr_mob_id_lanternfly : rr_frand() > 0.6 ? rr_mob_id_ant :rr_mob_id_quetzalcoatlus; }
-uint8_t mixed_biomes_zone() { return rr_frand() > 0.5 ? ALL_MOBS : rr_frand() > 0.8 ? rr_mob_id_ant : rr_frand() > 0.7 ? rr_mob_id_lanternfly : rr_frand() > 0.64 ? rr_mob_id_dragonfly : rr_frand() > 0.88 ? rr_mob_id_honeybee : rr_frand() > 0.3 ? rr_mob_id_spider : rr_frand() > 0.3 ? rr_mob_id_hornet : rr_frand() > 0.02 ? rr_mob_id_house_centipede : rr_mob_id_beehive; }
+uint8_t mixed_biomes_zone()
+{
+    float seed = rr_frand();
+    if ((seed -= 0.5) < 0)
+        return ALL_MOBS;
+    if ((seed -= 0.015585) < 0)
+        return rr_mob_id_fern;
+    if ((seed -= 0.00026) < 0)
+        return rr_mob_id_tree;
+    if ((seed -= 0.00104) < 0)
+        return rr_mob_id_meteor;
+    if ((seed -= 0.115) < 0)
+        return rr_mob_id_ant;
+    if ((seed -= 0.03) < 0)
+        return rr_mob_id_hornet;
+    if ((seed -= 0.102) < 0)
+        return rr_mob_id_dragonfly;
+    if ((seed -= 0.015) < 0)
+        return rr_mob_id_honeybee;
+    if ((seed -= 0.11) < 0)
+        return rr_mob_id_spider;
+    if ((seed -= 0.01) < 0)
+        return rr_mob_id_house_centipede;
+    if ((seed -= 0.1) < 0)
+        return rr_mob_id_lanternfly;
+    return rr_mob_id_beehive; //0.001115
+}
 
 struct zone
 {
