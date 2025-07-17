@@ -33,7 +33,7 @@
 #include <Shared/pb.h>
 #include <Shared/MagicNumber.h>
 
-double CRAFT_XP_GAINS[rr_rarity_id_max - 1] = {1, 8, 60, 750, 25000, 1000000, 100000000};
+double CRAFT_XP_GAINS[rr_rarity_id_max - 1] = {3, 15, 100, 750, 25000, 1000000, 100000000};
 
 void rr_server_client_init(struct rr_server_client *this)
 {

@@ -88,7 +88,7 @@ uint8_t garden_zone()
     return rr_mob_id_beehive; //0.00223
 }
 uint8_t fern_zone() { return rr_frand() > 0.035 ? rr_mob_id_fern : rr_mob_id_tree; }
-uint8_t meteor_zone() { return rr_frand() > 0.8 ? rr_mob_id_meteor : rr_frand() > 0.4 ? rr_mob_id_quetzalcoatlus : rr_mob_id_dakotaraptor; }
+uint8_t meteor_zone() { return rr_frand() > 0.8 ? rr_mob_id_meteor : rr_frand() > 0.5 ? rr_mob_id_quetzalcoatlus : rr_mob_id_dakotaraptor; }
 uint8_t quetz_edmo_ant_zone() { return rr_frand() > 0.9 ? rr_mob_id_quetzalcoatlus : rr_frand() > 0.5 ? rr_mob_id_edmontosaurus : rr_mob_id_ant; }
 uint8_t ornith_pachy_zone() { return rr_frand() > 0.5 ? rr_mob_id_ornithomimus : rr_mob_id_pachycephalosaurus; }
 uint8_t pter_meteor_zone() { return rr_frand() > 0.035 ? rr_mob_id_pteranodon : rr_mob_id_meteor; }

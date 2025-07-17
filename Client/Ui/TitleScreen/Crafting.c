@@ -449,13 +449,13 @@ static void crafting_xp_text_animate(struct rr_ui_element *this,
     switch (game->crafting_data.crafting_rarity)
     {
     case rr_rarity_id_common:
-        data->text = "1 xp per craft";
+        data->text = "3 xp per craft";
         break;
     case rr_rarity_id_unusual:
-        data->text = "8 xp per craft";
+        data->text = "15 xp per craft";
         break;
     case rr_rarity_id_rare:
-        data->text = "60 xp per craft";
+        data->text = "100 xp per craft";
         break;
     case rr_rarity_id_epic:
         data->text = "750 xp per craft";
