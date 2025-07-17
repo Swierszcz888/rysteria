@@ -74,7 +74,7 @@ static void system_default_idle_heal(EntityIdx entity, void *captures)
             rr_component_flower_set_dead(rr_simulation_get_flower(this, entity),
                                          this, 1);
         else
-            rr_simulation_request_entity_deletion(this, entity);
+            rr_simulation_request_entity_deletion(this, entity, __FILE__, __LINE__);
     }
     else
     {
@@ -165,7 +165,7 @@ static void lightning_petal_system(struct rr_simulation *simulation,
     }
     animation->length = captures.length;
     if (!dev_cheat_enabled(simulation, petal->parent_id, invulnerable))
-        rr_simulation_request_entity_deletion(simulation, petal->parent_id);
+        rr_simulation_request_entity_deletion(simulation, petal->parent_id, __FILE__, __LINE__);
 }
 
 struct fireball_captures
@@ -244,7 +244,7 @@ static void fireball_petal_system(struct rr_simulation *simulation,
     animation->size = radius;
     animation->color_type = rr_animation_color_type_fireball;
     if (!dev_cheat_enabled(simulation, petal->parent_id, invulnerable))
-        rr_simulation_request_entity_deletion(simulation, petal->parent_id);
+        rr_simulation_request_entity_deletion(simulation, petal->parent_id, __FILE__, __LINE__);
 }
 
 static uint8_t damage_effect(struct rr_simulation *simulation, EntityIdx target,
@@ -291,7 +291,18 @@ static uint8_t damage_effect(struct rr_simulation *simulation, EntityIdx target,
     {
         struct rr_component_petal *petal =
             rr_simulation_get_petal(simulation, attacker);
-        if (petal->id == rr_petal_id_beak)
+        if (petal->id == rr_petal_id_shell)
+        {
+            struct rr_component_health *health =
+                rr_simulation_get_health(simulation, attacker);
+            if (petal->detached)
+                health->damage =
+                    sqrtf(1 + 0.4 * (75 - petal->effect_delay)) *
+                        RR_PETAL_DATA[petal->id].damage *
+                        RR_PETAL_DATA[petal->id].scale[petal->rarity].damage /
+                        RR_PETAL_DATA[petal->id].count[petal->rarity];
+        }
+        else if (petal->id == rr_petal_id_beak)
         {
             struct rr_component_physical *physical =
                 rr_simulation_get_physical(simulation, target);
