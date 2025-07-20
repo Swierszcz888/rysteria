@@ -1111,7 +1111,7 @@ void tick_ai_pectinodon(EntityIdx entity,
         }
         else if (dist < 200)
         {
-            rr_vector_from_polar(&physical->acceleration, RR_PLAYER_SPEED * 0.5, M_PI + physical->angle);
+            rr_vector_from_polar(&physical->acceleration, RR_PLAYER_SPEED * 0.75, M_PI + physical->angle);
             ++ai->ticks_until_next_action;
         }
         break;
@@ -1186,7 +1186,7 @@ void tick_ai_trol(EntityIdx entity, struct rr_simulation *simulation)
 
             rr_component_physical_set_angle(physical, target_angle);
             struct rr_vector accel;
-            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 0.001 * dist + 0.02, physical->angle);
+            rr_vector_from_polar(&accel, RR_PLAYER_SPEED * 0.001 * dist + 0.05, physical->angle);
             rr_vector_add(&physical->acceleration, &accel);
     }
     default:
