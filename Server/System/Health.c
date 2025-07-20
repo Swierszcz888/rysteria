@@ -300,7 +300,7 @@ static uint8_t damage_effect(struct rr_simulation *simulation, EntityIdx target,
             if (petal->detached &&
                 rr_simulation_has_flower(simulation, relations->owner))
                 health->damage =
-                    sqrtf(1 + 0.4 * (75 - petal->effect_delay)) *
+                    sqrtf(1 + 0.5 * (75 - petal->effect_delay)) *
                         RR_PETAL_DATA[petal->id].damage *
                         RR_PETAL_DATA[petal->id].scale[petal->rarity].damage /
                         RR_PETAL_DATA[petal->id].count[petal->rarity];

@@ -110,7 +110,7 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
     if (id == rr_petal_id_shell)
     {
         char *extra = malloc((sizeof *extra) * 16);
-        rr_sprintf(extra, sqrtf(1 + 0.4 * 75) * RR_PETAL_DATA[id].damage *
+        rr_sprintf(extra, sqrtf(1 + 0.5 * 75) * RR_PETAL_DATA[id].damage *
                               RR_PETAL_DATA[id].scale[rarity].damage /
                               RR_PETAL_DATA[id].count[rarity]);
         rr_ui_container_add_element(
