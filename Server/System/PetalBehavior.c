@@ -562,6 +562,7 @@ static void system_flower_petal_movement_logic(
                 struct rr_vector delta = {t_physical->x - physical->x,
                                           t_physical->y - physical->y};
                 physical->bearing_angle = rr_vector_theta(&delta);
+                rr_component_physical_set_angle(physical, rr_vector_theta(&delta));
             }
             break;
         }
@@ -666,7 +667,13 @@ static void system_flower_petal_movement_logic(
         rr_component_physical_set_angle(
             physical, rr_vector_theta(&physical->acceleration));
     else if (petal->id == rr_petal_id_missile)
-        rr_component_physical_set_angle(physical, curr_angle);
+    {
+        if (!petal->detached) {
+            struct rr_vector vector = {position_vector.x, position_vector.y};
+            rr_vector_sub(&vector, &flower_vector);
+            rr_component_physical_set_angle(physical, rr_vector_theta(&vector));
+        }
+    }
     else if (petal->id == rr_petal_id_rake && player_info->input & 1)
             rr_component_physical_set_angle(physical, curr_angle + M_PI / 2);
     else
