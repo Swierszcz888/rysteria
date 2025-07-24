@@ -100,7 +100,7 @@ uint8_t edmo_dako_quetz_zone() { return rr_frand() > 0.45 ? rr_mob_id_edmontosau
 uint8_t dako_pecti_orni_zone() { return rr_frand() > 0.5 ? rr_mob_id_pectinodon : rr_frand() > 0.2 ? rr_mob_id_dakotaraptor : rr_mob_id_ornithomimus; }
 uint8_t pter_zone() { return rr_frand() > 0.1 ? rr_mob_id_pteranodon : ALL_MOBS; }
 uint8_t quetz_zone() { return rr_frand() > 0.2 ? rr_mob_id_quetzalcoatlus : rr_frand() > 0.4 ? rr_mob_id_ankylosaurus : rr_mob_id_pachycephalosaurus; }
-uint8_t anky_trex_bee_zone() { return rr_frand() > 0.6 ? rr_mob_id_ankylosaurus : rr_frand() > 0.4 ? rr_mob_id_trex : rr_mob_id_honeybee; }
+uint8_t anky_trex_bee_zone() { return rr_frand() > 0.65 ? rr_mob_id_ankylosaurus : rr_frand() > 0.45 ? rr_mob_id_trex : rr_mob_id_honeybee; }
 // ~x15 tree chance
 uint8_t tree_zone() { return rr_frand() > 0.0075 ? DIFFICULT_MOBS : rr_mob_id_tree; }
 uint8_t pecti_zone() { return rr_frand() > 0.7 ? rr_mob_id_pectinodon : DIFFICULT_MOBS; }

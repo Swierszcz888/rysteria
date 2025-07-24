@@ -257,7 +257,7 @@ static void system_flower_petal_movement_logic(
             physical->friction = 0.5;
             physical->bearing_angle = curr_angle;
             EntityIdx target = rr_simulation_find_nearest_enemy(
-                simulation, id, 2190, NULL, is_close_enough_and_angle);
+                simulation, id, 2100, NULL, is_close_enough_and_angle);
             if (target != RR_NULL_ENTITY)
             {
                 struct rr_component_physical *t_physical =
@@ -554,7 +554,7 @@ static void system_flower_petal_movement_logic(
             physical->friction = 0.5;
             physical->bearing_angle = curr_angle;
             EntityIdx target = rr_simulation_find_nearest_enemy(
-                simulation, id, 2190, NULL, is_close_enough_and_angle);
+                simulation, id, 2100, NULL, is_close_enough_and_angle);
             if (target != RR_NULL_ENTITY)
             {
                 struct rr_component_physical *t_physical =
