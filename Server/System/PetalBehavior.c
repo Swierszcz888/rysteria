@@ -391,6 +391,98 @@ static void system_flower_petal_movement_logic(
             }
             break;
         }
+        case rr_petal_id_wax:
+        {
+            struct rr_component_health *flower_health =
+                rr_simulation_get_health(simulation, player_info->flower_id);
+            float heal = 12 * RR_PETAL_RARITY_SCALE[petal->rarity].heal /
+                             petal_data->count[petal->rarity];
+            if (flower_health->shield < flower_health->max_health)
+            {
+                struct rr_vector delta = {
+                    (flower_vector.x - position_vector.x),
+                    (flower_vector.y - position_vector.y)};
+                if (rr_vector_magnitude_cmp(&delta, flower_physical->radius +
+                                                        physical->radius) == -1)
+                {
+                    float max_heal =
+                        flower_health->max_health - flower_health->shield;
+                    if (max_heal < heal)
+                        heal = max_heal;
+                    rr_component_health_set_shield(
+                        flower_health, flower_health->shield + heal);
+                    rr_simulation_request_entity_deletion(simulation, id, __FILE__, __LINE__);
+                    struct rr_simulation_animation *animation =
+                        &simulation->animations[simulation->animation_length++];
+                    animation->type = rr_animation_type_damagenumber;
+                    animation->owner = player_info->flower_id;
+                    animation->x = flower_physical->x;
+                    animation->y = flower_physical->y;
+                    animation->damage = ceilf(heal);
+                    animation->color_type = rr_animation_color_type_shield;
+                    return;
+                }
+                else
+                {
+                    rr_vector_scale(&delta, 0.4);
+                    rr_vector_add(&physical->acceleration, &delta);
+                    return;
+                }
+            }
+            else
+            {
+                for (uint32_t i = 0; i < simulation->flower_count; ++i)
+                {
+                    EntityIdx potential = simulation->flower_vector[i];
+                    if (is_dead_flower(simulation, potential))
+                        continue;
+                    struct rr_component_relations *target_relations =
+                        rr_simulation_get_relations(simulation, potential);
+                    if (!is_same_team(relations->team, target_relations->team))
+                        continue;
+                    struct rr_component_physical *target_physical =
+                        rr_simulation_get_physical(simulation, potential);
+                    struct rr_vector delta = {
+                        (target_physical->x - position_vector.x),
+                        (target_physical->y - position_vector.y)};
+                    if (rr_vector_magnitude_cmp(&delta, 200) == 1)
+                        continue;
+                    flower_health =
+                        rr_simulation_get_health(simulation, potential);
+                    if (flower_health->shield == flower_health->max_health)
+                        continue;
+                    if (rr_vector_magnitude_cmp(&delta,
+                                                target_physical->radius +
+                                                    physical->radius) == -1)
+                    {
+                        float max_heal =
+                            flower_health->max_health - flower_health->shield;
+                        if (max_heal < heal)
+                            heal = max_heal;
+                        rr_component_health_set_shield(
+                            flower_health, flower_health->shield + heal);
+                        rr_simulation_request_entity_deletion(simulation, id, __FILE__, __LINE__);
+                        struct rr_simulation_animation *animation =
+                            &simulation->animations
+                                 [simulation->animation_length++];
+                        animation->type = rr_animation_type_damagenumber;
+                        animation->owner = player_info->flower_id;
+                        animation->x = target_physical->x;
+                        animation->y = target_physical->y;
+                        animation->damage = ceilf(heal);
+                        animation->color_type = rr_animation_color_type_shield;
+                        return;
+                    }
+                    else
+                    {
+                        rr_vector_scale(&delta, 0.4);
+                        rr_vector_add(&physical->acceleration, &delta);
+                        return;
+                    }
+                }
+            }
+            break;
+        }
         case rr_petal_id_web:
         {
             if ((player_info->input & 3) == 0)

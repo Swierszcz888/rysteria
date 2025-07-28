@@ -146,8 +146,12 @@ void system_interpolation_for_each_function(EntityIdx entity, void *_captures)
             health->lerp_health = health->health;
         if (health->lerp_prev_health == 0)
             health->lerp_prev_health = health->health;
+        if (health->lerp_shield == 0)
+            health->lerp_shield = health->shield;
         health->lerp_health =
             rr_lerp(health->lerp_health, health->health, 20 * delta);
+        health->lerp_shield =
+            rr_lerp(health->lerp_shield, health->shield, 20 * delta);
         if (health->health < health->health_last_tick)
             health->prev_health_animation = 0.25;
         else if (health->prev_health_animation > 0)

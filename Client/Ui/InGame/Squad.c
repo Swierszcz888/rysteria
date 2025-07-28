@@ -118,6 +118,20 @@ static void player_hud_on_render(struct rr_ui_element *this,
                                               health->max_health,
                             0);
         rr_renderer_stroke(renderer);
+
+        rr_renderer_set_global_alpha(
+            renderer,
+            rr_fclamp(10 * health->lerp_shield / health->max_health, 0, 1) *
+                state2.global_alpha);
+        rr_renderer_set_stroke(renderer, 0xfff0ece1);
+        rr_renderer_set_line_width(renderer, 16);
+        rr_renderer_begin_path(renderer);
+        rr_renderer_move_to(renderer, -length / 2, 0);
+        rr_renderer_line_to(renderer,
+                            -length / 2 + 1.5 * length *
+                                              health->lerp_shield /
+                                              health->max_health, 0);
+        rr_renderer_stroke(renderer);
         rr_renderer_context_state_free(renderer, &state2);
 
         rr_renderer_translate(renderer, -length, 0);

@@ -121,5 +121,18 @@ void rr_component_health_render(EntityIdx entity, struct rr_game *game,
         renderer,
         -length + 2 * length * health->lerp_health / health->max_health, 0);
     rr_renderer_stroke(renderer);
+
+    rr_renderer_set_global_alpha(
+        renderer,
+        rr_fclamp(10 * health->lerp_shield / health->max_health, 0, 1) *
+            state.global_alpha);
+    rr_renderer_set_stroke(renderer, 0xfff0ece1);
+    rr_renderer_set_line_width(renderer, 5);
+    rr_renderer_begin_path(renderer);
+    rr_renderer_move_to(renderer, -length, 0);
+    rr_renderer_line_to(
+        renderer,
+        -length + 2 * length * health->lerp_shield / health->max_health, 0);
+    rr_renderer_stroke(renderer);
     rr_renderer_context_state_free(renderer, &state);
 }

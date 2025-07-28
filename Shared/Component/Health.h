@@ -41,6 +41,8 @@ struct rr_component_health
     RR_SERVER_ONLY(float poison;)
     RR_SERVER_ONLY(uint16_t poison_ticks;)
     RR_SERVER_ONLY(EntityHash poison_from;)
+    float shield;
+    RR_CLIENT_ONLY(float lerp_shield;)
     EntityIdx parent_id;
     uint8_t flags;
     RR_SERVER_ONLY(uint8_t protocol_state;)
@@ -64,6 +66,7 @@ RR_CLIENT_ONLY(void rr_component_health_read(struct rr_component_health *,
 
 RR_DECLARE_PUBLIC_FIELD(health, float, health)
 RR_DECLARE_PUBLIC_FIELD(health, float, max_health)
+RR_DECLARE_PUBLIC_FIELD(health, float, shield)
 RR_DECLARE_PUBLIC_FIELD(health, uint8_t, flags)
 RR_SERVER_ONLY(void rr_component_health_do_damage(struct rr_simulation *,
                                                   struct rr_component_health *,

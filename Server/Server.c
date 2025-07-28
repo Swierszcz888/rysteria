@@ -165,13 +165,15 @@ static void write_animation_function(struct rr_simulation *simulation,
         p_info_id != client->player_info->parent_id)
     {
         if (animation->type == rr_animation_type_damagenumber &&
-            animation->color_type == rr_animation_color_type_heal)
+            (animation->color_type == rr_animation_color_type_heal ||
+             animation->color_type == rr_animation_color_type_shield))
             return;
         if (dev_cheat_enabled(simulation, animation->owner, invisible))
             return;
     }
     if (animation->type == rr_animation_type_damagenumber &&
         animation->color_type != rr_animation_color_type_heal &&
+        animation->color_type != rr_animation_color_type_shield &&
         animation->squad != client->squad)
         return;
     if (animation->type == rr_animation_type_chat)

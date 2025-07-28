@@ -27,14 +27,16 @@
 #define FOR_EACH_PUBLIC_FIELD                                                  \
     X(health, float32)                                                         \
     X(flags, uint8)                                                            \
-    X(max_health, float32)
+    X(max_health, float32)                                                     \
+    X(shield, float32)
 
 enum
 {
     state_flags_max_health = 0b001,
     state_flags_flags = 0b010,
     state_flags_health = 0b100,
-    state_flags_all = 0b111
+    state_flags_shield = 0b1000,
+    state_flags_all = 0b1111
 };
 
 void rr_component_health_init(struct rr_component_health *this,
@@ -159,6 +161,7 @@ void rr_component_health_set_health(struct rr_component_health *this, float v)
 }
 
 RR_DEFINE_PUBLIC_FIELD(health, float, max_health)
+RR_DEFINE_PUBLIC_FIELD(health, float, shield)
 RR_DEFINE_PUBLIC_FIELD(health, uint8_t, flags)
 
 #endif

@@ -1128,6 +1128,9 @@ void rr_game_websocket_on_event_function(enum rr_websocket_event_type type,
                     case rr_animation_color_type_heal:
                         particle->color = 0xffffff44;
                         break;
+                    case rr_animation_color_type_shield:
+                        particle->color = 0xfff0ece1;
+                        break;
                     case rr_animation_color_type_uranium:
                         particle->color = 0xff63bf2e;
                         break;
