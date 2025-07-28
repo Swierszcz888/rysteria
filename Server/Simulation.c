@@ -93,11 +93,11 @@ uint8_t trice_trex_ant_zone() { return rr_frand() > 0.9 ? rr_mob_id_trex : rr_fr
 uint8_t ornith_pachy_zone() { return rr_frand() > 0.5 ? rr_mob_id_ornithomimus : rr_mob_id_pachycephalosaurus; }
 uint8_t pter_meteor_zone() { return rr_frand() > 0.035 ? rr_mob_id_pteranodon : rr_mob_id_meteor; }
 uint8_t anky_zone() { return rr_frand() > 0.1 ? rr_mob_id_ankylosaurus : rr_mob_id_pectinodon; }
-uint8_t trex_zone() { return rr_frand() > 0.005 ? rr_mob_id_trex : rr_mob_id_tree; }
+uint8_t trex_zone() { return rr_frand() > 0.02 ? rr_mob_id_trex : rr_mob_id_tree; }
 uint8_t trice_dako_zone() { return rr_frand() > 0.2 ? rr_mob_id_dakotaraptor : rr_mob_id_triceratops; }
 uint8_t edmo_zone() { return rr_mob_id_edmontosaurus; }
 uint8_t edmo_dako_quetz_zone() { return rr_frand() > 0.45 ? rr_mob_id_edmontosaurus : rr_frand() > 0.6 ? rr_mob_id_dakotaraptor : rr_mob_id_quetzalcoatlus; }
-uint8_t dako_pecti_orni_zone() { return rr_frand() > 0.5 ? rr_mob_id_pectinodon : rr_frand() > 0.2 ? rr_mob_id_dakotaraptor : rr_mob_id_ornithomimus; }
+uint8_t dako_pecti_orni_zone() { return rr_frand() > 0.5 ? rr_mob_id_pectinodon : rr_frand() > 0.3 ? rr_mob_id_dakotaraptor : rr_mob_id_ornithomimus; }
 uint8_t pter_zone() { return rr_frand() > 0.1 ? rr_mob_id_pteranodon : ALL_MOBS; }
 uint8_t quetz_zone() { return rr_frand() > 0.2 ? rr_mob_id_quetzalcoatlus : rr_frand() > 0.4 ? rr_mob_id_ankylosaurus : rr_mob_id_pachycephalosaurus; }
 uint8_t anky_trex_bee_zone() { return rr_frand() > 0.65 ? rr_mob_id_ankylosaurus : rr_frand() > 0.45 ? rr_mob_id_trex : rr_mob_id_honeybee; }

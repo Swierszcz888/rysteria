@@ -800,7 +800,7 @@ system_egg_hatching_logic(struct rr_simulation *simulation,
     else if (petal->id == rr_petal_id_meteor)
     {
         m_id = rr_mob_id_meteor;
-        m_rar = petal->rarity >= 2 ? petal->rarity - 2 : 0;
+        m_rar = petal->rarity >= 1 ? petal->rarity - 1 : 0;
     }
     struct rr_component_physical *physical =
         rr_simulation_get_physical(simulation, p_petal->entity_hash);
