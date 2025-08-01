@@ -391,7 +391,7 @@ static void system_flower_petal_movement_logic(
             }
             break;
         }
-        case rr_petal_id_wax:
+      /*case rr_petal_id_wax:
         {
             struct rr_component_health *flower_health =
                 rr_simulation_get_health(simulation, player_info->flower_id);
@@ -482,7 +482,7 @@ static void system_flower_petal_movement_logic(
                 }
             }
             break;
-        }
+        }*/
         case rr_petal_id_web:
         {
             if ((player_info->input & 3) == 0)
