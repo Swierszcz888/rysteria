@@ -37,6 +37,7 @@ uint8_t tick_summon_return_to_owner(EntityIdx, struct rr_simulation *);
 void tick_ai_default(EntityIdx, struct rr_simulation *, float);
 void tick_ai_triceratops(EntityIdx, struct rr_simulation *);
 void tick_ai_trex(EntityIdx, struct rr_simulation *);
+void tick_ai_tree(EntityIdx, struct rr_simulation *, float);
 void tick_ai_pteranodon(EntityIdx, struct rr_simulation *);
 void tick_ai_pachycephalosaurus(EntityIdx, struct rr_simulation *);
 void tick_ai_ornithomimus(EntityIdx, struct rr_simulation *);

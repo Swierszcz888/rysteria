@@ -238,6 +238,50 @@ void tick_ai_trex(EntityIdx entity, struct rr_simulation *simulation)
     }
 }
 
+void tick_ai_tree(EntityIdx entity, struct rr_simulation *simulation,
+                     float speed)
+{
+    struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
+    struct rr_component_physical *physical =
+        rr_simulation_get_physical(simulation, entity);
+    if (should_aggro(simulation, ai))
+    {
+        ai->ai_state = (rr_frand() < 0.005)
+                               ? rr_ai_state_attacking
+                               : rr_ai_state_waiting_to_attack;
+        ai->ticks_until_next_action = 300;
+    }
+
+    switch (ai->ai_state)
+    {
+    case rr_ai_state_attacking:
+    {
+        struct rr_vector accel;
+        struct rr_component_physical *physical2 =
+            rr_simulation_get_physical(simulation, ai->target_entity);
+
+        struct rr_vector delta = {physical2->x, physical2->y};
+        struct rr_vector target_pos = {physical->x, physical->y};
+        rr_vector_sub(&delta, &target_pos);
+        // struct rr_vector prediction = predict(delta, physical2->velocity, 4);
+        float target_angle = rr_vector_theta(&delta);
+
+        rr_component_physical_set_angle(
+            physical, rr_angle_lerp(physical->angle, target_angle, 0.4));
+
+        rr_vector_from_polar(&accel, speed, physical->angle);
+        rr_vector_add(&physical->acceleration, &accel);
+        ai->ticks_until_next_action = 15;
+        ai->ai_state = (rr_frand() < 0.001)
+                               ? rr_ai_state_waiting_to_attack
+                               : rr_ai_state_attacking;
+        break;
+    }
+    default:
+        break;
+    }
+}
+
 void tick_ai_pteranodon(EntityIdx entity, struct rr_simulation *simulation)
 {
     struct rr_component_ai *ai = rr_simulation_get_ai(simulation, entity);
