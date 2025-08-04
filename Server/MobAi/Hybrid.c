@@ -246,7 +246,7 @@ void tick_ai_tree(EntityIdx entity, struct rr_simulation *simulation,
         rr_simulation_get_physical(simulation, entity);
     if (should_aggro(simulation, ai))
     {
-        ai->ai_state = (rr_frand() < 0.005)
+        ai->ai_state = (rr_frand() < 0.001)
                                ? rr_ai_state_attacking
                                : rr_ai_state_waiting_to_attack;
         ai->ticks_until_next_action = 300;
