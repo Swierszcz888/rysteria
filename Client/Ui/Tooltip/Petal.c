@@ -525,14 +525,14 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
         float burn_damage;
 
     switch (rarity) {
-        case 0:  burn_damage = 50.0 / 3;    break;
-        case 1:  burn_damage = 100.0 / 3;   break;
-        case 2:  burn_damage = 200.0 / 3;   break;
-        case 3:  burn_damage = 400.0 / 3;   break;
-        case 4:  burn_damage = 800.0 / 3;   break;
-        case 5:  burn_damage = 2400.0 / 3;  break;
-        case 6:  burn_damage = 7200.0 / 3;  break;
-        case 7:  burn_damage = 21600.0 / 3; break;
+        case 0:  burn_damage = 45.0 / 3;    break;
+        case 1:  burn_damage = 90.0 / 3;    break;
+        case 2:  burn_damage = 180.0 / 3;   break;
+        case 3:  burn_damage = 360.0 / 3;   break;
+        case 4:  burn_damage = 720.0 / 3;   break;
+        case 5:  burn_damage = 2160.0 / 3;  break;
+        case 6:  burn_damage = 6480.0 / 3;  break;
+        case 7:  burn_damage = 19440.0 / 3; break;
         default: burn_damage = 0.0;         break;
       }
 

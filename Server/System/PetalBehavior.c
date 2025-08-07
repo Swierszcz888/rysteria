@@ -19,6 +19,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <Server/Client.h>
 #include <Server/EntityAllocation.h>
@@ -665,11 +666,13 @@ static void system_flower_petal_movement_logic(
             for (uint32_t i = 0; i < simulation->flower_count; ++i)
             {
                 EntityIdx target = simulation->flower_vector[i];
-                if (!is_dead_flower(simulation, target))
-                    continue;
                 struct rr_component_relations *target_relations =
                     rr_simulation_get_relations(simulation, target);
                 if (is_same_team(relations->team, target_relations->team))
+                    continue;
+                struct rr_component_player_info *target_player_info =
+                    rr_simulation_get_player_info(simulation, target_relations->owner);
+                if (!is_dead_flower(simulation, target))
                     continue;
                 struct rr_component_physical *target_physical =
                     rr_simulation_get_physical(simulation, target);

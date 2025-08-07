@@ -135,14 +135,14 @@ EntityIdx rr_simulation_alloc_petal(struct rr_simulation *this, EntityIdx arena,
         float burn_damage;
 
     switch (rarity) {
-        case 0:  burn_damage = 50.0 / 75;    break;
-        case 1:  burn_damage = 100.0 / 75;   break;
-        case 2:  burn_damage = 200.0 / 75;   break;
-        case 3:  burn_damage = 400.0 / 75;   break;
-        case 4:  burn_damage = 800.0 / 75;   break;
-        case 5:  burn_damage = 2400.0 / 75;  break;
-        case 6:  burn_damage = 7200.0 / 75;  break;
-        case 7:  burn_damage = 21600.0 / 75; break;
+        case 0:  burn_damage = 45.0 / 75;    break;
+        case 1:  burn_damage = 90.0 / 75;    break;
+        case 2:  burn_damage = 180.0 / 75;   break;
+        case 3:  burn_damage = 360.0 / 75;   break;
+        case 4:  burn_damage = 720.0 / 75;   break;
+        case 5:  burn_damage = 2160.0 / 75;  break;
+        case 6:  burn_damage = 6480.0 / 75;  break;
+        case 7:  burn_damage = 19440.0 / 75; break;
         default: burn_damage = 0.0;          break;
         }
         health->secondary_damage = burn_damage;
@@ -250,7 +250,7 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
     physical->slow_resist = rr_fclamp(0.075 * powf(1.6, rarity_scale->radius) - 0.075, 0, 1);
     if (mob_id == rr_mob_id_tree)
     {
-        physical->mass = 30.0f * powf(2, rarity_id + 1);
+        physical->mass = 500.0f * powf(2, rarity_id + 1);
     }
     if (mob_id == rr_mob_id_meteor)
     {
