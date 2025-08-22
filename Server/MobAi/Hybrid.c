@@ -246,7 +246,7 @@ void tick_ai_tree(EntityIdx entity, struct rr_simulation *simulation,
         rr_simulation_get_physical(simulation, entity);
     if (should_aggro(simulation, ai))
     {
-        ai->ai_state = (rr_frand() < 0.001)
+        ai->ai_state = (rr_frand() < 0.0002)
                                ? rr_ai_state_attacking
                                : rr_ai_state_waiting_to_attack;
         ai->ticks_until_next_action = 300;
@@ -864,7 +864,6 @@ void tick_ai_dragonfly(EntityIdx entity, struct rr_simulation *simulation)
         ai->ticks_until_next_action = 10;
     }
     physical->phasing = 0;
-    physical->knockback_scale = 1;
 
     switch (ai->ai_state)
     {
@@ -915,7 +914,6 @@ void tick_ai_dragonfly(EntityIdx entity, struct rr_simulation *simulation)
     case rr_ai_state_dashing:
     {
         physical->phasing = 1;
-        physical->knockback_scale = 0;
         struct rr_vector accel;
         struct rr_component_physical *physical2 =
             rr_simulation_get_physical(simulation, ai->target_entity);
@@ -1218,7 +1216,6 @@ void tick_ai_trol(EntityIdx entity, struct rr_simulation *simulation)
         break;
     case rr_ai_state_attacking:
     {
-        physical->knockback_scale = 0;
         struct rr_component_physical *physical2 =
             rr_simulation_get_physical(simulation, ai->target_entity);
 
