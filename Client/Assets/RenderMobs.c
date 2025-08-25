@@ -408,7 +408,7 @@ void rr_renderer_draw_mob(struct rr_renderer *renderer, uint8_t id,
             render_sprite(renderer, id, 2, flags);
             rr_renderer_context_state_free(renderer, &state);
             
-            rr_renderer_translate(renderer, -90, 0);
+            rr_renderer_translate(renderer, -40, 0);
             //render_sprite(renderer, id, 2, flags);
             //rr_renderer_translate(renderer, 90, 0);
             render_sprite(renderer, id, 1, flags);
@@ -423,7 +423,8 @@ void rr_renderer_draw_mob(struct rr_renderer *renderer, uint8_t id,
             rr_renderer_translate(renderer, 0, 20);
             render_sprite(renderer, id, 3, flags);
             rr_renderer_context_state_free(renderer, &state);
-            rr_renderer_translate(renderer, 150, 0);
+            rr_renderer_rotate(renderer, M_PI / 2);
+            rr_renderer_translate(renderer, 0, -100);
             render_sprite(renderer, id, 0, flags);
             break;
         case rr_mob_id_trol:
@@ -584,7 +585,7 @@ void rr_renderer_mob_cache_init()
                                  rr_house_centipede_leg_draw, 0);
 
     rr_renderer_spritesheet_init(
-        &mob_sprites[19], NULL, 240, 240, rr_quetzalcoatlus_head_draw, 240, 240,
+        &mob_sprites[19], NULL, 240, 240, rr_lanternfly_head_draw, 240, 240,
         rr_lanternfly_abdomen_draw, 240, 240, rr_lanternfly_leg_draw, 240, 240,
         rr_lanternfly_wing1_draw, 0);
 
