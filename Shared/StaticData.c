@@ -225,7 +225,7 @@ double RR_HELL_CREEK_MOB_ID_RARITY_COEFFICIENTS[rr_mob_id_max] = {
     0,      //centi
     0,      //lanternfly
     10,     //pecti
-    0.001,  //trol
+    0.0025, //trol
     0,      //test
 };
 double RR_GARDEN_MOB_ID_RARITY_COEFFICIENTS[rr_mob_id_max] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 10};

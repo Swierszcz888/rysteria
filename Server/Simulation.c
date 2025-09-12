@@ -65,27 +65,29 @@ static void set_special_zone(uint8_t biome, uint8_t (*fun)(), uint32_t x,
 uint8_t garden_zone()
 {
     float seed = rr_frand();
-    if ((seed -= 0.03117) < 0)
+    if ((seed -= 0.03053) < 0)
         return rr_mob_id_fern;
-    if ((seed -= 0.00052) < 0)
+    if ((seed -= 0.00051) < 0)
         return rr_mob_id_tree;
-    if ((seed -= 0.00208) < 0)
+    if ((seed -= 0.00204) < 0)
         return rr_mob_id_meteor;
     if ((seed -= 0.23) < 0)
         return rr_mob_id_ant;
     if ((seed -= 0.06) < 0)
         return rr_mob_id_hornet;
-    if ((seed -= 0.204) < 0)
+    if ((seed -= 0.21) < 0)
         return rr_mob_id_dragonfly;
     if ((seed -= 0.03) < 0)
         return rr_mob_id_honeybee;
     if ((seed -= 0.22) < 0)
         return rr_mob_id_spider;
-    if ((seed -= 0.02) < 0)
+    if ((seed -= 0.015) < 0)
         return rr_mob_id_house_centipede;
     if ((seed -= 0.2) < 0)
         return rr_mob_id_lanternfly;
-    return rr_mob_id_beehive; //0.00223
+    if ((seed -= 0.000005) < 0)
+        return rr_mob_id_trol;
+    return rr_mob_id_beehive; //0.001915
 }
 uint8_t fern_zone() { return rr_frand() > 0.035 ? rr_mob_id_fern : rr_mob_id_tree; }
 uint8_t meteor_zone() { return rr_frand() > 0.8 ? rr_mob_id_meteor : rr_frand() > 0.5 ? rr_mob_id_quetzalcoatlus : rr_mob_id_dakotaraptor; }
@@ -118,27 +120,29 @@ uint8_t mixed_biomes_zone()
     float seed = rr_frand();
     if ((seed -= 0.5) < 0)
         return ALL_MOBS;
-    if ((seed -= 0.015585) < 0)
+    if ((seed -= 0.015265) < 0)
         return rr_mob_id_fern;
-    if ((seed -= 0.00026) < 0)
+    if ((seed -= 0.000255) < 0)
         return rr_mob_id_tree;
-    if ((seed -= 0.00104) < 0)
+    if ((seed -= 0.00102) < 0)
         return rr_mob_id_meteor;
     if ((seed -= 0.115) < 0)
         return rr_mob_id_ant;
     if ((seed -= 0.03) < 0)
         return rr_mob_id_hornet;
-    if ((seed -= 0.102) < 0)
+    if ((seed -= 0.105) < 0)
         return rr_mob_id_dragonfly;
     if ((seed -= 0.015) < 0)
         return rr_mob_id_honeybee;
     if ((seed -= 0.11) < 0)
         return rr_mob_id_spider;
-    if ((seed -= 0.01) < 0)
+    if ((seed -= 0.0075) < 0)
         return rr_mob_id_house_centipede;
     if ((seed -= 0.1) < 0)
         return rr_mob_id_lanternfly;
-    return rr_mob_id_beehive; //0.001115
+    if ((seed -= 0.0000025) < 0)
+        return rr_mob_id_trol;
+    return rr_mob_id_beehive; //0.0009575
 }
 
 struct zone
