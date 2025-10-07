@@ -412,7 +412,7 @@ static void system_flower_petal_movement_logic(
                         heal = max_heal;
                     rr_component_health_set_shield(
                         flower_health, flower_health->shield + heal);
-                    rr_simulation_request_entity_deletion(simulation, id, __FILE__, __LINE__);
+                    rr_simulation_request_entity_deletion(simulation, id);
                     struct rr_simulation_animation *animation =
                         &simulation->animations[simulation->animation_length++];
                     animation->type = rr_animation_type_damagenumber;
@@ -462,7 +462,7 @@ static void system_flower_petal_movement_logic(
                             heal = max_heal;
                         rr_component_health_set_shield(
                             flower_health, flower_health->shield + heal);
-                        rr_simulation_request_entity_deletion(simulation, id, __FILE__, __LINE__);
+                        rr_simulation_request_entity_deletion(simulation, id);
                         struct rr_simulation_animation *animation =
                             &simulation->animations
                                  [simulation->animation_length++];
@@ -1283,7 +1283,7 @@ static void system_petal_misc_logic(EntityIdx id, void *_simulation)
                 rr_component_petal_set_detached(petal, 0);
                 struct rr_component_flower *target_flower =
                     rr_simulation_get_flower(simulation, petal->bind_target);
-                rr_simulation_request_entity_deletion(simulation, petal->bind_target, __FILE__, __LINE__);
+                rr_simulation_request_entity_deletion(simulation, petal->bind_target);
             }
         }
     }
