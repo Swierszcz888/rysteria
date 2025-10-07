@@ -95,6 +95,7 @@ set(SRCS
     Ui/TitleScreen/Inventory.c
     Ui/TitleScreen/LevelBar.c
     Ui/TitleScreen/MobGallery.c
+    Ui/TitleScreen/Rysteria.c
     Ui/TitleScreen/Settings.c
     Ui/TitleScreen/Squad.c
     Ui/Slider.c
