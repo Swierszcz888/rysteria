@@ -135,7 +135,7 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
                           rr_ui_text_init(extra, 12, 0xffffffff), NULL),
                       -1, 0));
         extra = malloc((sizeof *extra) * 8);
-        sprintf(extra, "%.2f", 0.5);
+        sprintf(extra, "%.1f", 0.5);
         rr_ui_container_add_element(
             this, rr_ui_set_justify(
                       rr_ui_h_container_init(
@@ -225,10 +225,10 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
                           rr_ui_text_init(extra, 12, 0xffffffff), NULL),
                       -1, 0));
         extra = malloc((sizeof *extra) * 8);
-        sprintf(extra, "%.2f", 0.75);
+        sprintf(extra, "%.1f", 0.5);
         rr_ui_container_add_element(
             this, rr_ui_set_justify(
-                    rr_ui_h_container_init(
+                      rr_ui_h_container_init(
                           rr_ui_container_init(), 0, 0,
                           rr_ui_text_init("Diminish factor: ", 12, 0xff0f8282),
                           rr_ui_text_init(extra, 12, 0xffffffff), NULL),
@@ -307,6 +307,15 @@ struct rr_ui_element *rr_ui_petal_tooltip_init(uint8_t id, uint8_t rarity)
                       rr_ui_h_container_init(
                           rr_ui_container_init(), 0, 0,
                           rr_ui_text_init("FOV increase: ", 12, 0xffe38329),
+                          rr_ui_text_init(extra, 12, 0xffffffff), NULL),
+                      -1, 0));
+        extra = malloc((sizeof *extra) * 8);
+        sprintf(extra, "%.1f", 0.5);
+        rr_ui_container_add_element(
+            this, rr_ui_set_justify(
+                      rr_ui_h_container_init(
+                          rr_ui_container_init(), 0, 0,
+                          rr_ui_text_init("Diminish factor: ", 12, 0xff0f8282),
                           rr_ui_text_init(extra, 12, 0xffffffff), NULL),
                       -1, 0));
     }
