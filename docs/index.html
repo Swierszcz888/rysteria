@@ -74,14 +74,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
         <script>
             let rrolfErrors = 0;
             function rrolfError() {
-                if (++rrolfErrors === 2) {
+                if (++rrolfErrors === 1) {
                     document.querySelector("#rrolf-error").style.display = "block";
                     setTimeout(() => window.location.reload(), 10000);
                 }
             }
             var rrolfScript = null;
         </script>
-        <script src="https://8080-swierszcz888-rysteria-g0p1l3grjs9.ws-eu121.gitpod.io/rrolf-client" onerror="rrolfError()" onload="rrolfScript = this"></script>
-        <script src="https://8080-swierszcz888-rysteria-g0p1l3grjs9.ws-eu120.gitpod.io/rrolf-client" onerror="rrolfError()" onload="rrolfScript = this"></script>
+        <script src="https://congenial-memory-q765xpgj7qgv24prj-1234.app.github.dev/rrolf-client" onerror="rrolfError()" onload="rrolfScript = this"></script>
     </body>
 </html>
