@@ -110,7 +110,7 @@ static void rysteria_toggle_button_on_event(struct rr_ui_element *this,
     {
         if (game->pressed != this)
             return;
-        rr_page_open("https://maxnest0x0.github.io/rysteria/");
+        rr_page_open("https://maxnest0x0.github.io/rysteria/", 0);
     }
     rr_ui_render_tooltip_below(this, game->rysteria_tooltip, game);
     game->cursor = rr_game_cursor_pointer;

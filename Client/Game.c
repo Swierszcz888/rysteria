@@ -75,9 +75,6 @@ static void rr_game_read_account(struct rr_game *this, struct proto_bug *decoder
     memset(this->inventory, 0, sizeof this->inventory);
     memset(this->failed_crafts, 0, sizeof this->failed_crafts);
     memset(this->cache.mob_kills, 0, sizeof this->cache.mob_kills);
-    char uuid[sizeof this->rivet_account.uuid];
-    proto_bug_read_string(decoder, uuid, sizeof this->rivet_account.uuid,
-                          "uuid");
     this->cache.experience = proto_bug_read_float64(decoder, "xp");
     uint8_t id;
     while ((id = proto_bug_read_uint8(decoder, "id")))
@@ -234,6 +231,7 @@ static void rr_game_autocraft_tick(struct rr_game *this, float delta)
     this->crafting_data.crafting_id = this->crafting_data.crafting_rarity = 0;
 }
 
+/*
 void rr_api_on_get_password(char *s, void *captures)
 {
     struct rr_game *this = captures;
@@ -257,6 +255,7 @@ void rr_rivet_on_log_in(char *token, char *avatar_url, char *name,
     // rr_api_get_password(this->rivet_account.token, this);
     rr_api_on_get_password("5d68a8ec6cbf3997a641803260390362d59681bc7524ef3a3fd67afddaba0ba96d1196d30834aa25aa1440cadffb4c87af6495e613c535b793cc1c71aa8c4d04", this);
 }
+*/
 
 static struct rr_ui_element *make_label_tooltip(char const *text, float size)
 {
@@ -400,12 +399,11 @@ void rr_game_init(struct rr_game *this)
     this->window->resizeable = 0;
     this->window->on_event = window_on_event;
 
-    strcpy(this->rivet_account.name, "loading");
-    strcpy(this->rivet_account.avatar_url, "");
+    strcpy(this->rivet_account.name, "Guest");
     strcpy(this->rivet_account.token, "");
-    strcpy(this->rivet_account.account_number, "#0000");
-    strcpy(this->rivet_account.uuid, "no-uuid");
-    rr_rivet_identities_create_guest(this);
+    strcpy(this->rivet_account.code, "");
+    strcpy(this->rivet_account.uuid, "");
+    rr_discord_oauth2_init(this);
 
     // clang-format off
     rr_ui_container_add_element(
@@ -414,10 +412,6 @@ void rr_game_init(struct rr_game *this)
             rr_ui_set_justify(
                 rr_ui_h_container_init(rr_ui_container_init(), 10, 10,
                     rr_ui_settings_toggle_button_init(),
-                    rr_ui_discord_toggle_button_init(),
-                    rr_ui_github_toggle_button_init(),
-                    rr_ui_gardn_toggle_button_init(),
-                    rr_ui_rysteria_toggle_button_init(),
                     rr_ui_account_toggle_button_init(),
                     rr_ui_dev_panel_toggle_button_init(),
                     rr_ui_fullscreen_toggle_button_init(),
@@ -425,6 +419,21 @@ void rr_game_init(struct rr_game *this)
                     NULL
                 ),
             -1, -1),
+        ui_not_hidden)
+    );
+
+    rr_ui_container_add_element(
+        this->window,
+        rr_ui_link_toggle(
+            rr_ui_set_justify(
+                rr_ui_h_container_init(rr_ui_container_init(), 10, 10,
+                    rr_ui_rysteria_toggle_button_init(),
+                    rr_ui_gardn_toggle_button_init(),
+                    rr_ui_github_toggle_button_init(),
+                    rr_ui_discord_toggle_button_init(),
+                    NULL
+                ),
+            1, -1),
         ui_not_hidden)
     );
 
@@ -501,14 +510,7 @@ void rr_game_init(struct rr_game *this)
                                     rr_ui_v_container_init(
                                         rr_ui_popup_container_init(), 10, 10,
                                         rr_ui_text_init("Squad", 24, 0xffffffff),
-                                        rr_ui_h_container_init(rr_ui_container_init(), 0, 10, 
-                                            rr_ui_text_init("Private", 14, 0xffffffff),
-                                            rr_ui_toggle_private_button_init(this),
-                                            rr_ui_static_space_init(10),
-                                            rr_ui_text_init("Reveal code", 14, 0xffffffff),
-                                            rr_ui_toggle_expose_code_button_init(this),
-                                            NULL
-                                        ),
+                                        rr_ui_squad_toggle_buttons_container_init(this),
                                         rr_ui_multi_choose_element_init(
                                             socket_ready,
                                             rr_ui_text_init("Connecting...", 24, 0xffffffff),
@@ -652,6 +654,8 @@ void rr_game_init(struct rr_game *this)
             ),
         -1, 1)
     );
+    this->window->elements.start[this->window->elements.size - 1]
+        ->pass_on_event = 1;
 
     rr_ui_container_add_element(this->window, rr_ui_container_add_element(rr_ui_inventory_container_init(), close_menu_button_init(25))->container);
     rr_ui_container_add_element(this->window, rr_ui_container_add_element(rr_ui_mob_container_init(), close_menu_button_init(25))->container);
@@ -662,7 +666,7 @@ void rr_game_init(struct rr_game *this)
 
     this->link_account_tooltip = rr_ui_container_add_element(
         this->window,
-        make_label_tooltip("Login with Rivet", 16)
+        make_label_tooltip("Login with Discord", 16)
     );
 
     this->inventory_tooltip = rr_ui_container_add_element(
@@ -702,22 +706,22 @@ void rr_game_init(struct rr_game *this)
 
     this->discord_tooltip = rr_ui_container_add_element(
         this->window,
-        make_label_tooltip("Join Our Discord!", 16)
+        make_label_tooltip("Join our Discord!", 16)
     );
 
     this->github_tooltip = rr_ui_container_add_element(
         this->window,
-        make_label_tooltip("We're Open Source!", 16)
+        make_label_tooltip("We're open source!", 16)
     );
 
     this->gardn_tooltip = rr_ui_container_add_element(
         this->window,
-        make_label_tooltip("Try The Gardn Project!", 16)
+        make_label_tooltip("Try the gardn project!", 16)
     );
 
     this->rysteria_tooltip = rr_ui_container_add_element(
         this->window,
-        make_label_tooltip("Try Original Rysteria!", 16)
+        make_label_tooltip("Try original Rysteria!", 16)
     );
 
     this->fullscreen_tooltip = rr_ui_container_add_element(
@@ -727,7 +731,7 @@ void rr_game_init(struct rr_game *this)
 
     this->link_reminder_tooltip = rr_ui_container_add_element(
         this->window,
-        make_label_tooltip("Login to save progess across devices", 16)
+        make_label_tooltip("Login to save progress across devices", 16)
     );
 
     this->leave_squad_tooltip = rr_ui_container_add_element(
@@ -772,7 +776,7 @@ void rr_game_init(struct rr_game *this)
 
     this->anti_afk = rr_ui_container_add_element(
         this->window,
-        rr_ui_anti_afk_container_init()
+        rr_ui_anti_afk_container_init(this)
     );
 
     // clang-format on
@@ -876,10 +880,12 @@ void rr_game_websocket_on_event_function(enum rr_websocket_event_type type,
                                    "useless bytes");
             proto_bug_write_uint64(&verify_encoder, verification,
                                    "verification");
-            proto_bug_write_string(&verify_encoder, this->rivet_player_token,
+            proto_bug_write_string(&verify_encoder, this->rivet_account.token,
                                    300, "rivet token");
             proto_bug_write_string(&verify_encoder, this->rivet_account.uuid,
                                    100, "rivet uuid");
+            proto_bug_write_string(&verify_encoder, this->rivet_account.code,
+                                   100, "oauth2 code");
             proto_bug_write_varuint(&verify_encoder, this->dev_flag,
                                     "dev_flag");
             rr_websocket_send(&this->socket,
@@ -950,6 +956,12 @@ void rr_game_websocket_on_event_function(enum rr_websocket_event_type type,
                 proto_bug_read_string(&encoder,
                                       this->squad.squad_members[i].nickname, 16,
                                       "nickname");
+                proto_bug_read_string(&encoder,
+                                      this->squad.squad_members[i].uuid, 37,
+                                      "uuid");
+                proto_bug_read_string(&encoder,
+                                      this->squad.squad_members[i].discord, 20,
+                                      "discord");
                 for (uint32_t j = 0; j < RR_MAX_SLOT_COUNT * 2; ++j)
                 {
                     this->squad.squad_members[i].loadout[j].id =
@@ -971,6 +983,9 @@ void rr_game_websocket_on_event_function(enum rr_websocket_event_type type,
             // this->is_dev =
             //     this->squad.squad_members[this->squad.squad_pos].is_dev;
             this->afk = proto_bug_read_uint8(&encoder, "afk");
+            if (this->afk)
+                proto_bug_read_string(&encoder, this->afk_challenge, 7,
+                                      "afk_challenge");
             if (proto_bug_read_uint8(&encoder, "in game") == 1)
             {
                 if (!this->simulation_ready)
@@ -1077,6 +1092,12 @@ void rr_game_websocket_on_event_function(enum rr_websocket_event_type type,
                     proto_bug_read_string(&encoder,
                                           squad->squad_members[i].nickname, 16,
                                           "nickname");
+                    proto_bug_read_string(&encoder,
+                                          squad->squad_members[i].uuid, 37,
+                                          "uuid");
+                    proto_bug_read_string(&encoder,
+                                          squad->squad_members[i].discord, 20,
+                                          "discord");
                     for (uint32_t j = 0; j < RR_MAX_SLOT_COUNT * 2; ++j)
                     {
                         squad->squad_members[i].loadout[j].id =
@@ -1222,6 +1243,8 @@ void rr_game_websocket_on_event_function(enum rr_websocket_event_type type,
                 proto_bug_read_varuint(&encoder, "fail count");
             this->crafting_data.temp_attempts =
                 proto_bug_read_varuint(&encoder, "attempts");
+            this->crafting_data.last_attempts =
+                proto_bug_read_varuint(&encoder, "last attempts");
             this->crafting_data.temp_xp =
                 proto_bug_read_float64(&encoder, "craft xp");
             this->crafting_data.animation =
@@ -1232,6 +1255,9 @@ void rr_game_websocket_on_event_function(enum rr_websocket_event_type type,
                           this->crafting_data.temp_fails)) / 5.0f;
             break;
         }
+        case rr_clientbound_oauth2_data:
+            rr_discord_oauth2_read_data(this, &encoder);
+            break;
         default:
             RR_UNREACHABLE("how'd this happen");
         }
@@ -1502,7 +1528,7 @@ void rr_game_tick(struct rr_game *this, float delta)
 {
     if (this->ticks_until_text_cache == 0)
     {
-        rr_renderer_text_cache_init();
+        rr_renderer_text_cache_redraw(NULL);
         this->ticks_until_text_cache = 255;
     }
     else if (this->ticks_until_text_cache < 25)

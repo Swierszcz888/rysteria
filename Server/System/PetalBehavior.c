@@ -87,7 +87,7 @@ static void uranium_damage(EntityIdx target, void *_captures)
             ai->aggro_range = radius + target_physical->radius;
     }
     if ((ai->target_entity == RR_NULL_ENTITY ||
-         rr_frand() < powf(0.3, mob->rarity)) &&
+         rr_frand() < powf(0.3, mob->rarity / (petal->rarity / 3.0 + 1))) &&
         !dev_cheat_enabled(simulation, relations->owner, no_aggro))
         ai->target_entity = relations->owner;
 }
@@ -517,7 +517,7 @@ static void system_flower_petal_movement_logic(
         {
             if ((player_info->input & 2) == 0)
                 break;
-            petal->effect_delay = 15 * 25;
+            petal->effect_delay = 5 * 25;
             rr_component_petal_set_detached(petal, 1);
             break;
         }
@@ -792,6 +792,7 @@ static void petal_modifiers(struct rr_simulation *simulation,
     // reset
     physical->acceleration_scale = 1;
     player_info->modifiers.drop_pickup_radius = 25;
+    player_info->modifiers.magnet_count = 0;
     player_info->modifiers.petal_extension = 0;
     player_info->modifiers.reload_speed = 1;
 
@@ -864,6 +865,7 @@ static void petal_modifiers(struct rr_simulation *simulation,
                     continue;
                 if (data->id == rr_petal_id_magnet)
                 {
+                    ++player_info->modifiers.magnet_count;
                     player_info->modifiers.drop_pickup_radius +=
                         (50 + 180 * slot->rarity) * magnet_diminish_factor;
                     magnet_diminish_factor *= 0.5;
@@ -1249,8 +1251,15 @@ static void system_petal_misc_logic(EntityIdx id, void *_simulation)
                     rr_simulation_get_relations(simulation, relations->owner);
                 if (flower_relations->nest != RR_NULL_ENTITY &&
                     rr_simulation_entity_alive(simulation, flower_relations->nest))
-                    rr_simulation_request_entity_deletion(
-                        simulation, flower_relations->nest);
+                {
+                    struct rr_component_nest *old_nest =
+                        rr_simulation_get_nest(simulation, flower_relations->nest);
+                    if (old_nest->rarity < petal->rarity)
+                        rr_simulation_request_entity_deletion(
+                            simulation, flower_relations->nest);
+                    else
+                        return;
+                }
                 EntityIdx nest_id = rr_simulation_alloc_entity(simulation);
                 petal->p_petal->entity_hash = flower_relations->nest =
                     rr_simulation_get_entity_hash(simulation, nest_id);

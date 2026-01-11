@@ -60,6 +60,7 @@ struct rr_game_crafting_data
     float autocraft_animation;
     uint32_t count;
     uint32_t success_count;
+    uint32_t last_attempts;
     uint8_t crafting_id;
     uint8_t crafting_rarity;
     uint32_t temp_successes;
@@ -222,6 +223,7 @@ struct rr_game
 
     char rivet_player_token[400];
     char connect_code[16];
+    char afk_challenge[7];
 };
 
 void rr_game_init(struct rr_game *);

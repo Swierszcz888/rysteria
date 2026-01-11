@@ -68,7 +68,7 @@ static void *rr_create_game_thread(void *arg)
 #define troll_skids                                                            \
     if (!trusted)                                                              \
     {                                                                          \
-        rr_page_open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");           \
+        rr_page_open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", 1);        \
         return;                                                                \
     }
 
@@ -187,22 +187,22 @@ void rr_main_loop(struct rr_game *this)
             Module.ctxs = [Module.canvas.getContext('2d')];
             Module.availableCtxs =
                 new Array(256).fill(0).map(function(_, i) { return i; });
-            window.onkeydown = function(e)
+            window.addEventListener("keydown", function(e)
             {
                 _rr_key_event(
                     $0, 1, e.which,
                     e.key ? (!e.ctrlKey && !e.metaKey && e.key.length == 1) *
                                 e.key.charCodeAt()
                           : 0, +e.repeat, +e.isTrusted);
-            };
-            window.onkeyup = function(e)
+            });
+            window.addEventListener("keyup", function(e)
             {
                 _rr_key_event(
                     $0, 0, e.which,
                     e.key ? (!e.ctrlKey && !e.metaKey && e.key.length == 1) *
                                 e.key.charCodeAt()
                           : 0, +e.repeat, +e.isTrusted);
-            };
+            });
             window.addEventListener(
                 "mousedown", async function(e) {
                     const clientX = e.clientX;
@@ -351,10 +351,10 @@ void rr_renderer_main_loop(struct rr_game *this, float delta, float width,
     float b = width / 1920;
 
     float scale = (this->renderer->scale = b < a ? a : b) * device_pixel_ratio;
-    this->renderer->width = this->window->width = this->window->abs_width =
-        width;
-    this->renderer->height = this->window->height = this->window->abs_height =
-        height;
+    this->renderer->width = width;
+    this->renderer->height = height;
+    this->window->width = this->window->abs_width = width / this->renderer->scale;
+    this->window->height = this->window->abs_height = height / this->renderer->scale;
     rr_game_tick(this, delta);
     this->input_data->scroll_delta = 0;
 }

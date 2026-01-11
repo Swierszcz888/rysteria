@@ -117,8 +117,8 @@ EntityIdx rr_simulation_alloc_petal(struct rr_simulation *this, EntityIdx arena,
     float scale_d = data->scale[rarity].damage;
     if (id == rr_petal_id_club)
     {
-        rr_component_physical_set_radius(physical, 15* (powf(1.00009, powf(rarity, 4.5))));
-        physical->mass = 2.0f * powf(1.3, rarity);
+        rr_component_physical_set_radius(physical, 15 * (powf(1.00009, powf(rarity, 4.5))));
+        physical->mass = 25 * powf(1.8, rarity);
         physical->knockback_scale = 10.0f;
     }
     else if (id == rr_petal_id_fireball)
@@ -200,7 +200,7 @@ static EntityIdx rr_simulation_alloc_mob_non_recursive(
     rr_component_physical_set_y(physical, y);
     physical->arena = arena_id;
     physical->friction = 0.75;
-    physical->mass = 10.0f * powf(2, rarity_id + 1);
+    physical->mass = 25.0f * powf(6, RR_MOB_RARITY_SCALING[rarity_id].radius);
     rr_component_health_set_max_health(health,
                                        mob_data->health * rarity_scale->health);
     rr_component_health_set_health(health,
@@ -246,7 +246,7 @@ EntityIdx rr_simulation_alloc_mob(struct rr_simulation *this,
     rr_component_physical_set_y(physical, y);
     physical->arena = arena_id;
     physical->friction = 0.75;
-    physical->mass = 10.0f * powf(2, rarity_id + 1);
+    physical->mass = 25.0f * powf(6, RR_MOB_RARITY_SCALING[rarity_id].radius);
     physical->slow_resist = rr_fclamp(0.075 * powf(1.6, rarity_scale->radius) - 0.075, 0, 1);
     if (mob_id == rr_mob_id_tree)
     {

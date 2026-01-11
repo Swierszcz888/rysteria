@@ -17,6 +17,7 @@
 #include <Server/Server.h>
 
 #include <assert.h>
+#include <ctype.h>
 #include <math.h>
 #include <pthread.h>
 #include <string.h>
@@ -253,6 +254,8 @@ void rr_server_client_broadcast_update(struct rr_server_client *this)
         proto_bug_write_uint8(&encoder, member->kick_vote_count, "kick votes");
         proto_bug_write_varuint(&encoder, member->level, "level");
         proto_bug_write_string(&encoder, member->nickname, 16, "nickname");
+        proto_bug_write_string(&encoder, member->client->rivet_account.uuid, 37, "uuid");
+        proto_bug_write_string(&encoder, member->client->rivet_account.name, 20, "discord");
         for (uint8_t j = 0; j < RR_MAX_SLOT_COUNT * 2; ++j)
         {
             proto_bug_write_uint8(&encoder, member->loadout[j].id, "id");
@@ -268,7 +271,10 @@ void rr_server_client_broadcast_update(struct rr_server_client *this)
     char joined_code[16];
     sprintf(joined_code, "%s-%s", server->server_alias, squad->squad_code);
     proto_bug_write_string(&encoder, joined_code, 16, "squad code");
-    proto_bug_write_uint8(&encoder, this->afk_ticks > 25 * 60 * 25, "afk");
+    proto_bug_write_uint8(&encoder, this->afk, "afk");
+    if (this->afk)
+        proto_bug_write_string(&encoder, this->afk_challenge, 7,
+                               "afk_challenge");
     proto_bug_write_uint8(&encoder, this->player_info != NULL, "in game");
     if (this->player_info != NULL)
         rr_simulation_write_binary(&server->simulation, &encoder,
@@ -538,103 +544,13 @@ static int handle_lws_event(struct rr_server *this, struct lws *ws,
             // Read uuid
             proto_bug_read_string(&encoder, client->rivet_account.uuid, 100,
                                   "rivet uuid");
+            proto_bug_read_string(&encoder, client->rivet_account.code, 100,
+                                  "oauth2 code");
 
 #ifndef SANDBOX
             if (rr_get_hash(rr_get_hash(proto_bug_read_varuint(&encoder, "dev_flag"))) == 228999115085610932)
 #endif
                 client->dev = 1;
-
-            for (uint32_t j = 0; j < RR_MAX_CLIENT_COUNT; ++j)
-            {
-                if (i == j)
-                    continue;
-                if (!rr_bitset_get(this->clients_in_use, j))
-                    continue;
-                if (this->clients[j].verified == 0)
-                    continue;
-                if (this->clients[j].pending_kick)
-                    continue;
-                if (client->dev || this->clients[j].dev)
-                    continue;
-                if (strcmp(client->rivet_account.uuid,
-                           this->clients[j].rivet_account.uuid)/* == 0*/)
-                    continue;
-                if (strcmp(client->ip_address,
-                           this->clients[j].ip_address) != 0)
-                    continue;
-                if (this->clients[j].disconnected)
-                {
-                    rr_bitset_unset(this->clients_in_use, j);
-                    this->clients[j].in_use = 0;
-                    rr_server_client_free(&this->clients[j]);
-                }
-                else
-                    this->clients[j].pending_kick = 1;
-                break;
-            }
-
-            for (uint32_t j = 0; j < RR_MAX_CLIENT_COUNT; ++j)
-            {
-                if (i == j)
-                    continue;
-                if (!rr_bitset_get(this->clients_in_use, j))
-                    continue;
-                if (this->clients[j].verified == 0)
-                    continue;
-                if (this->clients[j].pending_kick)
-                    continue;
-                if (client->dev != this->clients[j].dev)
-                    continue;
-                if (client->dev && this->clients[j].disconnected == 0)
-                    continue;
-                if (strcmp(client->rivet_account.uuid,
-                           this->clients[j].rivet_account.uuid) != 0)
-                    continue;
-                client->player_info = this->clients[j].player_info;
-                client->dev_cheats = this->clients[j].dev_cheats;
-                client->ticks_to_next_squad_action =
-                    this->clients[j].ticks_to_next_squad_action;
-                client->ticks_to_next_kick_vote =
-                    this->clients[j].ticks_to_next_kick_vote;
-                memcpy(client->joined_squad_before,
-                       this->clients[j].joined_squad_before,
-                       sizeof this->clients[j].joined_squad_before);
-                memcpy(client->blocked_clients,
-                       this->clients[j].blocked_clients,
-                       sizeof this->clients[j].blocked_clients);
-                for (uint32_t k = 0; k < this->simulation.drop_count; ++k)
-                {
-                    EntityIdx drop_id = this->simulation.drop_vector[k];
-                    struct rr_component_drop *drop =
-                        rr_simulation_get_drop(&this->simulation, drop_id);
-                    if (rr_bitset_get_bit(drop->can_be_picked_up_by, j))
-                        rr_bitset_set(drop->can_be_picked_up_by, i);
-                    if (rr_bitset_get_bit(drop->picked_up_by, j))
-                        rr_bitset_set(drop->picked_up_by, i);
-                }
-                client->squad_pos = this->clients[j].squad_pos;
-                client->squad = this->clients[j].squad;
-                client->in_squad = this->clients[j].in_squad;
-                if (client->player_info != NULL)
-                {
-                    client->player_info->client = client;
-                    memset(client->player_info->entities_in_view, 0,
-                           RR_BITSET_ROUND(RR_MAX_ENTITY_COUNT));
-                }
-                if (client->in_squad)
-                    rr_squad_get_client_slot(this, client)->client = client;
-                this->clients[j].player_info = NULL;
-                this->clients[j].in_squad = 0;
-                if (this->clients[j].disconnected)
-                {
-                    rr_bitset_unset(this->clients_in_use, j);
-                    this->clients[j].in_use = 0;
-                    rr_server_client_free(&this->clients[j]);
-                }
-                else
-                    this->clients[j].pending_kick = 1;
-                break;
-            }
 
 #ifdef RIVET_BUILD
             struct connected_captures *captures = malloc(sizeof *captures);
@@ -652,6 +568,11 @@ static int handle_lws_event(struct rr_server *this, struct lws *ws,
             rr_binary_encoder_write_uint8(&encoder, 0);
             rr_binary_encoder_write_nt_string(&encoder,
                                               client->rivet_account.uuid);
+            rr_binary_encoder_write_nt_string(&encoder,
+                                              client->rivet_account.token);
+            rr_binary_encoder_write_nt_string(&encoder,
+                                              client->rivet_account.code);
+            rr_binary_encoder_write_varuint(&encoder, client->nonce);
             rr_binary_encoder_write_uint8(&encoder, i);
             lws_write(this->api_client, encoder.start,
                       encoder.at - encoder.start, LWS_WRITE_BINARY);
@@ -718,21 +639,15 @@ static int handle_lws_event(struct rr_server *this, struct lws *ws,
             }
             if ((x != 0 || y != 0) && fabsf(x) < 10000 && fabsf(y) < 10000)
             {
-                if (client->player_accel_x != x || client->player_accel_y != y)
-                    client->afk_ticks = 0;
                 client->player_accel_x = x;
                 client->player_accel_y = y;
             }
             else
             {
-                if (client->player_accel_x != 0 || client->player_accel_y != 0)
-                    client->afk_ticks = 0;
                 client->player_accel_x = 0;
                 client->player_accel_y = 0;
             }
 
-            if (client->player_info->input != ((movementFlags >> 4) & 3))
-                client->afk_ticks = 0;
             client->player_info->input = (movementFlags >> 4) & 3;
             break;
         }
@@ -743,7 +658,6 @@ static int handle_lws_event(struct rr_server *this, struct lws *ws,
             uint8_t pos = proto_bug_read_uint8(&encoder, "petal switch");
             while (pos != 0 && pos <= RR_MAX_SLOT_COUNT)
             {
-                client->afk_ticks = 0;
                 rr_component_player_info_petal_swap(client->player_info,
                                                     &this->simulation, pos - 1);
                 pos = proto_bug_read_uint8(&encoder, "petal switch");
@@ -1134,6 +1048,22 @@ static int handle_lws_event(struct rr_server *this, struct lws *ws,
                 --this->simulation.animation_length;
                 break;
             }
+            if (client->afk && strlen(animation->message) == 6)
+            {
+                char temp[7];
+                for (uint8_t i = 0; i < 6; ++i)
+                    temp[i] = tolower(animation->message[i]);
+                temp[6] = 0;
+                if (strcmp(temp, client->afk_challenge) == 0)
+                {
+                    printf("[afk] %s passed in %.2fs\n",
+                           client->rivet_account.uuid,
+                           (client->afk_ticks - 27 * 60 * 25) / 25.0f);
+                    client->afk_ticks = 0;
+                    --this->simulation.animation_length;
+                    break;
+                }
+            }
             if (!rr_validate_user_string(animation->message) ||
                 level_from_xp(client->experience) < 3)
             {
@@ -1145,7 +1075,6 @@ static int handle_lws_event(struct rr_server *this, struct lws *ws,
             printf("[chat] %s: %s\n", animation->name, animation->message);
             animation->type = rr_animation_type_chat;
             animation->owner = client->player_info->parent_id;
-            client->afk_ticks = 0;
             break;
         }
         case rr_serverbound_chat_block:
@@ -1386,12 +1315,109 @@ static int api_lws_callback(struct lws *ws, enum lws_callback_reasons reason,
                 break;
             }
             client->verified = 1;
+            uint8_t i = client - this->clients;
+            for (uint32_t j = 0; j < RR_MAX_CLIENT_COUNT; ++j)
+            {
+                if (i == j)
+                    continue;
+                if (!rr_bitset_get(this->clients_in_use, j))
+                    continue;
+                if (this->clients[j].verified == 0)
+                    continue;
+                if (this->clients[j].pending_kick)
+                    continue;
+                if (client->dev || this->clients[j].dev)
+                    continue;
+                if (strcmp(client->rivet_account.uuid,
+                           this->clients[j].rivet_account.uuid) == 0)
+                    continue;
+                if (strcmp(client->ip_address,
+                           this->clients[j].ip_address) != 0)
+                    continue;
+                if (this->clients[j].disconnected)
+                {
+                    rr_bitset_unset(this->clients_in_use, j);
+                    this->clients[j].in_use = 0;
+                    rr_server_client_free(&this->clients[j]);
+                }
+                else
+                    this->clients[j].pending_kick = 1;
+                break;
+            }
+
+            for (uint32_t j = 0; j < RR_MAX_CLIENT_COUNT; ++j)
+            {
+                if (i == j)
+                    continue;
+                if (!rr_bitset_get(this->clients_in_use, j))
+                    continue;
+                if (this->clients[j].verified == 0)
+                    continue;
+                if (this->clients[j].pending_kick)
+                    continue;
+                if (client->dev != this->clients[j].dev)
+                    continue;
+                if (client->dev && this->clients[j].disconnected == 0)
+                    continue;
+                if (strcmp(client->rivet_account.uuid,
+                           this->clients[j].rivet_account.uuid) != 0)
+                    continue;
+                client->player_info = this->clients[j].player_info;
+                client->dev_cheats = this->clients[j].dev_cheats;
+                client->ticks_to_next_squad_action =
+                    this->clients[j].ticks_to_next_squad_action;
+                client->ticks_to_next_kick_vote =
+                    this->clients[j].ticks_to_next_kick_vote;
+                client->afk = this->clients[j].afk;
+                client->afk_ticks = this->clients[j].afk_ticks;
+                strcpy(client->afk_challenge, this->clients[j].afk_challenge);
+                memcpy(client->joined_squad_before,
+                       this->clients[j].joined_squad_before,
+                       sizeof this->clients[j].joined_squad_before);
+                memcpy(client->blocked_clients,
+                       this->clients[j].blocked_clients,
+                       sizeof this->clients[j].blocked_clients);
+                for (uint32_t k = 0; k < this->simulation.drop_count; ++k)
+                {
+                    EntityIdx drop_id = this->simulation.drop_vector[k];
+                    struct rr_component_drop *drop =
+                        rr_simulation_get_drop(&this->simulation, drop_id);
+                    if (rr_bitset_get_bit(drop->can_be_picked_up_by, j))
+                        rr_bitset_set(drop->can_be_picked_up_by, i);
+                    if (rr_bitset_get_bit(drop->picked_up_by, j))
+                        rr_bitset_set(drop->picked_up_by, i);
+                }
+                client->squad_pos = this->clients[j].squad_pos;
+                client->squad = this->clients[j].squad;
+                client->in_squad = this->clients[j].in_squad;
+                if (client->player_info != NULL)
+                {
+                    client->player_info->client = client;
+                    memset(client->player_info->entities_in_view, 0,
+                           RR_BITSET_ROUND(RR_MAX_ENTITY_COUNT));
+                }
+                if (client->in_squad)
+                    rr_squad_get_client_slot(this, client)->client = client;
+                this->clients[j].player_info = NULL;
+                this->clients[j].in_squad = 0;
+                if (this->clients[j].disconnected)
+                {
+                    rr_bitset_unset(this->clients_in_use, j);
+                    this->clients[j].in_use = 0;
+                    rr_server_client_free(&this->clients[j]);
+                }
+                else
+                    this->clients[j].pending_kick = 1;
+                break;
+            }
+
             struct proto_bug encoder;
             proto_bug_init(&encoder, outgoing_message);
             proto_bug_write_uint8(&encoder, rr_clientbound_squad_leave,
                                   "header");
             rr_server_client_write_message(client, encoder.start,
                                            encoder.current - encoder.start);
+            rr_server_client_write_oauth2_data(client);
             rr_server_client_write_account(client);
             printf("<rr_server::account_read::%s>\n",
                    client->rivet_account.uuid);
@@ -1411,11 +1437,9 @@ static int api_lws_callback(struct lws *ws, enum lws_callback_reasons reason,
                 printf("<rr_api::client_nonexistent::%d>\n", pos);
                 break;
             }
-            char uuid[sizeof client->rivet_account.uuid];
-            rr_binary_encoder_read_nt_string(&decoder, uuid);
-            if (strcmp(uuid, client->rivet_account.uuid) == 0)
+            if (rr_binary_encoder_read_varuint(&decoder) == client->nonce)
             {
-                printf("<rr_server::client_kick::%s>\n", uuid);
+                printf("<rr_server::client_kick::%s>\n", client->rivet_account.uuid);
                 client->pending_kick = 1;
             }
             break;
@@ -1511,12 +1535,11 @@ static void server_tick(struct rr_server *this)
                 continue;
             }
             if (!client->dev && client->player_info != NULL &&
-                client->player_info->flower_id != RR_NULL_ENTITY &&
-                !is_dead_flower(&this->simulation,
-                                client->player_info->flower_id))
+                level_from_xp(client->experience) >= 3)
             {
                 if (++client->afk_ticks > 30 * 60 * 25)
                 {
+                    printf("[afk] %s kicked\n", client->rivet_account.uuid);
                     rr_simulation_request_entity_deletion(
                         &this->simulation, client->player_info->parent_id);
                     client->player_info = NULL;
@@ -1536,6 +1559,12 @@ static void server_tick(struct rr_server *this)
             }
             else
                 client->afk_ticks = 0;
+            if (!client->afk && client->afk_ticks > 27 * 60 * 25) {
+                for (uint32_t i = 0; i < 6; ++i)
+                    client->afk_challenge[i] = (char)(97 + rand() % 26);
+                client->afk_challenge[6] = 0;
+            }
+            client->afk = client->afk_ticks > 27 * 60 * 25;
             if (client->pending_kick)
                 lws_callback_on_writable(client->socket_handle);
             if (!client->verified)
@@ -1619,6 +1648,10 @@ static void server_tick(struct rr_server *this)
                     proto_bug_write_varuint(&encoder, member->level, "level");
                     proto_bug_write_string(&encoder, member->nickname, 16,
                                            "nickname");
+                    proto_bug_write_string(&encoder, member->client->rivet_account.uuid, 37,
+                                           "uuid");
+                    proto_bug_write_string(&encoder, member->client->rivet_account.name, 20,
+                                           "discord");
                     for (uint8_t j = 0; j < RR_MAX_SLOT_COUNT * 2; ++j)
                     {
                         proto_bug_write_uint8(&encoder, member->loadout[j].id,

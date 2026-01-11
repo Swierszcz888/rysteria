@@ -50,13 +50,13 @@ struct rr_petal_data RR_PETAL_DATA[rr_petal_id_max] = {
     {rr_petal_id_basic,     rr_rarity_id_common,    offensive, 10.0f,  15.0f,   0.0f,  50,  0, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_pellet,    rr_rarity_id_common,    offensive,  8.0f,   5.0f,   0.0f,  10,  0, {1,2,2,3,3,5,6,8}},
     {rr_petal_id_fossil,    rr_rarity_id_common,    offensive,  5.0f, 150.0f,   0.0f, 100,  0, {1,1,1,1,1,1,1,1}},
-    {rr_petal_id_stinger,   rr_rarity_id_common,    offensive, 65.0f,   3.0f,  10.0f, 150,  0, {1,1,1,1,1,3,5,6}},
-    {rr_petal_id_berry,     rr_rarity_id_rare,      offensive,  4.0f,   5.0f,  12.0f,  10,  0, {1,1,1,1,1,2,3,3}},
+    {rr_petal_id_stinger,   rr_rarity_id_common,    offensive, 70.0f,   3.0f,  10.0f, 150,  0, {1,1,1,1,1,3,5,6}},
+    {rr_petal_id_berry,     rr_rarity_id_rare,      offensive,  5.0f,   5.0f,  12.0f,  13,  0, {1,1,1,1,1,2,3,3}},
     {rr_petal_id_shell,     rr_rarity_id_rare,      offensive, 10.0f,  16.0f,   0.0f,  50, 13, {1,1,1,1,1,2,3,3}},
     {rr_petal_id_peas,      rr_rarity_id_rare,      offensive, 22.0f,  12.0f,   8.0f,  13, 12, {4,4,4,4,4,4,5,7}},
-    {rr_petal_id_leaf,      rr_rarity_id_unusual,   offensive,  9.0f,   8.0f,   8.0f,  38,  0, {1,1,1,1,1,1,1,1}},
+    {rr_petal_id_leaf,      rr_rarity_id_unusual,   offensive,  9.0f,   8.0f,   8.0f,  38,  0, {1,1,1,1,1,2,2,2}},
     {rr_petal_id_egg,       rr_rarity_id_unusual,   defensive,  1.0f,  75.0f,  10.0f,  25,150, {1,2,4,5,5,5,3,2}},
-    {rr_petal_id_magnet,    rr_rarity_id_unusual,   defensive,  2.0f,  25.0f,  10.0f,  38,  0, {1,1,1,1,1,1,1,3}},
+    {rr_petal_id_magnet,    rr_rarity_id_unusual,   defensive,  2.0f,  25.0f,   0.0f,  38,  0, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_uranium,   rr_rarity_id_rare,      offensive,  3.0f,  40.0f,   0.0f,  25, 25, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_feather,   rr_rarity_id_common,    defensive,  1.0f,   3.0f,   0.0f,  25,  0, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_azalea,    rr_rarity_id_common,    defensive,  5.0f,  15.0f,   8.0f,  25, 50, {1,1,1,1,1,1,3,5}},
@@ -64,13 +64,13 @@ struct rr_petal_data RR_PETAL_DATA[rr_petal_id_max] = {
     {rr_petal_id_web,       rr_rarity_id_rare,      defensive,  5.0f,   5.0f,   0.0f,  50, 13, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_seed,      rr_rarity_id_legendary, defensive,  1.0f,  75.0f,   0.0f,  63, 13, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_gravel,    rr_rarity_id_unusual,   offensive,  9.0f,  20.0f,   0.0f,  20, 10, {1,2,2,2,3,3,4,5}},
-    {rr_petal_id_club,      rr_rarity_id_common,    offensive,  2.0f,1200.0f,   0.0f, 250,  0, {1,1,1,1,1,1,1,1}},
+    {rr_petal_id_club,      rr_rarity_id_common,    offensive,  2.0f,1200.0f,   0.0f, 200,  0, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_crest,     rr_rarity_id_rare,      offensive,  0.0f,   0.0f,   0.0f,   0,  0, {0,0,0,0,0,0,0,0}},
     {rr_petal_id_droplet,   rr_rarity_id_common,    offensive, 15.0f,   5.0f,   0.0f,  37,  0, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_beak,      rr_rarity_id_unusual,   defensive,  1.0f,  30.0f,   0.0f,  55,  0, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_lightning, rr_rarity_id_unusual,   offensive,  7.0f,   1.0f,   0.0f,  63,  0, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_third_eye, rr_rarity_id_legendary, offensive,  0.0f,   0.0f,   0.0f,   0,  0, {0,0,0,0,0,0,0,0}},
-    {rr_petal_id_nest,      rr_rarity_id_legendary, defensive,  5.0f,  25.0f,   0.0f, 125, 13, {1,1,1,1,1,1,1,1}},
+    {rr_petal_id_nest,      rr_rarity_id_legendary, defensive,  5.0f,  25.0f,   0.0f, 250, 13, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_fireball,  rr_rarity_id_unusual,   offensive,260.0f,   1.0f,   0.0f, 600,  0, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_meat,      rr_rarity_id_common,    offensive,  0.0f,1600.0f,   0.0f, 188, 13, {1,1,1,1,1,1,1,1}},
     {rr_petal_id_bubble,    rr_rarity_id_common,    defensive,  1.0f,  25.0f,   0.0f, 150,  3, {1,1,1,1,1,1,1,1}},
@@ -331,12 +331,10 @@ static void init_maze(uint32_t size, uint8_t *template,
         for (int32_t x = 0; x < size / 2; ++x)
         {
             uint8_t this_tile = offset(0, 0);
-#ifdef RR_SERVER
             maze_grid(x * 2, y * 2).difficulty = this_tile;
             maze_grid(x * 2 + 1, y * 2).difficulty = this_tile;
             maze_grid(x * 2, y * 2 + 1).difficulty = this_tile;
             maze_grid(x * 2 + 1, y * 2 + 1).difficulty = this_tile;
-#endif
             this_tile = this_tile != 0;
             // top left
             uint8_t top = offset(0, -1);
@@ -534,7 +532,6 @@ uint32_t level_from_xp(double xp)
     return level;
 }
 
-#ifdef RR_SERVER
 #define _ 0
 #define c 1
 #define C 4
@@ -552,25 +549,6 @@ uint32_t level_from_xp(double xp)
 #define X 52
 #define a 56
 #define A 60
-#else
-#define _ 0
-#define c 1
-#define C 1
-#define u 1
-#define U 1
-#define r 1
-#define R 1
-#define e 1
-#define E 1
-#define l 1
-#define L 1
-#define m 1
-#define M 1
-#define x 1
-#define X 1
-#define a 1
-#define A 1
-#endif
 
 #define RR_DEFINE_MAZE(name, size)                                             \
     struct rr_maze_grid RR_MAZE_##name[size][size];                            \
