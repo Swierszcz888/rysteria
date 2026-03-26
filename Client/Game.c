@@ -22,7 +22,7 @@
 #include <string.h>
 #include <sys/time.h>
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 #include <libwebsockets.h>
 #endif
 
@@ -1772,7 +1772,7 @@ void rr_game_tick(struct rr_game *this, float delta)
     rr_dom_set_cursor(this->cursor);
     rr_game_crafting_tick(this, delta);
     rr_game_autocraft_tick(this, delta);
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
     lws_service(this->socket.socket_context, -1);
 #endif
     if (this->socket_ready)

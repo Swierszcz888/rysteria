@@ -18,7 +18,7 @@
 
 #include <Shared/Utilities.h>
 
-#if defined(RIVET_BUILD) && !defined(EMSCRIPTEN)
+#if defined(RIVET_BUILD) && !defined(__EMSCRIPTEN__)
 #include <curl/curl.h>
 #endif
 
